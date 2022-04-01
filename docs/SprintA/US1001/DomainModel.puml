@@ -1,0 +1,217 @@
+@startuml DomainModel
+class Product{
+  -id
+  -description
+  -brandName
+  -reference
+  -barcode
+  -productionCode
+  -price
+  -disponibility
+  -categoryId
+}
+
+class Category{
+  -id
+  -alphaNumericCode
+  -description
+}
+
+class Customer{
+  -userId
+  -id
+  -VAT
+  -birthdate
+  -gender
+}
+
+class "ProductCatalog" {
+  -id
+  -products
+  -description
+}
+
+class "ShoppingCart" {
+  -customerId
+  -itemId
+  -total
+  -ship_to
+}
+
+class Order {
+  -id
+  -date
+  -customerId
+  -billingAddress
+  -deliveryAddress
+  -totalAmount
+  -payCode
+  -state
+}
+
+class Payment {
+  -orderId
+  -payCode
+  -payStatus
+  -payTotal
+}
+
+class Shipment {
+  -shipmentType
+  -volume
+  -weight
+}
+
+class "SalesClerk"  {
+  -userId
+-organizationRole
+}
+
+
+class "SalesManager" {
+-userId
+-organizationRole
+}
+
+class "WarehouseEmployee" {
+-userId
+-organizationRole
+-warehouseId
+}
+
+class "Administrator"{
+-userId
+-organizationRole
+}
+
+class PurchaseHistory{
+-customerId
+-orderId
+-type
+}
+
+class Warehouse {
+-Length
+-Width
+-Unit
+-Aisles
+-Squares
+-Rows
+}
+
+class Aisle {
+-id
+-beginSquare
+-endSquare
+-depthSquare
+-accessibility
+}
+
+class Square {
+-lSquare
+-wSquare
+}
+
+class Rows {
+-id
+-beginSquare
+-endSquare
+-aisle
+}
+
+class Shelf {
+ -id
+ -beginSquare
+ -endSquare
+ -aisle
+ -row
+}
+
+class Bin {
+  -id
+  -beginSquare
+  -endSquare
+  -aisle
+  -row
+  -shelf
+}
+
+class User{
+-userId
+-name
+-address
+-phoneNumber
+-email
+}
+
+class Survey {
+  -id
+  -alphaNumericCode
+  -description
+  -timeToBePerformed
+  -rules
+  -questionaryId
+}
+
+class Questionnaire {
+-id
+-title
+-welcomeMessage
+-sections 
+-finalMessage
+}
+
+class Section {
+-id
+-title
+-description
+-obligatoriness
+-repeatability
+-content
+}
+
+class Question {
+  -id
+  -question 
+  -instruction 
+  -type 
+  -obligatoriness
+  -extraInfo 
+}
+
+
+User "1" -- "0..1" SalesManager : can be >
+User "1" -- "0..1" Administrator : can be >
+User "1" -- "0..1" SalesClerk : can be >
+User "1" -- "0..1" WarehouseEmployee : can be >
+User "1" -- "0..1" Customer : can be >
+Product "0..*" -- "1" Category: has >
+ProductCatalog "1" -- "*" Product: composed of >
+ShoppingCart "1" -- "1..*" ProductCatalog: can add products from >
+ShoppingCart "1" -- "0..1" Order : can origine >
+Order "1" -- "1" Shipment: has >
+Order "1" -- "1" Payment: has >
+Customer "1" -- "1" ShoppingCart : uses >
+SalesClerk "1" -- "0..*" Customer : can register >
+SalesClerk "1" -- "0..*" Order : can register >
+SalesClerk "1" -- "1..*" ProductCatalog : manages >
+SalesClerk "1" -- "1..*" Category : manages >
+Customer "1" -- "1" PurchaseHistory : has >
+PurchaseHistory "1" -- "0..*" Order : has >
+Warehouse "1" -- "1..*" Aisle : organized by >
+Aisle "1" -- "1..*" Rows : vertically split on >
+Rows "1" -- "1..*" Shelf : horizontally split by >
+Shelf "1" -- "1..*" Bin : divided in >
+Bin "1" -- "1" Product : contains >
+Warehouse "1" -- "1..*" Square : can be thought as >
+WarehouseEmployee "1" --"1..*" Warehouse: manages >
+SalesManager "1" -- "1" SalesClerk: does the same as >
+Administrator "1" -- "0..*" User: manages all >
+SalesManager "1" -- "0..*" Survey: carries out >
+Survey "1" -- "0..*" Questionnaire: can be >
+Customer "1" -- "0..1" Questionnaire: can answer >
+Section "1" -- "1..*" Question: has >
+Questionnaire "1" -- "1..*" Section: has >
+
+@enduml
+
