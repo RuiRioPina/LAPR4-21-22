@@ -1,190 +1,223 @@
-@startuml
+@startuml DomainModel
+class Product{
+  -id
+  -description
+  -brandName
+  -reference
+  -barcode
+  -productionCode
+  -price
+  -disponibility
+  -categoryId
+}
 
-hide methods
-hide fields
+class Category{
+  -id
+  -alphaNumericCode
+  -description
+}
 
-package Team <<rectangle>> {
+class Customer{
+  -userId
+  -id
+  -VAT
+  -birthdate
+  -gender
+}
 
+class "ProductCatalog" {
+  -id
+  -products
+  -description
+}
 
+class "ShoppingCart" {
+  -customerId
+  -itemId
+  -total
+  -ship_to
+}
 
+class Order {
+  -id
+  -date
+  -customerId
+  -billingAddress
+  -deliveryAddress
+  -totalAmount
+  -payCode
+  -state
+}
 
+class Payment {
+  -orderId
+  -payCode
+  -payStatus
+  -payTotal
+}
 
+class Shipment {
+  -shipmentType
+  -volume
+  -weight
+}
 
+class "SalesClerk"  {
+  -userId
+-organizationRole
 }
 
 
-
-package "Team Type" <<Rectangle>>{
-    class TeamType << (E,#FFFFFF) >>
-    class Team << (E,#FFFFFF) >> <<Root>>
-
-
-    TeamType <--o Team
-
-
+class "SalesManager" {
+-userId
+-organizationRole
 }
 
-package Ticket <<Rectangle>>{
-
-    class Ticket << (E,#FFFFFF) >> <<Root>>
-
-    class Feedback << (V,#AAAAAA) >>
-
-    class TicketStatus << (V,#AAAAAA) >>
-
-    class Urgency << (V,#AAAAAA) >>
-
-    class DateOfGeneration << (V,#AAAAAA) >>
-
-    class LimitDate << (V,#AAAAAA) >>
-
-
-
-    Ticket -down-> Feedback
-    Ticket o--> TicketStatus
-    Ticket o--> Urgency
-
-    Ticket --> DateOfGeneration
-    Ticket --> LimitDate
-
-    Ticket --> Form
-
-
+class "WarehouseEmployee" {
+-userId
+-organizationRole
+-warehouseId
 }
 
-package Activity <<rectangle>>{
-    class Activity << (E,#FFFFFF) >>
-    class ActivityType << (V,#AAAAAA) >>
-    class ActivityFlux << (E,#FFFFFF) >> <<Root>>
-
-    Activity o--> ActivityType
-    ActivityFlux o--> Activity
-    Ticket o--> ActivityFlux
-
+class "Administrator"{
+-userId
+-organizationRole
 }
 
-package Catalog <<Rectangle>>{
-
-    class Catalog << (E,#FFFFFF) >> <<Root>>
-
-    class SLA << (V,#AAAAAA) >>
-
-    class CatalogCriteria << (E,#FFFFFF) >>
-
-    Catalog --> SLA
-    Catalog --> CatalogCriteria
-    CatalogCriteria o--> TeamType
-
+class PurchaseHistory{
+-customerId
+-orderId
+-type
 }
 
-package Service <<Rectangle>>{
-    class Service << (E,#FFFFFF) >> <<Root>>
-    class CompletedService << (E,#FFFFFF) >>
-    class UncompletedService << (E,#FFFFFF) >>
-    class KeyWords << (V,#AAAAAA) >>
-
-    class Approval << (E,#FF9F00) >>
-
-    class Classification << (E,#FF9F00) >>
-
-    class ClassificationInterval << (V,#AAAAAA) >>
-
-
-    Service --> ActivityFlux
-
-    Approval ..> Service
-
-    Classification ..> Service
-
-    Service --> ClassificationInterval
-
-    Service --> KeyWords
-
-    UncompletedService -|> Service
-    CompletedService -left|> Service
-
-    Service --> Form
-
+class Warehouse {
+-Length
+-Width
+-Unit
+-Aisles
+-Squares
+-Rows
 }
 
-package Form <<Rectangle>>{
-    class Form << (E,#FFFFFF) >> <<Root>>
-
-    class SolicitationForm << (E,#FFFFFF) >>
-
-    class ManualActivityForm << (E,#FFFFFF) >>
-
-    class FormAttribute << (E,#FFFFFF) >>
-
-    class AttributeType << (V,#AAAAAA) >>
-
-    class AttributeValue << (V,#AAAAAA) >>
-
-    class Script << (V,#AAAAAA) >>
-
-    Form --> FormAttribute
-
-    SolicitationForm -|> Form
-
-    ManualActivityForm -up|> Form
-
-    Form --> Script
-
-    FormAttribute --> AttributeType
-
-    FormAttribute --> AttributeValue
-
-
-
+class Aisle {
+-id
+-beginSquare
+-endSquare
+-depthSquare
+-accessibility
 }
 
-package User <<Rectangle>>{
-    class User << (E,#FFFFFF) >> <<Root>>
-
-    class Function << (V,#AAAAAA) >>
-
-    class Administrator << (E,#FFFFFF) >>
-
-    class Collaborator << (E,#FFFFFF) >>
-
-    class Address << (V,#AAAAAA) >>
-
-    class HumanResources << (E,#FFFFFF) >>
-
-    User --> Function
-
-    Administrator --|> User
-    Collaborator --|> User
-    Collaborator --> Address
-    HumanResources --|> User
-    Ticket --> Collaborator
-    Team --> Collaborator
-    Collaborator --> Collaborator
-
-
-
-
-
+class Square {
+-lSquare
+-wSquare
 }
 
-/'
+class Rows {
+-id
+-beginSquare
+-endSquare
+-aisle
+}
 
-Uma nota sobre os value objects, se um conceito foi identificado como value object em princípio
-deve ser representado no diagrama pois terá regras de negócio associadas. No entanto, se forem
-value objects genéricos, ex., Email, Money, Date, não será necessário representa-los e podem
-aparecer apenas como atributos das entidades
+class Shelf {
+ -id
+ -beginSquare
+ -endSquare
+ -aisle
+ -row
+}
 
-https://moodle.isep.ipp.pt/pluginfile.php/96426/mod_resource/content/15/Processo_de_engenharia_de_aplicacoes.pdf
+class Bin {
+  -id
+  -beginSquare
+  -endSquare
+  -aisle
+  -row
+  -shelf
+}
 
-Página 15
-'/
+class User{
+-userId
+-name
+-address
+-phoneNumber
+-email
+}
+
+class Survey {
+  -id
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              -alphaNumericCode
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              -description
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              -timeToBePerformed
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              -rules
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                              -questionaryId
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                            }
+
+class Questionnaire {
+-id
+-title
+-welcomeMessage
+-sections
+-finalMessage
+}
+
+class Section {
+-id
+-title
+-description
+-obligatoriness
+-repeatability
+-content
+}
+
+class Question {
+  -id
+  -question
+  -instruction
+  -type
+  -obligatoriness
+  -extraInfo
+}
 
 
-
-
-
-
+User "1" -- "0..1" SalesManager : can be >
+User "1" -- "0..1" Administrator : can be >
+User "1" -- "0..1" SalesClerk : can be >
+User "1" -- "0..1" WarehouseEmployee : can be >
+User "1" -- "0..1" Customer : can be >
+Product "0..*" -- "1" Category: has >
+ProductCatalog "1" -- "*" Product: composed of >
+ShoppingCart "1" -- "1..*" ProductCatalog: can add products from >
+ShoppingCart "1" -- "0..1" Order : can origine >
+Order "1" -- "1" Shipment: has >
+Order "1" -- "1" Payment: has >
+Customer "1" -- "1" ShoppingCart : uses >
+SalesClerk "1" -- "0..*" Customer : can register >
+SalesClerk "1" -- "0..*" Order : can register >
+SalesClerk "1" -- "1..*" ProductCatalog : manages >
+SalesClerk "1" -- "1..*" Category : manages >
+Customer "1" -- "1" PurchaseHistory : has >
+PurchaseHistory "1" -- "0..*" Order : has >
+Warehouse "1" -- "1..*" Aisle : organized by >
+Aisle "1" -- "1..*" Rows : vertically split on >
+Rows "1" -- "1..*" Shelf : horizontally split by >
+Shelf "1" -- "1..*" Bin : divided in >
+Bin "1" -- "1" Product : contains >
+Warehouse "1" -- "1..*" Square : can be thought as >
+WarehouseEmployee "1" --"1..*" Warehouse: manages >
+SalesManager "1" -- "1" SalesClerk: does the same as >
+Administrator "1" -- "0..*" User: manages all >
+SalesManager "1" -- "0..*" Survey: carries out >
+Survey "1" -- "0..*" Questionnaire: can be >
+Customer "1" -- "0..1" Questionnaire: can answer >
+Section "1" -- "1..*" Question: has >
+Questionnaire "1" -- "1..*" Section: has >
+SalesManager "1" -- "1..*" Report: views >
+Report "1" -- "1..*" Sales: contains >
+Warehouse "1" -- "1..*" AVG: operates >
+AVG "1" -- "1" AVGState: is in >
 
 
 
 @enduml
+
