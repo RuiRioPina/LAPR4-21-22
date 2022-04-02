@@ -202,14 +202,14 @@
     Aisle "1" -- "1..*" Rows : vertically split on >
     Rows "1" -- "1..*" Shelf : horizontally split by >
     Shelf "1" -- "1..*" Bin : divided in >
-    Bin "1" -- "1" Product : contains >
+    Bin "1" -- "0..1" Product : contains >
     Warehouse "1" -- "1..*" Square : can be thought as >
     WarehouseEmployee "1" --"1..*" Warehouse: manages >
     SalesManager "1" -- "1" SalesClerk: does the same as >
     Administrator "1" -- "0..*" User: manages all >
     SalesManager "1" -- "0..*" Survey: carries out >
     Survey "1" -- "0..*" Questionnaire: can be >
-    Customer "1" -- "0..1" Questionnaire: can answer >
+    Customer "1" -- "0..1" Questionnaires: can answer >
     Section "1" -- "1..*" Question: has >
     Questionnaire "1" -- "1..*" Section: has >
     SalesManager "1" -- "1..*" Report: views >
