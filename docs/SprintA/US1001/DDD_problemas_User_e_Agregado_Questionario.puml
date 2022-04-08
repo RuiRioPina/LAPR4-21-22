@@ -2,22 +2,47 @@
 hide methods
 
 
-
-package User <<rectangle>>{
-
 class User << (E,#FFFFFF) >> << Root >>
-     
+
+package WarehouseEmployee <<rectangle>>{
+
+class WarehouseEmployee << (E,#FFFFFF) >> <<Root>>
+
 }
 
-package Customer <<rectangle>>{
+package SalesClerk <<rectangle>>{
+
+class SalesClerk << (E,#FFFFFF) >> <<Root>>
+
+}
+
+package SalesManager <<rectangle>>{
+
+class SalesManager << (E,#FFFFFF) >> <<Root>>
+
+}
+
+package Administrator <<rectangle>>{
+
+class Administrator << (E,#FFFFFF) >> <<Root>>{
+}
+
+}
+
+package "Shopping Cart" <<rectangle>>{     
+
+class "Shopping Cart" << (E,#FFFFFF) >> << Root >> 
+
+}
+
+package Customer <<rectangle>>{     
 
 class Customer << (E,#FFFFFF) >> <<Root>>
 
-class "Shopping Cart" << (E,#FFFFFF) >> 
+
 
 class "Purchase History" << (E,#FFFFFF) >> 
 
-    Customer "1" --> "1" "Shopping Cart"
     Customer "1" --> "1" "Purchase History"
 }
 
@@ -56,6 +81,7 @@ class Survey << (E,#FFFFFF) >> <<Root>> {
 -description
 }
 
+
 class "Alphanumeric code" << (V,#FFFFFF) >>
 
 class "Period of days" << (V,#FFFFFF) >>
@@ -71,6 +97,38 @@ package "Question Type" <<rectangle>> {
 class "Question Type" << (E,#FFFFFF) >> <<Root>>
 }
 
+package Section <<rectangle>> {
+class Section << (E,#FFFFFF) >> << root >>  {
+-description
+}
+class "Section Id" << (V,#FFFFFF) >> 
+
+class Repeatability << (V,#FFFFFF) >> 
+
+class "Section Title"  << (V,#FFFFFF) >> 
+
+Section "1" --> "1" "Section Id"
+
+Section "1" --> "1" "Section Title"
+
+Section "1" --> "1" Repeatability
+
+
+}
+
+package Question <<rectangle>>{
+class Question << (E,#FFFFFF) >> << root >>{
+-question
+-instruction
+-additionalInfo
+}
+
+Question "1" --> "1..*" "Question Id"
+}
+
+
+
+
 package Questionnaire <<rectangle>> {
 
 class Questionnaire << (E,#FFFFFF) >> <<Root>> {
@@ -78,52 +136,20 @@ class Questionnaire << (E,#FFFFFF) >> <<Root>> {
 -finalMessage
 }
 
-class Section << (E,#FFFFFF) >>  {
--description
-}
-
-class Question << (E,#FFFFFF) >> {
--question
--instruction
--additionalInfo
-}
-
 class "Questionnaire Id" << (V,#FFFFFF) >> 
 
-class Title << (V,#FFFFFF) >> 
+class "Questionnaire Title"  << (V,#FFFFFF) >> 
 
-class "Obligatoriness" << (V,#FFFFFF) >> 
 
-class "Section Id" << (V,#FFFFFF) >> 
 
 class "Question Id" << (V,#FFFFFF) >> 
-
-class Repeatability << (V,#FFFFFF) >> 
-
-class Content << (V,#FFFFFF) >> 
-
 
 Questionnaire "1" --> "1..*" Section
 
 Questionnaire "1" --> "1" "Questionnaire Id"
 
-Questionnaire "1" --> "1" Title 
+Questionnaire "1" --> "1" "Questionnaire Title" 
 
-Section "1" --> "1" "Obligatoriness"
-
-Section "1" --> "1" "Section Id"
-
-Section "1" --> "1" Title 
-
-Section "1" --> "1" Content 
-
-Section "1" --> "1" Repeatability
-
-Content "1" --> "1..*" Question
-
-Question "1" --> "1..*" "Question Id"
-
-Question "1" --> "1" Obligatoriness 
 }
 
 
@@ -176,9 +202,9 @@ package "Product Category" <<Rectangle>>{
 
 
 
-   class Catalog << (E,#FFFFFF) >>
+ class Catalog << (E,#FFFFFF) >>
 
- 
+ class "Obligatoriness" << (V,#FFFFFF) >> 
 
 
 "Product Category" "1" --> "0..*" Product
@@ -187,4 +213,14 @@ Customer "1" --> "0..*" Order
 Survey "1" --> "0..*" Questionnaire
 Customer "1" --> "0..*" Questionnaire
 Warehouse"1" --> "0..*" AVG
+Section "1" --> "1..*" Question
+Section "1" --> "1" "Obligatoriness"
+Question "1" --> "1" "Obligatoriness"
+Customer "1" --> "1" "Shopping Cart"
+"Shopping Cart" "1" --> "1" Catalog
+User "1" --|> "0..*" Customer
+User "1" --|> "0..*" WarehouseEmployee
+User "1" --|> "0..*" SalesClerk
+User "1" --|> "0..*" Administrator
+User "1" --|> "0..*" SalesManager
 @enduml

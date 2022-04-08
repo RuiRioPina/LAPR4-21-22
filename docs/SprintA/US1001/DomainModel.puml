@@ -231,6 +231,8 @@
     Warehouse "1" -- "1..*" AVG: operates >
     AVG "1" -- "1" AVGState: is in >
     Warehouse "1" -- "1..*" AVGDock : contains >
+        Warehouse "1" --- "1..*" XYZPosition : arranged with >
+    Warehouse "1" -- "1..*" AVGDock : contains >
     Warehouse "1" --- "1..*" XYZPosition : arranged with >
     Square "1" -- "0..*" XYZPosition : conditions >
 
