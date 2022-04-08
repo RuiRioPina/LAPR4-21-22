@@ -217,7 +217,7 @@
     Rows "1" -- "1..*" Shelf : horizontally split by >
     Shelf "1" -- "1..*" Bin : divided in >
     Bin "1" -- "0..1" Product : contains >
-    Warehouse "1" -- "1..*" Square : can be thought as >
+    Warehouse "1" -- "1..*" Square : < conditions dimensions
     WarehouseEmployee "1" --"1..*" Warehouse: manages >
     SalesManager "1" -- "1" SalesClerk: does the same as >
     Administrator "1" -- "0..*" User: manages all >
@@ -232,6 +232,9 @@
     AVG "1" -- "1" AVGState: is in >
     Warehouse "1" -- "1..*" AVGDock : contains >
         Warehouse "1" --- "1..*" XYZPosition : arranged with >
+    Warehouse "1" -- "1..*" AVGDock : contains >
+    Warehouse "1" --- "1..*" XYZPosition : arranged with >
+    Square "1" -- "0..*" XYZPosition : conditions >
 
 
     @enduml
