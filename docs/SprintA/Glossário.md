@@ -4,8 +4,6 @@
 
 | **_TEA_** (EN)  | **_TEA_** (PT) | **_Description_** (EN)|                                       
 |:----------------|:---------------|:------------|
-| **Value-Added Tax (VAT)** | **Imposto sobre o Valor Acrescentado (IVA)** | Tax levied on sales or supplies of services and is paid by consumers when paying for goods or services supplied. The seller or service provider receives the VAT and then pays it to the Tax and Customs Authority (AT). |
-
 | **Administrator** | **Administrador** | Responsible for managing (e.g.: creating, deactivating) the system users and their respective permissions as well as the general configuration of the system. |
 | **AGV Manager** | **Gerente de AGV ** | Application responsible for managing and interacting with the AGVs managing the warehouse. |
 | **API (Application Programming Interface)** | **API (interface de programação de aplicativos)** | Set of definitions and protocols for building and integrating application software.  |
