@@ -38,6 +38,12 @@
       -ship_to
     }
 
+    class XYZPosition {
+      -Xposition
+      -Yposition
+      -Zposition
+    }
+
     class Order {
       -id
       -date
@@ -91,20 +97,22 @@
     }
 
     class Warehouse {
-    -Length
-    -Width
+    -id
     -Unit
     -Aisles
-    -Squares
+    -Square
     -Rows
+    -xPositionMax
+    -yPositionMax
+    -zPositionMax
     }
 
     class Aisle {
     -id
-    -beginSquare
-    -endSquare
-    -depthSquare
-    -accessibility
+    -beginXYZposition
+    -endXYZposition
+    -depthXYZPosition
+    --xyzAccessPosition
     }
 
     class Square {
@@ -112,17 +120,23 @@
     -wSquare
     }
 
+    class AVGDock{
+      -id
+      -xyzPosition
+      -xyzAccessPosition
+    }
+
     class Rows {
     -id
-    -beginSquare
-    -endSquare
+    -beginXYZposition
+    -endXYZposition
     -aisle
     }
 
     class Shelf {
      -id
-     -beginSquare
-     -endSquare
+     -beginXYZposition
+     -endXYZposition
      -aisle
      -row
     }
@@ -216,8 +230,8 @@
     Report "1" -- "1..*" Sales: contains >
     Warehouse "1" -- "1..*" AVG: operates >
     AVG "1" -- "1" AVGState: is in >
-
+    Warehouse "1" -- "1..*" AVGDock : contains >
+        Warehouse "1" --- "1..*" XYZPosition : arranged with >
 
 
     @enduml
-
