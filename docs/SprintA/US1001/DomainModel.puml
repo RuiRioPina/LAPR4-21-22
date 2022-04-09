@@ -120,7 +120,7 @@
     -wSquare
     }
 
-    class AVGDock{
+    class AGVDock{
       -id
       -xyzPosition
       -xyzAccessPosition
@@ -193,6 +193,13 @@
       -extraInfo
     }
 
+    class AGV {
+        -id
+        -shortDescription
+        -maxWeight
+        -
+    }
+
 
     User "1" -- "0..1" SalesManager : can be >
     User "1" -- "0..1" Administrator : can be >
@@ -228,11 +235,14 @@
     Questionnaire "1" -- "1..*" Section: has >
     SalesManager "1" -- "1..*" Report: views >
     Report "1" -- "1..*" Sales: contains >
-    Warehouse "1" -- "1..*" AVG: operates >
-    AVG "1" -- "1" AVGState: is in >
-    Warehouse "1" -- "1..*" AVGDock : contains >
+    Warehouse "1" -- "1..*" AGV: operates >
+    AGV "1" -- "1" AGVState: is in >
+        AGVDock "1" -- "0..1" AGV : houses >
+               AGV "1" -- "1"  AGVDock :  serves as a base for <
+
+    AGV "1" -- "1..*" AGVModel : contains >
         Warehouse "1" --- "1..*" XYZPosition : arranged with >
-    Warehouse "1" -- "1..*" AVGDock : contains >
+    Warehouse "1" -- "1..*" AGVDock : contains >
     Warehouse "1" --- "1..*" XYZPosition : arranged with >
     Square "1" -- "0..*" XYZPosition : conditions >
 
