@@ -2,6 +2,52 @@
 
 **Terms, Expressions and Acronyms (TEA) are organized alphabetically.**
 
+### Domain Model  ###
+
+| **_TEA_** (EN)  | **_TEA_** (PT) | **_Description_** (EN)|                                       
+|:----------------|:---------------|:------------|
+| **Address** | **Endereço** | Address of the costumer. |
+| **Adress Type** | **Tipo de Endereço** | Type of Address of the costumer. |
+| **Alphanumeric Code** | **Código Alfanumérico** | Code that contains letters and numbers used to identify the survey. |
+| **Barcode** | **Código de Barras** | Code used to identify the Product. |
+| **Brand** | **Marca** | Brand of the Product. |
+| **Catalog** | **Catálogo** | Contains the available products. |
+| **Customer** | **Cliente** | User of the system that buys products and creates orders. |
+| **Date Of Birth** | **Data de Nascimento** | Date of Birth of the Customer. |
+| **Description** | **Descrição** | Description of the Product. |
+| **Email** | **Email** | Email of the Customer. |
+| **Name** | **Nome** | Name of the Customer. |
+| **Obligatoriness** | **Obrigatoriedade** | Determines wheter a questionaire or question are mandatory. |
+| **Order State** | **Estado do pedido** | Classification of the state of the order(eg. pending/complete). |
+| **Payment** | **Pagamento** | Payment of the order. |
+| **Period of Days** | **Período de dias** | Period of days that a survey is in circulation. |
+| **Phone Number** | **Número de Telemóvel** | Phone Number used to identify a particular phone. |
+| **Photo** | **Foto** | Photo of the Product. |
+| **Price** | **Preço** | Price of the Product. |
+| **Product Category** | **Categoria de Produto** | Category of Product(used to filter different types of items). |
+| **Product** | **Produto** | Item meant to be bought by the customer. |
+| **Production Code** | **Código de Produção** | Code used to identify the Product. |
+| **Purchase History** | **Histórico de compra** | Contains the past purchases of the client and their date. |
+| **Question** | **Questão** | Question of the section. |
+| **Questionnaire** | **Questionário** | Form Given to a target audience that has an opportunity to answer it and express their opinions, possibly influencing future changes. |
+| **Questionnaire Title** | **Título do Questionário** | Title of the questionnaire. |
+| **QuestionnaireID** | **ID Questionário** | Number used by the system to identify a specific questionnaire. |
+| **Reference** | **Referência** | References and/or relations to other Products. |
+| **Repeatability** | **Repetibilidade** | Optional condition of a section stating if the questions of this section are to be answered more than once.  |
+| **Rules** | **Regras** | Survey rules that allow the identification of which customers will receive it(e.g customers that order a certain product in a certain period). |
+| **Section** | **Secção** | Section of the questionnaire that aggregates questions. |
+| **Section Title** | **Título da Secção** | Title of the questionnaire section. |
+| **SectionID** | **ID Secção** | Number used by the system to identify a specific section. |
+| **Shipment** | **Envio** | Way of taking the order to the Customer. |
+| **Shopping Cart** | **Carrinho de Compras** | Shopping cart owned by each user. Stores items that the customer wishes to buy. Is meant to create an Order after Payment. |
+| **Survey** | **Pesquisa** | Data given by the customers organized to find out their opinion on the products that they buy and/or want to buy. |
+| **User** | **Utilizador** | User in the system that represents and employee or a customer. |
+| **User Type** | **Tipo De Utilizador** | Classification used to identify the permissions of an user. |
+| **VATID(Value-Added-Tax ID)** | **ID do IVA(Imposto sobre o Valor Acrescentado)** | ID used to find the Tax applied to the purchases of the customer. |
+
+
+### Specifications Document  ###
+
 | **_TEA_** (EN)  | **_TEA_** (PT) | **_Description_** (EN)|                                       
 |:----------------|:---------------|:------------|
 | **Administrator** | **Administrador** | Responsible for managing (e.g.: creating, deactivating) the system users and their respective permissions as well as the general configuration of the system. |
@@ -30,3 +76,4 @@
 | **Value-Added Tax (VAT)** | **Imposto sobre o Valor Acrescentado (IVA)** | Tax levied on sales or supplies of services and is paid by consumers when paying for goods or services supplied. The seller or service provider receives the VAT and then pays it to the Tax and Customs Authority (AT). |
 | **XML (Extensible Markup Language)** | **XML (Linguagem de Marcação Extensível)** | Set of codes, or tags, that describes the text in a digital document. |
 | **Warehouse Employee** | **Empregado de Armazém** | responsible for managing the warehouse information (e.g.: plants and AGVs) as well as checking and controlling its functioning and by packaging and sending for customer delivering orders. |
+
