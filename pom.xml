@@ -9,9 +9,9 @@
     <packaging>pom</packaging>
 
     <properties>
-		<eapli.framework.core.version>v18.1.0_CORE</eapli.framework.core.version>
-		<eapli.framework.authz.version>v17.4.0_AUTHZ</eapli.framework.authz.version>
-		<eapli.framework.pubsub.version>v16.7.0_PUBSUB</eapli.framework.pubsub.version>
+        <eapli.framework.core.version>v18.1.0_CORE</eapli.framework.core.version>
+        <eapli.framework.authz.version>v17.4.0_AUTHZ</eapli.framework.authz.version>
+        <eapli.framework.pubsub.version>v16.7.0_PUBSUB</eapli.framework.pubsub.version>
         
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
@@ -47,7 +47,7 @@
 			<artifactId>eapli.framework.infrastructure.pubsub</artifactId>
 			<version>${eapli.framework.pubsub.version}</version>
 		</dependency>
-		
+
 		<!-- keep junit4 for now -->
 		<dependency>
 			<groupId>org.junit.vintage</groupId>
@@ -62,7 +62,11 @@
 			<version>5.8.2</version>
 			<scope>test</scope>
 		</dependency>
-		
+        <dependency>
+            <groupId>org.eclipse.persistence </groupId>
+            <artifactId>eclipselink</artifactId>
+            <version>2.7.10</version>
+        </dependency>
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
