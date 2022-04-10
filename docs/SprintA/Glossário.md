@@ -1,8 +1,6 @@
-# Glossary
+# GLOSSARY
 
-**Terms, Expressions and Acronyms (TEA) are organized alphabetically.**
-
-<br>
+Terms, Expressions and Acronyms (TEA) are organized alphabetically.
 
 ### DOMAIN MODEL  ###
 
@@ -51,7 +49,7 @@
 
 <br>
 
-### SPECIFICATIONS MODEL  ###
+### SPECIFICATIONS DOCUMENT  ###
 
 <br>
 
