@@ -200,25 +200,29 @@
         -
     }
 
+    class Role {
+           -description
+    }
+
 
     User "1" -- "0..1" SalesManager : can be >
     User "1" -- "0..1" Administrator : can be >
     User "1" -- "0..1" SalesClerk : can be >
     User "1" -- "0..1" WarehouseEmployee : can be >
     User "1" -- "0..1" Customer : can be >
-    Product "0..*" -- "1" Category: has >
+    Product "0..*" -- "1" Category: is in >
     ProductCatalog "1" -- "*" Product: composed of >
     ShoppingCart "1" -- "1" ProductCatalog: can add products from >
     ShoppingCart "1" -- "0..1" Order : can origine >
-    Order "1" -- "1" Shipment: has >
-    Order "1" -- "1" Payment: has >
+    Order "1" -- "1" Shipment: >
+    Order "1" -- "1" Payment:  >
     Customer "1" -- "1" ShoppingCart : uses >
     SalesClerk "1" -- "0..*" Customer : can register >
     SalesClerk "1" -- "0..*" Order : can register >
     SalesClerk "1" -- "1" ProductCatalog : manages >
     SalesClerk "1" -- "1..*" Category : manages >
-    Customer "1" -- "1" PurchaseHistory : has >
-    PurchaseHistory "1" -- "0..*" Order : has >
+    Customer "1" -- "1" PurchaseHistory : has associated to him >
+    PurchaseHistory "1" -- "0..*" Order : records >
     Warehouse "1" -- "1..*" Aisle : organized by >
     Aisle "1" -- "1..*" Rows : vertically split on >
     Rows "1" -- "1..*" Shelf : horizontally split by >
@@ -227,12 +231,13 @@
     Warehouse "1" -- "1..*" Square : < conditions dimensions
     WarehouseEmployee "1" --"1..*" Warehouse: manages >
     SalesManager "1" -- "1" SalesClerk: does the same as >
-    Administrator "1" -- "0..*" User: manages all >
+    Administrator "1" -- "0..*" Role: manages >
+    Role "1" -- "1..*" User: caracterizes the permissions of >
     SalesManager "1" -- "0..*" Survey: carries out >
     Survey "1" -- "0..*" Questionnaire: can be >
     Customer "1" -- "0..1" Questionnaires: can answer >
-    Section "1" -- "1..*" Question: has >
-    Questionnaire "1" -- "1..*" Section: has >
+    Section "1" -- "1..*" Question: >
+    Questionnaire "1" -- "1..*" Section: >
     SalesManager "1" -- "1..*" Report: views >
     Report "1" -- "1..*" Sales: contains >
     Warehouse "1" -- "1..*" AGV: operates >

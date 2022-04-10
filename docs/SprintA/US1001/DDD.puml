@@ -5,8 +5,8 @@ package User <<rectangle>>{
 class User << (E,#FFFFFF) >> << root >>
 class Password << (V,#FFFFFF) >> 
 class Email<< (V,#FFFFFF) >> 
-User --> Password
-User --> Email
+User "1" --> "1" Password
+User "1" --> "1" Email
 }
 
 package WarehouseEmployee <<rectangle>>{
@@ -15,7 +15,7 @@ class WarehouseEmployee << (E,#FFFFFF) >> <<Root>>
 
 }
 
-class UserType << (I,#AAAAAA) >> << Interface >>
+class Role << (I,#AAAAAA) >> << Interface >>
 
 
 
@@ -38,22 +38,22 @@ class Administrator << (E,#FFFFFF) >> <<Root>>{
 
 }
 
-package "Shopping Cart" <<rectangle>>{     
+package "Shopping Cart" <<rectangle>>{
 
-class "Shopping Cart" << (E,#FFFFFF) >> << Root >> 
+class "Shopping Cart" << (E,#FFFFFF) >> << Root >>
 
 }
 
-package Customer <<rectangle>>{     
+package Customer <<rectangle>>{
 
 class Customer << (E,#FFFFFF) >> <<Root>>
 
-class "Purchase History" << (E,#FFFFFF) >> 
+class "Purchase History" << (E,#FFFFFF) >>
 
-class Address << (V,#FFFFFF) >> 
-class Name << (V,#FFFFFF) >> 
-class VatID << (V,#FFFFFF) >> 
-class PhoneNumber << (V,#FFFFFF) >> 
+class Address << (V,#FFFFFF) >>
+class Name << (V,#FFFFFF) >>
+class VatID << (V,#FFFFFF) >>
+class PhoneNumber << (V,#FFFFFF) >>
 class AddressType << (E,#FFFFFF) >> << Enum >>
 
     Customer "1" --> "1" "Purchase History"
@@ -65,25 +65,25 @@ class AddressType << (E,#FFFFFF) >> << Enum >>
     Customer "1" --> "0..1" LocalDate :dateOfBirth
     Customer "1" --> "1" PhoneNumber
     Customer "1" --> "1" VatID
-    
+
 }
 
 package Warehouse <<rectangle>>{
 
 class Warehouse << (V,#FFFFFF) >> <<Root>>
 
-class Aisle << (E,#FFFFFF) >> 
+class Aisle << (E,#FFFFFF) >>
 
-class Rows << (E,#FFFFFF) >> 
+class Rows << (E,#FFFFFF) >>
 
-class Shelf << (E,#FFFFFF) >> 
+class Shelf << (E,#FFFFFF) >>
 
-class Bin << (E,#FFFFFF) >> 
+class Bin << (E,#FFFFFF) >>
 
-Warehouse "1" --> "1..*" Aisle 
-Aisle "1" --> "1..*" Rows 
-Rows "1" --> "1..*" Shelf 
-Shelf "1" --> "1..*" Bin 
+Warehouse "1" --> "1..*" Aisle
+Aisle "1" --> "1..*" Rows
+Rows "1" --> "1..*" Shelf
+Shelf "1" --> "1..*" Bin
 
 }
 
@@ -91,17 +91,17 @@ Shelf "1" --> "1..*" Bin
 
 package AGVDock <<rectangle>>{
 
-class AGVDock << (E,#FFFFFF) >> <<Root>> 
+class AGVDock << (E,#FFFFFF) >> <<Root>>
 
-class AGV << (E,#FFFFFF) >> 
+class AGV << (E,#FFFFFF) >>
 
-class AGVState << (V,#FFFFFF) >> 
+class AGVState << (V,#FFFFFF) >>
 
-class AGVModel << (V,#FFFFFF) >> 
+class AGVModel << (V,#FFFFFF) >>
 
-AGV "1" --> "1" AGVState 
-AGV "0..*" <-- "1" AGVModel 
-AGVDock "1" --> "0..1" AGV: houses 
+AGV "1" --> "1" AGVState
+AGV "0..*" <-- "1" AGVModel
+AGVDock "1" --> "0..1" AGV: houses
 }
 
 package Survey <<rectangle>>{
@@ -130,11 +130,11 @@ package Section <<rectangle>> {
 class Section << (E,#FFFFFF) >> << root >>  {
 -description
 }
-class "Section Id" << (V,#FFFFFF) >> 
+class "Section Id" << (V,#FFFFFF) >>
 
-class Repeatability << (V,#FFFFFF) >> 
+class Repeatability << (V,#FFFFFF) >>
 
-class "Section Title"  << (V,#FFFFFF) >> 
+class "Section Title"  << (V,#FFFFFF) >>
 
 Section "1" --> "1" "Section Id"
 
@@ -165,19 +165,19 @@ class Questionnaire << (E,#FFFFFF) >> <<Root>> {
 -finalMessage
 }
 
-class "Questionnaire Id" << (V,#FFFFFF) >> 
+class "Questionnaire Id" << (V,#FFFFFF) >>
 
-class "Questionnaire Title"  << (V,#FFFFFF) >> 
+class "Questionnaire Title"  << (V,#FFFFFF) >>
 
 
 
-class "Question Id" << (V,#FFFFFF) >> 
+class "Question Id" << (V,#FFFFFF) >>
 
 Questionnaire "1" --> "1..*" Section
 
 Questionnaire "1" --> "1" "Questionnaire Id"
 
-Questionnaire "1" --> "1" "Questionnaire Title" 
+Questionnaire "1" --> "1" "Questionnaire Title"
 
 }
 
@@ -195,9 +195,9 @@ package Order <<rectangle>>{
     class "Order State" << (V,#AAAAAA) >>
 
 
-    Order --> Payment 
-    Order --> Shipment 
-    Order --> "Order State"
+    Order "1" --> "1" Payment
+    Order "1" --> "1" Shipment
+    Order "1" --> "1" "Order State"
 }
 
 package Product <<rectangle>>{
@@ -212,13 +212,13 @@ package Product <<rectangle>>{
     class "Production Code" << (V,#AAAAAA) >>
     class Price << (V,#AAAAAA) >>
 
-    Product --> Description
-    Product --> Brand 
-    Product --> Photo 
-    Product --> Reference
-    Product --> Barcode 
-    Product --> "Production Code"
-    Product --> Price 
+    Product --> "1" Description
+    Product --> "1" Brand
+    Product --> "0..*" Photo
+    Product --> "1" Reference
+    Product --> "1" Barcode
+    Product --> "1" "Production Code"
+    Product --> "1..*" Price
 
 }
 
@@ -233,7 +233,7 @@ package "Product Category" <<Rectangle>>{
 
  class Catalog << (E,#FFFFFF) >>
 
- class "Obligatoriness" << (V,#FFFFFF) >> 
+ class "Obligatoriness" << (V,#FFFFFF) >>
 
 
 "Product Category" "1" --> "0..*" Product
@@ -262,8 +262,8 @@ Customer "1" --> "1" "Shopping Cart" : has associated to him
 SalesClerk "1" --> "1..*" "Order" :can register
 SalesManager "1" --> "1..*" "Customer" :can register
 WarehouseEmployee "1" --> "1..*" "Warehouse" :works
-Administrator "1" --> "1..*" "UserType" :manages
-UserType"1" --> "1..*" User :caracterizes the permissions of
+Administrator "1" --> "1..*" "Role" :manages
+Role "1" --> "1..*" User :caracterizes the permissions of
 "Shopping Cart" "1" --> "1..*" Order: origines after Payment
 Warehouse "1" --> "0..*" Product: stores
 Order "*" --> "1" Warehouse: when state is "to be prepared"
