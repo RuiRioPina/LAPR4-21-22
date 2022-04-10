@@ -1,8 +1,10 @@
-# Glossary
+# GLOSSARY
 
-**Terms, Expressions and Acronyms (TEA) are organized alphabetically.**
+Terms, Expressions and Acronyms (TEA) are organized alphabetically.
 
-### Domain Model  ###
+### DOMAIN MODEL  ###
+
+<br>
 
 | **_TEA_** (EN)  | **_TEA_** (PT) | **_Description_** (EN)|                                       
 |:----------------|:---------------|:------------|
@@ -45,8 +47,11 @@
 | **User Type** | **Tipo De Utilizador** | Classification used to identify the permissions of an user. |
 | **VATID(Value-Added-Tax ID)** | **ID do IVA(Imposto sobre o Valor Acrescentado)** | ID used to find the Tax applied to the purchases of the customer. |
 
+<br>
 
-### Specifications Document  ###
+### SPECIFICATIONS DOCUMENT  ###
+
+<br>
 
 | **_TEA_** (EN)  | **_TEA_** (PT) | **_Description_** (EN)|                                       
 |:----------------|:---------------|:------------|
