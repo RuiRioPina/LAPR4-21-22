@@ -1,36 +1,58 @@
-# USDemo1
+# US1003
 =======================================
 
 
 # 1. Requisitos
 
-*Nesta secção a equipa deve indicar a funcionalidade desenvolvida bem como descrever a sua interpretação sobre a mesma e sua correlação e/ou dependência de/com outros requisitos.*
+**US1003** As Sales Clerk, I want to register a new customer.
 
-*Exemplo*
-
-**Demo1** Como {Ator} pretendo...
-
-- Demo1.1. Blá Blá Blá ...
-
-- Demo1.2. Blá Blá Blá ...
-
-A interpretação feita deste requisito foi no sentido de ...
+A interpretação feita deste requisito foi no sentido de registar um cliente no sistema, para este poder navegar os catálogos
+e visualizar, comprar produtos. 
 
 # 2. Análise
 
-*Neste secção a equipa deve relatar o estudo/análise/comparação que fez com o intuito de tomar as melhores opções de design para a funcionalidade bem como aplicar diagramas/artefactos de análise adequados.*
+## 2.1 Futuras implementações para os outros atores
 
-*Recomenda-se que organize este conteúdo por subsecções.*
+* Este processo será feito pelo Sales Clerk um dos atores que podem fazer esta ação, sendo os outros 
+atores o próprio cliente e um sales manager. Por este motivo esta ação será partilha por todos, logo iremos fazer esforços para que os
+outros atores (o cliente e o sales manager) possam reutilizar o código desenvolvido. *
+
+## 2.2 Sequência das ações
+
+* O sales clerk irá perguntar ao customer algumas informações mandatárias: nome, VAT, endereço de email e um número de telemóvel. Opcionalmente pode pedir a data de nascimento,
+o género e o endereço de shipment e billing. *
+
+## 2.3 Regras de negócio associadas aos atributos de um customer
+
+* NOME:
+* VAT:
+* ENDEREÇO DE EMAIL:
+* NÚMERO DE TELEMÓVEL:
+* DATA DE NASCIMENTO:
+* GÉNERO:
+* ENDEREÇO SHIPMENT E BILLING:
+
+## 2.5 Pré Condições
+
+n/a.
+
+## 2.5 Pós Condições
+
+A informação dos customers é persistida.
+
+## 2.6 SSD
+
+[SSD-Diagram](Diagramas/SSD.svg/)
 
 # 3. Design
 
 *Nesta secção a equipa deve descrever o design adotado para satisfazer a funcionalidade. Entre outros, a equipa deve apresentar diagrama(s) de realização da funcionalidade, diagrama(s) de classes, identificação de padrões aplicados e quais foram os principais testes especificados para validar a funcionalidade.*
 
-*Para além das secções sugeridas, podem ser incluídas outras.*
+Usar padrão builder
 
 ## 3.1. Realização da Funcionalidade
 
-*Nesta secção deve apresentar e descrever o fluxo/sequência que permite realizar a funcionalidade.*
+[SD-Diagram](Diagramas/SD.svg/)
 
 ## 3.2. Diagrama de Classes
 
