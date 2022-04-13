@@ -1,36 +1,60 @@
-# USDemo1
+# US1001
 =======================================
 
 
 # 1. Requisitos
 
-*Nesta secção a equipa deve indicar a funcionalidade desenvolvida bem como descrever a sua interpretação sobre a mesma e sua correlação e/ou dependência de/com outros requisitos.*
-
-*Exemplo*
-
-**Demo1** Como {Ator} pretendo...
-
-- Demo1.1. Blá Blá Blá ...
-
-- Demo1.2. Blá Blá Blá ...
-
-A interpretação feita deste requisito foi no sentido de ...
+**As Sales Clerk, I want to specify a new product for sale.**
 
 # 2. Análise
 
-*Neste secção a equipa deve relatar o estudo/análise/comparação que fez com o intuito de tomar as melhores opções de design para a funcionalidade bem como aplicar diagramas/artefactos de análise adequados.*
+Produto é um elemento fulcral de todo o sistema e tem relações com armazéns, categorias e cátalogo.
 
-*Recomenda-se que organize este conteúdo por subsecções.*
+É necessário implementar potenciais características que definem um produto (p.e. barcode, reference).
+
+**Dependência(s)**
+
+* Cada produto pertence obrigatoriamente a uma categoria, logo é necessário estas existirem à priori [US1005].
+
+**Fluxo Básico**
+
+- 1. Sales Clerk inicia a especificação de um novo produto.
+
+- 2. Insere ou seleciona as suas características.
+
+- 3. Sistema valida os dados necessários e regista-os, informando o sucesso da operação.
+
+**Esclarecimento(s) do Cliente**
+
+**1. ** Product Registration 
+
+Some information regarding each of those (product) attributes:
+
+- photo: it might be of any common format (e.g. png, jpeg, svg);
+
+- short description: not empty having 30 chars maximum;
+
+- extended description: not empty with a minimum of 20 chars and 100 chars maximum;
+
+- technical description: multiple lines of text, preferably with no limit or the biggest possible.
+
+- brand: not empty having 50 chars maximum;
+
+- reference: not empty alphanumeric code with at 23 chars maximum;
+
+- production code: not empty alphanumeric code with at 23 chars maximum however it might meet a given regular expression defined/configured at deployment time.
+
+- internal code: not empty alphanumeric code with at 23 chars maximum however it might meet a given regular expression defined/configured at deployment time.
+
+Mandatory attributes: internal code, short and extended description.
+
+In accordance with the specification document, other atributes might also be mandatory.
 
 # 3. Design
 
-*Nesta secção a equipa deve descrever o design adotado para satisfazer a funcionalidade. Entre outros, a equipa deve apresentar diagrama(s) de realização da funcionalidade, diagrama(s) de classes, identificação de padrões aplicados e quais foram os principais testes especificados para validar a funcionalidade.*
-
-*Para além das secções sugeridas, podem ser incluídas outras.*
-
 ## 3.1. Realização da Funcionalidade
 
-*Nesta secção deve apresentar e descrever o fluxo/sequência que permite realizar a funcionalidade.*
+![SD_1001](SD_US1001.svg)
 
 ## 3.2. Diagrama de Classes
 
