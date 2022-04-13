@@ -54,7 +54,7 @@ In accordance with the specification document, other atributes might also be man
 
 ## 3.1. Realização da Funcionalidade
 
-![SD_1001](SD_US1001.svg)
+![SD_1001](SD_1001.svg)
 
 ## 3.2. Diagrama de Classes
 
