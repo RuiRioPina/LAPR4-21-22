@@ -23,6 +23,7 @@
  */
 package eapli.base.app.backoffice.console.presentation;
 
+import eapli.base.app.backoffice.console.presentation.products.SpecifyNewProductUI;
 import eapli.base.app.common.console.presentation.authz.MyUserMenu;
 import eapli.base.Application;
 import eapli.base.app.backoffice.console.presentation.authz.AddUserUI;
@@ -103,6 +104,9 @@ public class MainMenu extends AbstractUI {
     private static final int MEALS_OPTION = 7;
     private static final int REPORTING_DISHES_OPTION = 8;
 
+    // PRODUCTS
+    private static final int SPECIFY_NEW_PRODUCT = 1;
+
     private static final String SEPARATOR_LABEL = "--------------";
 
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
@@ -145,12 +149,19 @@ public class MainMenu extends AbstractUI {
             mainMenu.addItem(MenuItem.separator(SEPARATOR_LABEL));
         }
 
+        //Sales Clerk Menu
+        if(authz.isAuthenticatedUserAuthorizedTo(BaseRoles.SALES_CLERK)) {
+            final Menu salesClerkMenu = buildSalesClerkMenu();
+            mainMenu.addSubMenu(USERS_OPTION,salesClerkMenu);
+        }
+
+        /* example
         if (authz.isAuthenticatedUserAuthorizedTo(BaseRoles.POWER_USER, BaseRoles.ADMIN)) {
             final Menu usersMenu = buildUsersMenu();
             mainMenu.addSubMenu(USERS_OPTION, usersMenu);
             final Menu settingsMenu = buildAdminSettingsMenu();
             mainMenu.addSubMenu(SETTINGS_OPTION, settingsMenu);
-        }
+        }*/
 
         if (!Application.settings().isMenuLayoutHorizontal()) {
             mainMenu.addItem(MenuItem.separator(SEPARATOR_LABEL));
@@ -185,6 +196,11 @@ public class MainMenu extends AbstractUI {
     }
 
 
+    private Menu buildSalesClerkMenu() {
+        final Menu menu = new Menu("Products >");
+        menu.addItem(SPECIFY_NEW_PRODUCT, "Specify New Product", new SpecifyNewProductUI()::show);
+        return menu;
+    }
 
 
 

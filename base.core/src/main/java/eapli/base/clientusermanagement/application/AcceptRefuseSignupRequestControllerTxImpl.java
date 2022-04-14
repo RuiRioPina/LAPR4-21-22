@@ -114,7 +114,7 @@ public class AcceptRefuseSignupRequestControllerTxImpl
     //
     private SystemUser createSystemUserForClientUser(final SignupRequest theSignupRequest) {
         final Set<Role> roles = new HashSet<>();
-        roles.add(BaseRoles.CLIENT_USER);
+        roles.add(BaseRoles.COSTUMER_USER);
         return userService.registerUser(theSignupRequest.username(), theSignupRequest.password(),
                 theSignupRequest.name(), theSignupRequest.email(), roles);
     }

@@ -59,7 +59,7 @@ import eapli.framework.infrastructure.eventpubsub.impl.inprocess.InProcessPubSub
         final SystemUserBuilder userBuilder = UserBuilderHelper.builder();
         userBuilder.withUsername(theSignupRequest.username())
                 .withPassword(theSignupRequest.password()).withName(theSignupRequest.name())
-                .withEmail(theSignupRequest.email()).withRoles(BaseRoles.CLIENT_USER);
+                .withEmail(theSignupRequest.email()).withRoles(BaseRoles.COSTUMER_USER);
         final SystemUser newUser = userRepository.save(userBuilder.build());
 
         // notify interested parties
