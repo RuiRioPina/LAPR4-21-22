@@ -37,7 +37,7 @@ public final class BaseRoles {
     /**
      * Utente
      */
-    public static final Role COSTUMER_USER = Role.valueOf("COSTUMER_USER");
+    public static final Role CUSTOMER_USER = Role.valueOf("CUSTOMER_USER");
     /**
      * Base Administrator
      */
@@ -65,6 +65,6 @@ public final class BaseRoles {
     }
 
     public boolean isCollaborator(final Role role) {
-        return role != COSTUMER_USER;
+        return role != CUSTOMER_USER;
     }
 }
