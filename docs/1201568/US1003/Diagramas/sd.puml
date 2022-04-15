@@ -38,14 +38,11 @@ SYS-> CTRL : registerCustomer(name, VAT, email, mobile, phone number, birthdate,
 note over CSB: CustomerBuilder cria entidade do tipo Customer num estado válido
 activate CTRL
 CTRL-> CSB **: create
-activate REP
-deactivate REP
 
 CTRL-> CSB: setName(name)
 
 
 note over CTRL, CSB:Set the  rest of the information
-note over CUS: domain rules checked here
 CTRL-> CSB: createCustomer()
 activate CSB
 CSB -> CUS : createCustomer(name, VAT, email, mobile, phone number, birthdate, gender, address)
@@ -62,17 +59,17 @@ deactivate PC
 
 CTRL-> RF: customers()
 activate RF
-RF->CR: create
+RF->CR**: create
 
 RF->CTRL: customerRepository
 deactivate RF
 CTRL->CR: save(customer)
 
 deactivate PC
-activate CUS
+activate CR
 
 CTRL -> SYS: confirmation is show to the user
-deactivate CUS
+deactivate CR
 deactivate CTRL
 
 SYS-> SC: confirmation is show to the user

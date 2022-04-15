@@ -42,7 +42,7 @@ A informação dos customers é persistida.
 
 ## 2.6 SSD
 
-[SSD-Diagram](Diagramas/SSD.svg/)
+![SSD-Diagram](Diagramas/SSD.svg/)
 
 # 3. Design
 
@@ -52,24 +52,37 @@ Usar padrão builder
 
 ## 3.1. Realização da Funcionalidade
 
-[SD-Diagram](Diagramas/SD.svg/)
+![SD-Diagram](Diagramas/SD.svg/)
 
 ## 3.2. Diagrama de Classes
 
-*Nesta secção deve apresentar e descrever as principais classes envolvidas na realização da funcionalidade.*
+![CD-Diagram](Diagramas/CD.svg/)
 
 ## 3.3. Padrões Aplicados
 
-*Nesta secção deve apresentar e explicar quais e como foram os padrões de design aplicados e as melhores práticas.*
+* Foi utilizado o CRUD (Create, Read, Update, Delete) para trabalhar sobre os customers.
+
+* Foi utilizado o GRASP
+
+* Foi utilizado o Builder, já que há certos atributos que são opcionais e temos muita complexidade de regras de negócio.
+
+* Foram utilizados o padrão repository, para representar as ações CRUD relativas ao customer.
 
 ## 3.4. Testes 
 *Nesta secção deve sistematizar como os testes foram concebidos para permitir uma correta aferição da satisfação dos requisitos.*
 
-**Teste 1:** Verificar que não é possível criar uma instância da classe Exemplo com valores nulos.
+**Teste 1:** Verificar que não é possível criar uma instância da classe Customer com valores nulos.
 
 	@Test(expected = IllegalArgumentException.class)
 		public void ensureNullIsNotAllowed() {
-		Exemplo instance = new Exemplo(null, null);
+		Customer instance = new Customer(null, null, null, null, null, null, null);
+	}
+
+**Teste 2:** Verificar que é possível criar uma instância da classe Customer apenas com os atributos mandatórios.
+
+	@Test(expected = IllegalArgumentException.class)
+		public void ensureNullIsNotAllowed() {
+		Customer instance = new Customer(name, vat, email, phoneNumber, null, null, null);
 	}
 
 # 4. Implementação
