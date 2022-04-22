@@ -23,6 +23,7 @@
  */
 package eapli.base.app.backoffice.console.presentation;
 
+import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNewCategoryUI;
 import eapli.base.app.backoffice.console.presentation.products.SpecifyNewProductUI;
 import eapli.base.app.common.console.presentation.authz.MyUserMenu;
 import eapli.base.Application;
@@ -103,9 +104,12 @@ public class MainMenu extends AbstractUI {
     private static final int TRACEABILITY_OPTION = 6;
     private static final int MEALS_OPTION = 7;
     private static final int REPORTING_DISHES_OPTION = 8;
-
+    // CATEGORY
+    private static final int REGISTER_NEW_CATEGORY = 1;
+    private static final int MAIN_MENU_CATEGORY=3;
     // PRODUCTS
     private static final int SPECIFY_NEW_PRODUCT = 1;
+
 
     private static final String SEPARATOR_LABEL = "--------------";
 
@@ -153,6 +157,8 @@ public class MainMenu extends AbstractUI {
         if(authz.isAuthenticatedUserAuthorizedTo(BaseRoles.SALES_CLERK)) {
             final Menu salesClerkMenu = buildSalesClerkMenu();
             mainMenu.addSubMenu(USERS_OPTION,salesClerkMenu);
+            final Menu registerCategoryMenu = BuildCategoryMenu();
+            mainMenu.addSubMenu(MAIN_MENU_CATEGORY,registerCategoryMenu);
         }
 
         /* example
@@ -199,8 +205,17 @@ public class MainMenu extends AbstractUI {
     private Menu buildSalesClerkMenu() {
         final Menu menu = new Menu("Products >");
         menu.addItem(SPECIFY_NEW_PRODUCT, "Specify New Product", new SpecifyNewProductUI()::show);
+        final Menu menuCategory = new Menu("Categories >");
+        menuCategory.addItem(REGISTER_NEW_CATEGORY, "Register New Category", new RegisterNewCategoryUI()::show);
         return menu;
     }
+
+    private Menu BuildCategoryMenu(){
+        final Menu menuCategory = new Menu("Categories >");
+        menuCategory.addItem(REGISTER_NEW_CATEGORY, "Register New Category", new RegisterNewCategoryUI()::show);
+        return menuCategory;
+    }
+
 
 
 
