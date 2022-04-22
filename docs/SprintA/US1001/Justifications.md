@@ -1,5 +1,4 @@
-We divided the questionnaire in different aggregates in order to not delete the whole just to delete a part of the questionnaire (if everything was in the same aggregate we would have to delete an entire questionnaire to delete a question)
-E.g in case we wanted to delete a Section, if they were in the same aggregate we would have to delete the questionnaire also. Since they are separated from each other we can safely delete any section without deleting the whole questionnaire.
+Since we cannot reuse any sections, questions, questionnaires they are all in the same aggregate.
 
 Since the Obligatoriness value object is simple and has the same domain rules in both aggregates (Question and Section) we shared the value object by putting it outside both aggregates and relating each aggregate roots to the value object.
 
