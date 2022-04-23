@@ -58,35 +58,111 @@ In accordance with the specification document, other atributes might also be man
 
 ## 3.2. Diagrama de Classes
 
-*Nesta secção deve apresentar e descrever as principais classes envolvidas na realização da funcionalidade.*
+![CD_1001](CD_1001.svg)
 
 ## 3.3. Padrões Aplicados
 
-*Nesta secção deve apresentar e explicar quais e como foram os padrões de design aplicados e as melhores práticas.*
+- GRASP
+- JPA
+- Repository 
 
 ## 3.4. Testes 
-*Nesta secção deve sistematizar como os testes foram concebidos para permitir uma correta aferição da satisfação dos requisitos.*
 
-**Teste 1:** Verificar que não é possível criar uma instância da classe Exemplo com valores nulos.
+**Teste 1:** Verificar que não é possível criar uma instância da classe Produto com valores nulos.
 
 	@Test(expected = IllegalArgumentException.class)
 		public void ensureNullIsNotAllowed() {
-		Exemplo instance = new Exemplo(null, null);
+		Product instance = new Product(null, null, null, null, null, null, null, null, null);
 	}
 
 # 4. Implementação
 
-*Nesta secção a equipa deve providenciar, se necessário, algumas evidências de que a implementação está em conformidade com o design efetuado. Para além disso, deve mencionar/descrever a existência de outros ficheiros (e.g. de configuração) relevantes e destacar commits relevantes;*
+## Construtor do Produto
+    public Product (Category category, Designation name, ProductDescription description, Brand brand, Price price, Reference reference, InternalCode internalCode, ProductionCode productionCode, Barcode barcode) {
+        Preconditions.noneNull(category, name, brand, price, internalCode, barcode);
+        this.category = category;
+        this.name = name;
+        this.description = description;
+        this.brand = brand;
+        this.price = price;
+        this.reference = reference;
+        this.internalCode = internalCode;
+        this.productionCode = productionCode;
+        this.barcode = barcode;
+    }
 
-*Recomenda-se que organize este conteúdo por subsecções.*
+## SpecifyNewProductUI
+
+    public class SpecifyNewProductUI extends AbstractUI {
+
+    private final SpecifyNewProductController theController = new SpecifyNewProductController();
+
+    @Override
+    protected boolean doShow() {
+
+        final Iterable<Category> productCategories = this.theController.categories();
+
+        final SelectWidget<Category> selector = new SelectWidget<>("Product Categories:", productCategories,
+                new ProductCategoryPrinter());
+        selector.show();
+        final Category theProductCategory = selector.selectedElement();
+
+        String name;
+        do {
+            name = Console.readLine("Name");
+            if (name.isEmpty()) {
+                System.out.println("This field can't be empty.");
+            }
+        } while (name.isEmpty());
+
+        (...)
+
+        Double priceWoTaxes = Console.readDouble("Price without Taxes");
+        Double priceWiTaxes = Console.readDouble("Price with Taxes");
+
+        (...)
+
+        theController.specifyNewProduct(theProductCategory,Designation.valueOf(name),new ProductDescription(shortDescription,
+                extendedDescription, techDescription), new Brand(brand),new Price(priceWoTaxes, priceWiTaxes),
+                new Reference(reference), new InternalCode(internalCode), new ProductionCode(productionCode),
+                new Barcode(barcode));
+
+        return true;
+        }
+
+    @Override
+    public String headline() {
+        return "Specify New Product";
+        }
+    }
+
+##SpecifyNewProductController
+
+    public class SpecifyNewProductController {
+
+    private final ProductRepository productRepository = PersistenceContext.repositories().products();
+    private final ListCategories svcCategories = new ListCategories();
+
+    public Product specifyNewProduct (Category category,Designation name, ProductDescription description, Brand brand, Price price, Reference reference, InternalCode internalCode, ProductionCode productionCode, Barcode barcode) {
+        return productRepository.save(new Product(category,name,description,brand,price,reference,internalCode,productionCode,barcode));
+        }
+
+    public Iterable<Category> categories () {
+        return svcCategories.allCategories();
+        }
+    }
+
+- Issue #10
 
 # 5. Integração/Demonstração
 
-*Nesta secção a equipa deve descrever os esforços realizados no sentido de integrar a funcionalidade desenvolvida com as restantes funcionalidades do sistema.*
+- Foi adicionada uma opção (Products -> Specify New Product) ao menu do SalesClerk.
+ 
+- A categoria (do produto) é selecionada apartir da escolha de uma entre as já existentes.
+
+- Devem ser inseridas as informações do produto, tendo o sistema verificações de forma a cumprir os requisitos fornecidos pelo cliente.
 
 # 6. Observações
-
-*Nesta secção sugere-se que a equipa apresente uma perspetiva critica sobre o trabalho desenvolvido apontando, por exemplo, outras alternativas e ou trabalhos futuros relacionados.*
 
 
 
