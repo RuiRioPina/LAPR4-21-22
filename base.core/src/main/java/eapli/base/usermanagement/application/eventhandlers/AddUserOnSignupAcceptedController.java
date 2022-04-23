@@ -64,7 +64,7 @@ import eapli.framework.infrastructure.eventpubsub.impl.inprocess.InProcessPubSub
 
         // notify interested parties
         final DomainEvent event = new NewUserRegisteredFromSignupEvent(
-                theSignupRequest.mecanographicNumber(), newUser.username());
+                 newUser.username());
         dispatcher.publish(event);
 
         return newUser;

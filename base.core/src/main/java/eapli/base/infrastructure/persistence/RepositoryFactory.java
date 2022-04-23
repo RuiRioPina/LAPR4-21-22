@@ -22,7 +22,7 @@ package eapli.base.infrastructure.persistence;
 
 import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.repositories.CategoryRepository;
-import eapli.base.clientusermanagement.repositories.ClientUserRepository;
+import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.clientusermanagement.repositories.SignupRequestRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.authz.domain.repositories.UserRepository;
@@ -55,20 +55,21 @@ public interface RepositoryFactory {
      */
     UserRepository users();
 
+
     /**
      *
      * @param autoTx
      *            the transactional context to enroll
      * @return
      */
-    ClientUserRepository clientUsers(TransactionalContext autoTx);
+    CustomerRepository customers(TransactionalContext autoTx);
 
     /**
      * repository will be created in auto transaction mode
      *
      * @return
      */
-    ClientUserRepository clientUsers();
+    CustomerRepository customers();
 
     /**
      *

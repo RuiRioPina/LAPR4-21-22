@@ -113,7 +113,7 @@ public class SignupRequestBuilder implements DomainFactory<SignupRequest> {
             createdOn = Calendars.now();
         }
         return new SignupRequest(Username.valueOf(username), password,
-                Name.valueOf(firstName, lastName), EmailAddress.valueOf(email),
-                MecanographicNumber.valueOf(mecanographicNumber), createdOn);
+                Name.valueOf(firstName, lastName), EmailAddress.valueOf(email)
+               , createdOn);
     }
 }

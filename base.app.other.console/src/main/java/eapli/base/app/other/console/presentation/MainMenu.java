@@ -53,7 +53,6 @@ public class MainMenu extends AbstractUI {
     private static final int MY_USER_OPTION = 1;
     private static final int SALES_OPTION = 7;
 
-    private static final int RECHARGE_USER_CARD_OPTION = 1;
 
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
 
@@ -96,14 +95,14 @@ public class MainMenu extends AbstractUI {
     private Menu buildMainMenu() {
         final Menu mainMenu = new Menu();
 
-        final Menu myUserMenu = new MyUserMenu(BaseRoles.CASHIER);
+        final Menu myUserMenu = new MyUserMenu(BaseRoles.SALES_CLERK);
         mainMenu.addSubMenu(MY_USER_OPTION, myUserMenu);
 
         if (!Application.settings().isMenuLayoutHorizontal()) {
             mainMenu.addItem(MenuItem.separator(SEPARATOR_LABEL));
         }
 
-        if (authz.isAuthenticatedUserAuthorizedTo(BaseRoles.CASHIER)) {
+        if (authz.isAuthenticatedUserAuthorizedTo(BaseRoles.SALES_CLERK)) {
             final Menu cashierMenu = buildCashierMenu();
             mainMenu.addSubMenu(SALES_OPTION, cashierMenu);
         }

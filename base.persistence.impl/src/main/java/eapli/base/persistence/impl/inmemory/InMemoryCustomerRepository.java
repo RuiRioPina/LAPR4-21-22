@@ -18,43 +18,39 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eapli.base.clientusermanagement.domain;
+package eapli.base.persistence.impl.inmemory;
 
-import eapli.framework.domain.model.DomainFactory;
-import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import java.util.Optional;
+
+import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.repositories.CustomerRepository;
+import eapli.framework.infrastructure.authz.domain.model.Username;
+import eapli.framework.infrastructure.repositories.impl.inmemory.InMemoryDomainRepository;
 
 /**
- * A factory for User entities.
- *
- * This class demonstrates the use of the factory (DDD) pattern using a fluent
- * interface. it acts as a Builder (GoF).
  *
  * @author Jorge Santos ajs@isep.ipp.pt 02/04/2016
  */
-public class ClientUserBuilder implements DomainFactory<ClientUser> {
+public class InMemoryCustomerRepository
+        extends InMemoryDomainRepository<Customer, Long>
+        implements CustomerRepository {
 
-    private SystemUser systemUser;
-    private MecanographicNumber mecanographicNumber;
-
-    public ClientUserBuilder withSystemUser(final SystemUser systemUser) {
-        this.systemUser = systemUser;
-        return this;
-    }
-
-    public ClientUserBuilder withMecanographicNumber(final MecanographicNumber mecanographicNumber) {
-        this.mecanographicNumber = mecanographicNumber;
-        return this;
-    }
-
-    public ClientUserBuilder withMecanographicNumber(final String mecanographicNumber) {
-        this.mecanographicNumber = new MecanographicNumber(mecanographicNumber);
-        return this;
+    static {
+        InMemoryInitializer.init();
     }
 
     @Override
-    public ClientUser build() {
-        // since the factory knows that all the parts are needed it could throw
-        // an exception. however, we will leave that to the constructor
-        return new ClientUser(this.systemUser, this.mecanographicNumber);
+    public Optional<Customer> findByUsername(final Username name) {
+        return matchOne(e -> e.user().username().equals(name));
+    }
+
+    @Override
+    public Optional<Customer> findById(final Long number) {
+        return Optional.of(data().get(number));
+    }
+
+    @Override
+    public Iterable<Customer> findAllActive() {
+        return match(e -> e.user().isActive());
     }
 }

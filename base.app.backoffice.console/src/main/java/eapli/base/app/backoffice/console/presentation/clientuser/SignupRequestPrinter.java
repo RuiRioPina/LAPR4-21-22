@@ -32,7 +32,6 @@ class SignupRequestPrinter implements Visitor<SignupRequest> {
 
     @Override
     public void visit(final SignupRequest visitee) {
-        System.out.printf("%-10s%-20s%-10s%n", visitee.identity(), visitee.name(),
-                visitee.mecanographicNumber());
+        System.out.printf("%-10s%-20s%n", visitee.identity(), visitee.name());
     }
 }

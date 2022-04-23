@@ -22,8 +22,8 @@ package eapli.base.myclientuser.application;
 
 import java.util.Optional;
 
-import eapli.base.clientusermanagement.domain.ClientUser;
-import eapli.base.clientusermanagement.repositories.ClientUserRepository;
+import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.usermanagement.domain.BaseRoles;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
@@ -38,17 +38,17 @@ import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 public class MyClientUserService {
 
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
-    private final ClientUserRepository repo = PersistenceContext.repositories().clientUsers();
+    private final CustomerRepository repo = PersistenceContext.repositories().customers();
 
-    public ClientUser me() {
+    public Customer me() {
         final UserSession s = authz.session().orElseThrow(IllegalStateException::new);
         final SystemUser myUser = s.authenticatedUser();
         // TODO cache the client user object
-        final Optional<ClientUser> me = repo.findByUsername(myUser.identity());
+        final Optional<Customer> me = repo.findByUsername(myUser.identity());
         return me.orElseThrow(IllegalStateException::new);
     }
 
-    public ClientUser myUser() {
+    public Customer myUser() {
         authz.ensureAuthenticatedUserHasAnyOf(BaseRoles.CUSTOMER_USER);
         final UserSession s = authz.session().orElseThrow(IllegalStateException::new);
         final SystemUser me = s.authenticatedUser();

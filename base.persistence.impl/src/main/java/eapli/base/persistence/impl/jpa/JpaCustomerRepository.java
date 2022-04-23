@@ -18,40 +18,52 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eapli.base.persistence.impl.inmemory;
+package eapli.base.persistence.impl.jpa;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
-import eapli.base.clientusermanagement.domain.ClientUser;
-import eapli.base.clientusermanagement.domain.MecanographicNumber;
-import eapli.base.clientusermanagement.repositories.ClientUserRepository;
+import eapli.base.Application;
+import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.repositories.CustomerRepository;
+import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.authz.domain.model.Username;
-import eapli.framework.infrastructure.repositories.impl.inmemory.InMemoryDomainRepository;
+import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
 /**
  *
  * @author Jorge Santos ajs@isep.ipp.pt 02/04/2016
  */
-public class InMemoryClientUserRepository
-        extends InMemoryDomainRepository<ClientUser, MecanographicNumber>
-        implements ClientUserRepository {
+class JpaCustomerRepository
+        extends JpaAutoTxRepository<Customer, Long, Long>
+        implements CustomerRepository {
 
-    static {
-        InMemoryInitializer.init();
+    public JpaCustomerRepository(final TransactionalContext autoTx) {
+        super(autoTx, "id");
+    }
+
+    public JpaCustomerRepository(final String puname) {
+        super(puname, Application.settings().getExtendedPersistenceProperties(),
+                "id");
     }
 
     @Override
-    public Optional<ClientUser> findByUsername(final Username name) {
-        return matchOne(e -> e.user().username().equals(name));
+    public Optional<Customer> findByUsername(final Username name) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("name", name);
+        return matchOne("e.systemUser.username=:name", params);
     }
 
     @Override
-    public Optional<ClientUser> findByMecanographicNumber(final MecanographicNumber number) {
-        return Optional.of(data().get(number));
+    public Optional<Customer> findById(final Long number) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("number", number);
+        return matchOne("e.id=:number", params);
     }
 
     @Override
-    public Iterable<ClientUser> findAllActive() {
-        return match(e -> e.user().isActive());
+    public Iterable<Customer> findAllActive() {
+        return match("e.systemUser.active = true");
     }
 }

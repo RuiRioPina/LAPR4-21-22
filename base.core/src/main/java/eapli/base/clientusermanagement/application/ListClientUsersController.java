@@ -23,8 +23,8 @@
  */
 package eapli.base.clientusermanagement.application;
 
-import eapli.base.clientusermanagement.domain.ClientUser;
-import eapli.base.clientusermanagement.repositories.ClientUserRepository;
+import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.usermanagement.domain.BaseRoles;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
@@ -37,9 +37,9 @@ import eapli.framework.infrastructure.authz.application.AuthzRegistry;
 public class ListClientUsersController {
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
 
-    private final ClientUserRepository repo = PersistenceContext.repositories().clientUsers();
+    private final CustomerRepository repo = PersistenceContext.repositories().customers();
 
-    public Iterable<ClientUser> activeClientUsers() {
+    public Iterable<Customer> activeClientUsers() {
         authz.ensureAuthenticatedUserHasAnyOf(BaseRoles.POWER_USER, BaseRoles.ADMIN);
 
         return this.repo.findAllActive();

@@ -25,10 +25,10 @@ package eapli.base.clientusermanagement.application.eventhandlers;
 
 import java.util.Optional;
 
-import eapli.base.clientusermanagement.domain.ClientUser;
-import eapli.base.clientusermanagement.domain.ClientUserBuilder;
+import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.domain.CustomerBuilder;
 import eapli.base.clientusermanagement.domain.events.NewUserRegisteredFromSignupEvent;
-import eapli.base.clientusermanagement.repositories.ClientUserRepository;
+import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.framework.functional.Functions;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
@@ -42,17 +42,15 @@ import eapli.framework.infrastructure.authz.domain.repositories.UserRepository;
 /* package */ class AddClientUserOnSignupAcceptedController {
 
     private final UserRepository repo = PersistenceContext.repositories().users();
-    private final ClientUserRepository clientUserRepository = PersistenceContext
-            .repositories().clientUsers();
+    private final CustomerRepository customerRepository = PersistenceContext
+            .repositories().customers();
 
-    public ClientUser addClientUser(final NewUserRegisteredFromSignupEvent event) {
+    public Customer addClientUser(final NewUserRegisteredFromSignupEvent event) {
         final Optional<SystemUser> newUser = findUser(event);
 
         return newUser.map(u -> {
-            final ClientUserBuilder clientUserBuilder = new ClientUserBuilder();
-            clientUserBuilder.withMecanographicNumber(event.mecanographicNumber())
-                    .withSystemUser(u);
-            return clientUserRepository.save(clientUserBuilder.build());
+            final CustomerBuilder customerBuilder = new CustomerBuilder();
+            return customerRepository.save(customerBuilder.build());
         }).orElseThrow(IllegalStateException::new);
     }
 

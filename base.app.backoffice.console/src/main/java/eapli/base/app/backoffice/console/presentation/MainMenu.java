@@ -24,6 +24,7 @@
 package eapli.base.app.backoffice.console.presentation;
 
 import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNewCategoryUI;
+import eapli.base.app.backoffice.console.presentation.clientuser.AddCustomerUI;
 import eapli.base.app.backoffice.console.presentation.products.SpecifyNewProductUI;
 import eapli.base.app.common.console.presentation.authz.MyUserMenu;
 import eapli.base.Application;
@@ -99,8 +100,7 @@ public class MainMenu extends AbstractUI {
     // MAIN MENU
     private static final int MY_USER_OPTION = 1;
     private static final int USERS_OPTION = 2;
-    private static final int SETTINGS_OPTION = 4;
-    private static final int DISH_OPTION = 5;
+    private static final int CUSTOMERS_OPTION = 4;
     private static final int TRACEABILITY_OPTION = 6;
     private static final int MEALS_OPTION = 7;
     private static final int REPORTING_DISHES_OPTION = 8;
@@ -157,8 +157,13 @@ public class MainMenu extends AbstractUI {
         if(authz.isAuthenticatedUserAuthorizedTo(BaseRoles.SALES_CLERK)) {
             final Menu salesClerkMenu = buildSalesClerkMenu();
             mainMenu.addSubMenu(USERS_OPTION,salesClerkMenu);
+
             final Menu registerCategoryMenu = BuildCategoryMenu();
             mainMenu.addSubMenu(MAIN_MENU_CATEGORY,registerCategoryMenu);
+
+            final Menu customerMenu = buildUsersMenu();
+            mainMenu.addSubMenu(CUSTOMERS_OPTION,customerMenu);
+
         }
 
         /* example
@@ -189,11 +194,11 @@ public class MainMenu extends AbstractUI {
     }
 
     private Menu buildUsersMenu() {
-        final Menu menu = new Menu("Users >");
+        final Menu menu = new Menu("Customers >");
 
-        menu.addItem(ADD_USER_OPTION, "Add User", new AddUserUI()::show);
-        menu.addItem(LIST_USERS_OPTION, "List all Users", new ListUsersAction());
-        menu.addItem(DEACTIVATE_USER_OPTION, "Deactivate User", new DeactivateUserAction());
+        menu.addItem(ADD_USER_OPTION, "Add Customer", new AddCustomerUI()::show);
+        menu.addItem(LIST_USERS_OPTION, "List all Customers", new ListUsersAction());
+        menu.addItem(DEACTIVATE_USER_OPTION, "Deactivate Customer", new DeactivateUserAction());
         menu.addItem(ACCEPT_REFUSE_SIGNUP_REQUEST_OPTION, "Accept/Refuse Signup Request",
                 new AcceptRefuseSignupRequestAction());
         menu.addItem(EXIT_OPTION, RETURN_LABEL, Actions.SUCCESS);

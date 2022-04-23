@@ -26,9 +26,9 @@ package eapli.base.clientusermanagement.application;
 import java.util.HashSet;
 import java.util.Set;
 
-import eapli.base.clientusermanagement.domain.ClientUserBuilder;
+import eapli.base.clientusermanagement.domain.CustomerBuilder;
 import eapli.base.clientusermanagement.domain.SignupRequest;
-import eapli.base.clientusermanagement.repositories.ClientUserRepository;
+import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.clientusermanagement.repositories.SignupRequestRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.usermanagement.domain.BaseRoles;
@@ -63,8 +63,8 @@ public class AcceptRefuseSignupRequestControllerTxImpl
 
     private final TransactionalContext txCtx = PersistenceContext.repositories()
             .newTransactionalContext();
-    private final ClientUserRepository clientUserRepository = PersistenceContext
-            .repositories().clientUsers(txCtx);
+    private final CustomerRepository customerRepository = PersistenceContext
+            .repositories().customers(txCtx);
     private final SignupRequestRepository signupRequestsRepository = PersistenceContext
             .repositories().signupRequests(txCtx);
 
@@ -103,10 +103,9 @@ public class AcceptRefuseSignupRequestControllerTxImpl
 
     private void createClientUser(final SignupRequest theSignupRequest,
                                   final SystemUser newUser) {
-        final ClientUserBuilder clientUserBuilder = new ClientUserBuilder();
-        clientUserBuilder.withMecanographicNumber(theSignupRequest.mecanographicNumber())
-                .withSystemUser(newUser);
-        this.clientUserRepository.save(clientUserBuilder.build());
+        final CustomerBuilder customerBuilder = new CustomerBuilder();
+
+        this.customerRepository.save(customerBuilder.build());
     }
 
     //

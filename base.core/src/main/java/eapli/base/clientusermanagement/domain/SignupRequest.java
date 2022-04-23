@@ -25,13 +25,7 @@ package eapli.base.clientusermanagement.domain;
 
 import java.util.Calendar;
 
-import javax.persistence.EmbeddedId;
-import javax.persistence.Entity;
-import javax.persistence.EnumType;
-import javax.persistence.Enumerated;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Version;
+import javax.persistence.*;
 
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.domain.model.DomainEntities;
@@ -64,27 +58,40 @@ public class SignupRequest implements AggregateRoot<Username> {
 
     @EmbeddedId
     private Username username;
+    @Embedded
     private Password password;
+    @Embedded
     private Name name;
+    @Embedded
     private EmailAddress email;
 
-    private MecanographicNumber mecanographicNumber;
 
     @Enumerated(EnumType.STRING)
     private ApprovalStatus approvalStatus;
     @Temporal(TemporalType.DATE)
     private Calendar createdOn;
 
+    public EmailAddress getEmail() {
+        return email;
+    }
+
+    public Name getName() {
+        return name;
+    }
+
+    public Password getPassword() {
+        return password;
+    }
+
     /* package */ SignupRequest(final Username username, final Password password, final Name name,
-            final EmailAddress email, final MecanographicNumber mecanographicNumber,
+            final EmailAddress email,
             final Calendar createdOn) {
-        Preconditions.noneNull(username, password, name, email, mecanographicNumber);
+        Preconditions.noneNull(username, password, name, email);
 
         this.username = username;
         this.password = password;
         this.name = name;
         this.email = email;
-        this.mecanographicNumber = mecanographicNumber;
         // by default
         approvalStatus = ApprovalStatus.PENDING;
         this.createdOn = createdOn;
@@ -124,13 +131,10 @@ public class SignupRequest implements AggregateRoot<Username> {
         }
 
         return username.equals(that.username) && password.equals(that.password)
-                && name.equals(that.name) && email.equals(that.email)
-                && mecanographicNumber.equals(that.mecanographicNumber);
+                && name.equals(that.name) && email.equals(that.email);
     }
 
-    public MecanographicNumber mecanographicNumber() {
-        return mecanographicNumber;
-    }
+
 
     @Override
     public Username identity() {

@@ -23,9 +23,8 @@
  */
 package eapli.base.clientusermanagement.application;
 
-import eapli.base.clientusermanagement.domain.ClientUser;
-import eapli.base.clientusermanagement.domain.MecanographicNumber;
-import eapli.base.clientusermanagement.repositories.ClientUserRepository;
+import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.usermanagement.domain.BaseRoles;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
@@ -41,17 +40,17 @@ public class ClientUserService {
 
     private final AuthorizationService authz =
             AuthzRegistry.authorizationService();
-    private final ClientUserRepository repo =
-            PersistenceContext.repositories().clientUsers();
+    private final CustomerRepository repo =
+            PersistenceContext.repositories().customers();
 
-    public Optional<ClientUser> findClientUserByMecNumber(
-            final String mecNumber) {
+    public Optional<Customer> findClientUserById(
+            final String id) {
         authz.ensureAuthenticatedUserHasAnyOf(BaseRoles.POWER_USER,
                 BaseRoles.ADMIN);
-        return repo.ofIdentity(MecanographicNumber.valueOf(mecNumber));
+        return repo.ofIdentity(Long.valueOf(id));
     }
 
-    public Optional<ClientUser> findClientUserByUsername(
+    public Optional<Customer> findClientUserByUsername(
             final Username user) {
         authz.ensureAuthenticatedUserHasAnyOf(BaseRoles.POWER_USER,
                 BaseRoles.ADMIN);

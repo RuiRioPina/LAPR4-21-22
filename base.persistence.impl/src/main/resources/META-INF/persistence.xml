@@ -12,8 +12,12 @@
     <class>eapli.framework.infrastructure.authz.domain.model.Role</class>
     <class>eapli.framework.infrastructure.authz.domain.model.RoleSet</class>
     <class>eapli.framework.infrastructure.authz.domain.model.RoleAssignment</class>
-    <class>eapli.base.clientusermanagement.domain.ClientUser</class>
-    <class>eapli.base.clientusermanagement.domain.SignupRequest</class>
+    <class>eapli.base.clientusermanagement.domain.Customer</class>
+    <class>eapli.base.clientusermanagement.domain.Address</class>
+    <class>eapli.base.clientusermanagement.domain.Gender</class>
+    <class>eapli.base.clientusermanagement.domain.PhoneNumber</class>
+    <class>eapli.base.clientusermanagement.domain.Vat</class>
+    <class>java.time.LocalDate</class>
 
 
     <properties>
