@@ -33,11 +33,9 @@
             <version>${project.parent.version}</version>
         </dependency>
         <dependency>
-        	<groupId>eapli</groupId>
-        	<artifactId>
-        		eapli.framework.infrastructure.pubsub
-        	</artifactId>
-        	<version>16.3.1</version>
+            <groupId>org.bitbucket.pag_isep.eapliframework</groupId>
+            <artifactId>eapli.framework.infrastructure.pubsub</artifactId>
+            <version>${eapli.framework.pubsub.version}</version>
         </dependency>
     </dependencies>
 </project>

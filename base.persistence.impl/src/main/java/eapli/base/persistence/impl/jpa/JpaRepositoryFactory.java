@@ -21,6 +21,7 @@
 package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
+import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.repositories.CategoryRepository;
 import eapli.base.clientusermanagement.repositories.SignupRequestRepository;
 import eapli.base.infrastructure.persistence.RepositoryFactory;
@@ -78,4 +79,9 @@ public class JpaRepositoryFactory implements RepositoryFactory {
     }
     @Override
     public CategoryRepository categories(final TransactionalContext autoTx){return new JpaCategoryRepository(autoTx);}
+
+    @Override
+    public ProductRepository products() {
+        return new JpaProductRepository();
+    }
 }

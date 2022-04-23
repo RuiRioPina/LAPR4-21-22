@@ -20,6 +20,7 @@
  */
 package eapli.base.persistence.impl.inmemory;
 
+import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.repositories.CategoryRepository;
 import eapli.base.clientusermanagement.repositories.ClientUserRepository;
 import eapli.base.clientusermanagement.repositories.SignupRequestRepository;
@@ -84,6 +85,11 @@ public class InMemoryRepositoryFactory implements RepositoryFactory {
 
     public CategoryRepository categories(final TransactionalContext tx){
         return new InMemoryCategoryRepository();
+    }
+
+    @Override
+    public ProductRepository products() {
+        return new InMemoryProductRepository();
     }
 
 }
