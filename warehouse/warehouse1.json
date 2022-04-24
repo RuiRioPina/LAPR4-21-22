@@ -21,7 +21,7 @@
 				{
 					"Id":2, 
 					"begin": {"lsquare":8, "wsquare":1}, 
-					"end": {"lsquare:12", "wsquare":1}, 
+					"end": {"lsquare":12, "wsquare":1},
 					"shelves":4
 				},
 				{
