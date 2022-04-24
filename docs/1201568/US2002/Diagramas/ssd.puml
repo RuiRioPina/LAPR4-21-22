@@ -1,6 +1,6 @@
 @startuml
 autonumber
-actor "Sales Clerk" as MEDLT
+actor "Warehouse Employee" as MEDLT
 
 activate MEDLT
 MEDLT-> ":System" : Set up warehouse plant
