@@ -5,11 +5,8 @@ Class "AddCustomerUI"{
 }
 
 Class "AddCustomerController"{
-+registerCustomer(name, vat, email, phone Number, birthday, gender, address)
-
-+repositories()
-+customers()
-+saveCustomer()
++customerBuilder(firstName, lastName, vatId, email, prefix,
+ phoneNumber, birthday, gender, addresses)
 }
 
 Class "Name"{
@@ -35,8 +32,12 @@ Class "Vat"{
 +hashCode()
 +toString()
 }
-
-
+Class "PhoneNumber"{
+     -int prefix
+     -long number
+     +PhoneNumber(int prefix, int number)
+     +valueOf(String prefix, String phoneNumber)
+}
 Class "Customer"{
      -Name name;
      -Vat vat;
@@ -57,12 +58,14 @@ Class "Customer"{
 
 }
 
+
+
 class Address {
--Name streetName
--PostalCode postalCode
+-String streetName
+-String postalCode
 -Integer doorNumber
--City city
--Country country
+-String city
+-String country
 -AddressType addressType
 
 +Address(streetName, postalCode, doorNumber, city, country)
@@ -88,13 +91,15 @@ enum AddressType {
 
 
 class CustomerBuilder {
-+name(name)
-+vat(vat)
-+email(email)
-+birthday(birthday)
-+gender(gender)
-+address(address)
-+createCustomer()
++CustomerBuilder(final String firstName, final String lastName, final String vatId, final String email
+                     , final String prefix, final String phoneNumber)
++withName(name)
++withVat(vat)
++withEmail(email)
++withBirthday(birthday)
++withGender(gender)
++withAddress(address)
++build()
 }
 
 class PersistenceContext {
@@ -121,7 +126,7 @@ CustomerBuilder "1" --> "*" Customer : builds
 Name "1" <-- "1" Customer : contains
 Vat "1" <-- "1" Customer : contains
 PhoneNumber "1" <-- "1" Customer : contains
-DateOfBirthday "1" <-- "1" Customer : contains
+LocalDate "1" <-- "1" Customer : birthday
 Email "1" <-- "1" Customer : contains
 Address "1..*" <-- "1" Customer : contains
 AddressType "1" <-- "1" Address: contains

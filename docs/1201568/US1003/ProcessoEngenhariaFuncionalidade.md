@@ -6,7 +6,7 @@
 
 **US1003** As Sales Clerk, I want to register a new customer.
 
-A interpretação feita deste requisito foi no sentido de registar um cliente no sistema, para este poder navegar os catálogos
+A interpretação feita deste requisito foi no sentido de registar um cliente no sistema, através da introdução de dados, para este poder navegar os catálogos
 e visualizar, comprar produtos. 
 
 # 2. Análise
@@ -20,17 +20,17 @@ outros atores (o cliente e o sales manager) possam reutilizar o código desenvol
 ## 2.2 Sequência das ações
 
 * O sales clerk irá perguntar ao customer algumas informações mandatárias: nome, VAT, endereço de email e um número de telemóvel. Opcionalmente pode pedir a data de nascimento,
-o género e o endereço de shipment e billing. *
+o género e vários endereços (shipment e billing). *
 
 ## 2.3 Regras de negócio associadas aos atributos de um customer
 
-* NOME:
-* VAT:
-* ENDEREÇO DE EMAIL:
-* NÚMERO DE TELEMÓVEL:
-* DATA DE NASCIMENTO:
-* GÉNERO:
-* ENDEREÇO SHIPMENT E BILLING:
+* NOME: at least a first and last name is required. Although, desirably the customer should specify his/her full name. Considering this, apply the min/max length you consider as reasonable to meet this requirement.
+* VAT: VAT ID varies from one country to another. Usually it has letters and numbers (cf. here). The system must be prepared to support/recognize several VAT Ids.
+* ENDEREÇO DE EMAIL: Normal email format (something...)@(something...).(something...) eg.: test@email.com
+* NÚMERO DE TELEMÓVEL:  Phone number: according to international standards (e.g.: +351 934 563 123).
+* DATA DE NASCIMENTO: - Birthday: it is a date... you can adopt year/month/day.
+* GÉNERO: Male | Female
+* ENDEREÇO SHIPMENT E BILLING: Street name, door number, postal code, city, country.
 
 ## 2.5 Pré Condições
 
@@ -48,7 +48,8 @@ A informação dos customers é persistida.
 
 *Nesta secção a equipa deve descrever o design adotado para satisfazer a funcionalidade. Entre outros, a equipa deve apresentar diagrama(s) de realização da funcionalidade, diagrama(s) de classes, identificação de padrões aplicados e quais foram os principais testes especificados para validar a funcionalidade.*
 
-Usar padrão builder
+Foi usado o pattern fábrica, de modo a não expor a lógica de instanciação do Customer. Isto será realizado através da implementação "DomainFactory" da framework de EAPLI.
+
 
 ## 3.1. Realização da Funcionalidade
 
@@ -62,11 +63,21 @@ Usar padrão builder
 
 * Foi utilizado o CRUD (Create, Read, Update, Delete) para trabalhar sobre os customers.
 
-* Foi utilizado o GRASP
+* Foi utilizado o GRASP:
 
-* Foi utilizado o Builder, já que há certos atributos que são opcionais e temos muita complexidade de regras de negócio.
+* Foi utilizado o Builder, já que há certos atributos que são opcionais. O padrão builder dá-nos um processo passo a passo
+para construir um objeto completo. Este processo tem sempre a mesma implementação, porém os objetos finais podem possuir
+diferentes representações. Neste contexto o processo irá passar por criar os atributos obrigatórios de construtor, dando
+a possibilidade de definir apenas alguns atributos opcionais. Exemplo: customer com endereço de residência, mas sem género
+definido, nem data de aniversário.
 
-* Foram utilizados o padrão repository, para representar as ações CRUD relativas ao customer.
+
+* Foram utilizados o padrão repository, de modo a isolar os objetos de domínio de lógica de bases de dados. Os nossos objetos
+de domínio, que por já são complexos contendo muitas regras de domínio para impor, beneficia de outra camada onde apenas
+teremos lógica de bases de dados. Isto ajuda-nos a reduzir código duplicado, fazendo com que a layer de repositório 
+possua capacidades de fazer querying complexo. Um repositório encapsula a lista de objetos persistidos numa base de dados
+dando-nos uma visão orientada a objetos à camada de persitência. 
+
 
 ## 3.4. Testes 
 *Nesta secção deve sistematizar como os testes foram concebidos para permitir uma correta aferição da satisfação dos requisitos.*
@@ -87,9 +98,57 @@ Usar padrão builder
 
 # 4. Implementação
 
-*Nesta secção a equipa deve providenciar, se necessário, algumas evidências de que a implementação está em conformidade com o design efetuado. Para além disso, deve mencionar/descrever a existência de outros ficheiros (e.g. de configuração) relevantes e destacar commits relevantes;*
+## 4.1. Builder
 
-*Recomenda-se que organize este conteúdo por subsecções.*
+    public class CustomerBuilder implements DomainFactory<Customer> {
+
+ 
+    public CustomerBuilder() {
+    }
+
+    public CustomerBuilder(final String firstName, final String lastName, final String vatId, final String email
+                           , final String prefix, final String phoneNumber){
+        this.firstName=firstName;
+        this.lastName=lastName;
+        this.vatId=vatId;
+        this.email=email;
+        this.prefix=prefix;
+        this.phoneNumber=phoneNumber;
+    }
+
+    public CustomerBuilder withSystemUser(final SystemUser systemUser) {
+        this.systemUser = systemUser;
+        return this;
+    }
+    public CustomerBuilder withBirthday(final String birthday) {
+        this.birthday = birthday;
+        return this;
+    }
+
+    public CustomerBuilder withGender(final Gender gender) {
+        this.gender = gender;
+        return this;
+    }
+
+    public CustomerBuilder withAddress(final List<Address> address) {
+        this.address = address;
+        return this;
+    }
+
+    @Override
+    public Customer build() {
+        // since the factory knows that all the parts are needed it could throw
+        // an exception. however, we will leave that to the constructor
+        return new Customer(Name.valueOf(firstName, lastName)
+                , Vat.valueOf(vatId)
+                , EmailAddress.valueOf(email)
+                , PhoneNumber.valueOf(prefix, phoneNumber)
+                , LocalDate.parse(birthday,ISO_LOCAL_DATE)
+                , gender
+                , address);
+    }
+
+
 
 # 5. Integração/Demonstração
 
