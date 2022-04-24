@@ -9,7 +9,7 @@ import java.io.Serializable;
 @Embeddable
 public class PhoneNumber implements ValueObject, Serializable {
     private int prefix;
-    private int number;
+    private long number;
 
     public PhoneNumber(int prefix, int number) {
         this.prefix = prefix;

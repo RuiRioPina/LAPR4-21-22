@@ -31,12 +31,12 @@ import java.util.List;
 import static java.time.format.DateTimeFormatter.ISO_LOCAL_DATE;
 
 /**
- * A factory for User entities.
+ * A factory for Customer entities.
  *
  * This class demonstrates the use of the factory (DDD) pattern using a fluent
  * interface. it acts as a Builder (GoF).
  *
- * @author Jorge Santos ajs@isep.ipp.pt 02/04/2016
+ * @author Rui Pina 1201568@isep.ipp.pt 21/04/2022
  */
 public class CustomerBuilder implements DomainFactory<Customer> {
 

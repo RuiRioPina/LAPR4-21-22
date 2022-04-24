@@ -84,13 +84,13 @@ public class AddCustomerUI extends AbstractUI {
         } catch (final IntegrityViolationException | ConcurrencyException e) {
             System.out.println("That username is already in use.");
         }
-/*
+
         final String credentialsCreation = Console.readLine("Do you want to create the customers' credentials?");
 
         if (credentialsCreation.equalsIgnoreCase("yes") || credentialsCreation.equalsIgnoreCase("y")) {
-            // do something
+            System.out.println("Use Case 3.1.5: yet to be implemented. (Check the \"system to develop\" pdf)");
         }
-        */
+
 
 
         return false;
