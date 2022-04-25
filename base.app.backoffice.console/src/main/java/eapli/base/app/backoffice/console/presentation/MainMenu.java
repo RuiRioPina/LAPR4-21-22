@@ -26,9 +26,9 @@ package eapli.base.app.backoffice.console.presentation;
 import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNewCategoryUI;
 import eapli.base.app.backoffice.console.presentation.clientuser.AddCustomerUI;
 import eapli.base.app.backoffice.console.presentation.products.SpecifyNewProductUI;
+import eapli.base.app.backoffice.console.presentation.warehouse.WarehouseUI;
 import eapli.base.app.common.console.presentation.authz.MyUserMenu;
 import eapli.base.Application;
-import eapli.base.app.backoffice.console.presentation.authz.AddUserUI;
 import eapli.base.app.backoffice.console.presentation.authz.DeactivateUserAction;
 import eapli.base.app.backoffice.console.presentation.authz.ListUsersAction;
 import eapli.base.app.backoffice.console.presentation.clientuser.AcceptRefuseSignupRequestAction;
@@ -109,6 +109,9 @@ public class MainMenu extends AbstractUI {
     private static final int MAIN_MENU_CATEGORY=3;
     // PRODUCTS
     private static final int SPECIFY_NEW_PRODUCT = 1;
+    // WAREHOUSE
+    private static final int SET_UP_NEW_WAREHOUSE = 1;
+    private static final int WAREHOUSE = 2;
 
 
     private static final String SEPARATOR_LABEL = "--------------";
@@ -166,6 +169,12 @@ public class MainMenu extends AbstractUI {
 
         }
 
+        if(authz.isAuthenticatedUserAuthorizedTo(BaseRoles.WAREHOUSE_EMPLOYEE)) {
+            final Menu warehouseEmployeeMenu = buildWarehouseEmployeeMenu();
+            mainMenu.addSubMenu(WAREHOUSE,warehouseEmployeeMenu);
+
+        }
+
         /* example
         if (authz.isAuthenticatedUserAuthorizedTo(BaseRoles.POWER_USER, BaseRoles.ADMIN)) {
             final Menu usersMenu = buildUsersMenu();
@@ -212,6 +221,12 @@ public class MainMenu extends AbstractUI {
         menu.addItem(SPECIFY_NEW_PRODUCT, "Specify New Product", new SpecifyNewProductUI()::show);
         final Menu menuCategory = new Menu("Categories >");
         menuCategory.addItem(REGISTER_NEW_CATEGORY, "Register New Category", new RegisterNewCategoryUI()::show);
+        return menu;
+    }
+
+    private Menu buildWarehouseEmployeeMenu() {
+        final Menu menu = new Menu("Warehouse Management Menu");
+        menu.addItem(SET_UP_NEW_WAREHOUSE, "Set Up New Warehouse", new WarehouseUI()::show);
         return menu;
     }
 
