@@ -1,6 +1,7 @@
 package eapli.base.warehousemanagement.domain;
 
 import com.google.gson.annotations.SerializedName;
+import eapli.base.warehousemanagement.AGVDocks;
 import eapli.framework.domain.model.AggregateRoot;
 
 import javax.persistence.*;
@@ -27,6 +28,9 @@ public class Warehouse implements AggregateRoot<Long> {
     @SerializedName("Aisles")
     private List<Aisle> aisle;
 
+    @SerializedName("AGVDocks")
+    private List<AGVDocks> agvDocks;
+
     public Long getId() {
         return id;
     }
@@ -44,12 +48,14 @@ public class Warehouse implements AggregateRoot<Long> {
     @Override
     public String toString() {
         final StringBuffer sb = new StringBuffer("Warehouse{");
-        sb.append("name=").append(name);
+        sb.append("id=").append(id);
+        sb.append(", name='").append(name).append('\'');
         sb.append(", length=").append(length);
         sb.append(", width=").append(width);
         sb.append(", square=").append(square);
         sb.append(", unit='").append(unit).append('\'');
         sb.append(", aisle=").append(aisle);
+        sb.append(", agvDocks=").append(agvDocks);
         sb.append('}');
         return sb.toString();
     }
