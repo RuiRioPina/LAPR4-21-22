@@ -45,6 +45,8 @@ public class Product implements AggregateRoot<Long> {
     @Column(name = "barcode", nullable = false)
     private Barcode barcode;
 
+    private boolean active;
+
     public Product() {
     }
 
@@ -61,6 +63,7 @@ public class Product implements AggregateRoot<Long> {
         this.internalCode = internalCode;
         this.productionCode = productionCode;
         this.barcode = barcode;
+        this.active = true;
     }
 
     @Override

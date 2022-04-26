@@ -26,6 +26,7 @@ import eapli.base.clientusermanagement.domain.events.NewUserRegisteredFromSignup
 import eapli.base.clientusermanagement.domain.events.SignupAcceptedEvent;
 import eapli.base.infrastructure.bootstrapers.BaseBootstrapper;
 import eapli.base.infrastructure.bootstrapers.demo.BaseDemoBootstrapper;
+import eapli.base.infrastructure.bootstrapers.demo.ProductBootstrapper;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.infrastructure.smoketests.BaseDemoSmokeTester;
 import eapli.base.usermanagement.application.eventhandlers.SignupAcceptedWatchDog;
@@ -73,6 +74,8 @@ public final class BaseBootstrap extends BaseApplication {
             System.out.println("\n\n------- BASIC SCENARIO -------");
             new BaseDemoSmokeTester().execute();
         }
+        System.out.println("Products");
+        new ProductBootstrapper().execute();
     }
 
     private void handleArgs(final String[] args) {
