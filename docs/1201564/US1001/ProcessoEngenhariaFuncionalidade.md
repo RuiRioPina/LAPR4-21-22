@@ -68,13 +68,52 @@ In accordance with the specification document, other atributes might also be man
 
 ## 3.4. Testes 
 
-**Teste 1:** Verificar que não é possível criar uma instância da classe Produto com valores nulos.
-
 	@Test(expected = IllegalArgumentException.class)
 		public void ensureNullIsNotAllowed() {
 		Product instance = new Product(null, null, null, null, null, null, null, null, null);
 	}
 
+     @Test(expected = IllegalArgumentException.class)
+    public void ensureNullIsNotAllowed() {
+        new Product(null, null, null,null, null, null, null, null, null, null);
+    }
+
+    @Test
+    public void product() {
+        new Product(CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+        assertTrue(true);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ensureProductMustHavePrice() {
+        new Product(CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,null,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ensureProductMustHaveCategory() {
+        new Product(null,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ensureProductMustHaveInternalCode() {
+        new Product(CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,null,PRODUCTION_CODE,BARCODE);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ensureProductMustHaveBrand() {
+        new Product(CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,null,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ensureProductMustHaveName() {
+        new Product(CATEGORY,Designation.valueOf(" "),PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+        new Product(CATEGORY,null,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+    }
+
+    @Test(expected = IllegalArgumentException.class)
+    public void ensureProductMustHaveBarcode() {
+        new Product(CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,null);
+    }
 # 4. Implementação
 
 ## Construtor do Produto
