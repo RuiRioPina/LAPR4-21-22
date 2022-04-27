@@ -56,12 +56,11 @@ public class CustomerBuilder implements DomainFactory<Customer> {
     }
 
     public CustomerBuilder(final String firstName, final String lastName, final String vatId, final String email
-                           , final String prefix, final String phoneNumber){
+                           , final String phoneNumber){
         this.firstName=firstName;
         this.lastName=lastName;
         this.vatId=vatId;
         this.email=email;
-        this.prefix=prefix;
         this.phoneNumber=phoneNumber;
     }
 
@@ -88,12 +87,22 @@ public class CustomerBuilder implements DomainFactory<Customer> {
     public Customer build() {
         // since the factory knows that all the parts are needed it could throw
         // an exception. however, we will leave that to the constructor
-        return new Customer(Name.valueOf(firstName, lastName)
-                , Vat.valueOf(vatId)
-                , EmailAddress.valueOf(email)
-                , PhoneNumber.valueOf(prefix, phoneNumber)
-                , LocalDate.parse(birthday,ISO_LOCAL_DATE)
-                , gender
-                , address);
+        if(birthday!=null) {
+            return new Customer(Name.valueOf(firstName, lastName)
+                    , Vat.valueOf(vatId)
+                    , EmailAddress.valueOf(email)
+                    , PhoneNumber.valueOf(phoneNumber)
+                    , LocalDate.parse(birthday, ISO_LOCAL_DATE)
+                    , gender
+                    , address);
+        }else{
+            return new Customer(Name.valueOf(firstName, lastName)
+                    , Vat.valueOf(vatId)
+                    , EmailAddress.valueOf(email)
+                    , PhoneNumber.valueOf(phoneNumber)
+                    , null
+                    , gender
+                    , address);
+        }
     }
 }

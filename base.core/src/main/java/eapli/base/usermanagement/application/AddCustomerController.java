@@ -20,13 +20,11 @@
  */
 package eapli.base.usermanagement.application;
 
-import eapli.base.clientusermanagement.domain.Address;
-import eapli.base.clientusermanagement.domain.Customer;
-import eapli.base.clientusermanagement.domain.CustomerBuilder;
-import eapli.base.clientusermanagement.domain.Gender;
+import eapli.base.clientusermanagement.domain.*;
 import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.framework.application.UseCaseController;
+import eapli.framework.general.domain.model.EmailAddress;
 
 import java.util.List;
 
@@ -38,10 +36,10 @@ public class AddCustomerController {
 
     private final CustomerRepository repo = PersistenceContext.repositories().customers();
 
-    public Customer customerBuilder(final String firstName, final String lastName, final String vatId, final String email, final String prefix,
+    public Customer customerBuilder(final String firstName, final String lastName, final String vatId, final String email,
                                     final String phoneNumber, final String birthday, final Gender gender,
                                     final List<Address> addresses) {
-        CustomerBuilder customerBuilder = new CustomerBuilder(firstName, lastName, vatId, email, prefix, phoneNumber);
+        CustomerBuilder customerBuilder = new CustomerBuilder(firstName, lastName, vatId, email, phoneNumber);
         Customer customer= (customerBuilder.withBirthday(birthday)
                 .withGender(gender)
                 .withAddress(addresses)
@@ -49,8 +47,23 @@ public class AddCustomerController {
         for (Address adr: addresses) {
             adr.setCustomer(customer);
         }
-        return repo.save(customer);
+        if(customer != null) {
+            return repo.save(customer);
+        }
+        return null;
     }
 
 
+    public void validateEmail(String email) {
+        EmailAddress.valueOf(email);
+    }
+
+    public void validateVat(String vat) {
+        Vat.vatMeetsMinimumRequirements(vat);
+    }
+
+
+    public void validatePhoneNumber(String phoneNumber) {
+        PhoneNumber.phoneMeetsMinimumRequirements(phoneNumber);
+    }
 }

@@ -33,7 +33,12 @@ import eapli.framework.domain.repositories.IntegrityViolationException;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
 
+import java.time.DateTimeException;
+import java.time.LocalDate;
+import java.time.chrono.ChronoLocalDate;
+import java.time.temporal.TemporalAccessor;
 import java.util.ArrayList;
+import java.util.InputMismatchException;
 import java.util.List;
 
 /**
@@ -45,21 +50,23 @@ public class AddCustomerUI extends AbstractUI {
 
     private final AddCustomerController theController = new AddCustomerController();
     private Gender gender;
-    private String birthday;
-    private String prefix;
+    private String birthday = null;
 
     @Override
     protected boolean doShow() {
         final String firstName = Console.readLine("First Name");
         final String lastName = Console.readLine("Last Name");
-        final String vatId = Console.readLine("VAT ID");
-        final String email = Console.readLine("Email");
-        prefix = Console.readLine("Prefix");
-        final String phoneNumber = Console.readLine("Phone number");
+        final String vatId = inputVat();
+        final String email = inputEmail();
+        final String phoneNumber = inputPhoneNumber();
 
         String response = Console.readLine("Birthday: This field is optional. Do you want to define it?");
         if (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
-            birthday = Console.readLine("Birthday");
+            try {
+                birthday = inputBirthDate();
+            }catch (DateTimeException dateTimeException) {
+                System.out.println("There was an error while analysing the date introduce. Please try again!");
+            }
         }
         response = Console.readLine("Gender: This field is optional. Do you want to define it?");
         if (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
@@ -77,7 +84,12 @@ public class AddCustomerUI extends AbstractUI {
                 moreAddresses = Console.readLine("Do you want to define more addresses? (yes|no)");
             } while (moreAddresses.equalsIgnoreCase("yes") || moreAddresses.equalsIgnoreCase("y"));
         }
-        Customer customer = theController.customerBuilder(firstName, lastName, vatId, email, prefix, phoneNumber, birthday, gender, addresses);
+        Customer customer = null;
+        try {
+            customer = theController.customerBuilder(firstName, lastName, vatId, email, phoneNumber, birthday, gender, addresses);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
         try {
 
             System.out.println(customer);
@@ -90,7 +102,6 @@ public class AddCustomerUI extends AbstractUI {
         if (credentialsCreation.equalsIgnoreCase("yes") || credentialsCreation.equalsIgnoreCase("y")) {
             System.out.println("Use Case 3.1.5: yet to be implemented. (Check the \"system to develop\" pdf)");
         }
-
 
 
         return false;
@@ -144,6 +155,91 @@ public class AddCustomerUI extends AbstractUI {
             addressType = AddressType.SHIPMENT;
         }
         return addressType;
+    }
+
+    private String inputEmail() {
+        boolean passedValidation;
+        String email = "";
+        do {
+            try {
+                email = Console.readLine("Email");
+                theController.validateEmail(email);
+                passedValidation = true;
+            } catch (IllegalArgumentException e) {
+                passedValidation = false;
+                System.out.println(e.getMessage());
+            } catch (InputMismatchException e) {
+                passedValidation = false;
+            }
+        } while (!passedValidation);
+        return email;
+    }
+
+    private String inputVat() {
+        boolean passedValidation;
+        String vat = "";
+        do {
+            try {
+                vat = Console.readLine("Vat");
+                theController.validateVat(vat);
+                passedValidation = true;
+            } catch (IllegalArgumentException e) {
+                passedValidation = false;
+                System.out.println(e.getMessage());
+            } catch (InputMismatchException e) {
+                passedValidation = false;
+            } catch (IllegalStateException e) {
+                passedValidation = false;
+                System.out.println(e.getMessage());
+            }
+        } while (!passedValidation);
+        return vat;
+    }
+
+    private String inputPhoneNumber() {
+        boolean passedValidation;
+        String phoneNumber = "";
+        do {
+            try {
+                phoneNumber = Console.readLine("Phone Number");
+                theController.validatePhoneNumber(phoneNumber);
+                passedValidation = true;
+            } catch (IllegalArgumentException e) {
+                passedValidation = false;
+                System.out.println(e.getMessage());
+            } catch (InputMismatchException e) {
+                passedValidation = false;
+            } catch (IllegalStateException e) {
+                passedValidation = false;
+                System.out.println(e.getMessage());
+            }
+        } while (!passedValidation);
+        return phoneNumber;
+    }
+
+    private String inputBirthDate() {
+        boolean passedValidation;
+        String birthDate = null;
+        do {
+            birthDate = Console.readLine("Birth Date");
+            if(birthDate != null) {
+                if (LocalDate.parse(birthDate).isBefore(LocalDate.now()) && LocalDate.parse(birthDate).isAfter(LocalDate.parse(birthDate).minusYears(150))) {
+                    passedValidation = true;
+                } else if (!LocalDate.parse(birthDate).isBefore(LocalDate.now())) {
+                    passedValidation = false;
+                    System.out.println("You have introduced a date in the future. Please try another birth date.");
+                } else if (!LocalDate.parse(birthDate).isAfter(LocalDate.parse(birthDate).minusYears(150))) {
+                    passedValidation = false;
+                    System.out.println("You can't be more than 150 years. Please try another birth date.");
+                } else {
+                    passedValidation = false;
+                    System.out.println("There was some error.");
+                }
+            }else{
+                passedValidation = true;
+            }
+        } while (!passedValidation);
+        return birthDate;
     }
 
 

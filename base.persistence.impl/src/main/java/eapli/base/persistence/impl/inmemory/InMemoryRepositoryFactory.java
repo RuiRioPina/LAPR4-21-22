@@ -34,7 +34,7 @@ import eapli.framework.infrastructure.authz.repositories.impl.InMemoryUserReposi
  *
  * Created by nuno on 20/03/16.
  */
-public class InMemoryRepositoryFactory implements RepositoryFactory {
+public abstract class InMemoryRepositoryFactory implements RepositoryFactory {
 
     static {
         // only needed because of the in memory persistence
