@@ -6,7 +6,11 @@ class "CreateProductOrderUI" as UI {
 }
 
 class "CreateProductOrderController" as CTRL {
-
+  +getCustomerList()
+  +createOrder(Customer)
+  +getProductList()
+  +addProductToOrder(Product, int no)
+  +saveOrder()
 }
 
 class "PersistenceContext" as PCON {
