@@ -75,4 +75,8 @@ public class Product implements AggregateRoot<Long> {
     public Long identity() {
         return null;
     }
+
+    public Designation getName(){
+        return name;
+    }
 }

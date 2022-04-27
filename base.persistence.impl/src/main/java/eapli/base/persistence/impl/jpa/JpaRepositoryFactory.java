@@ -21,6 +21,7 @@
 package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
+import eapli.base.order.repositories.OrderRepository;
 import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.repositories.CategoryRepository;
 import eapli.base.clientusermanagement.repositories.SignupRequestRepository;
@@ -83,5 +84,10 @@ public class JpaRepositoryFactory implements RepositoryFactory {
     @Override
     public ProductRepository products() {
         return new JpaProductRepository();
+    }
+
+    @Override
+    public OrderRepository orders() {
+        return new JpaOrderRepository();
     }
 }

@@ -20,6 +20,7 @@
  */
 package eapli.base.infrastructure.persistence;
 
+import eapli.base.order.repositories.OrderRepository;
 import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.repositories.CategoryRepository;
 import eapli.base.clientusermanagement.repositories.CustomerRepository;
@@ -91,4 +92,6 @@ public interface RepositoryFactory {
     CategoryRepository categories(TransactionalContext autoTx);
 
     ProductRepository products();
+
+    OrderRepository orders();
 }
