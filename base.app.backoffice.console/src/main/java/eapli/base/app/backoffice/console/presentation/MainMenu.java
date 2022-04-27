@@ -25,6 +25,7 @@ package eapli.base.app.backoffice.console.presentation;
 
 import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNewCategoryUI;
 import eapli.base.app.backoffice.console.presentation.clientuser.AddCustomerUI;
+import eapli.base.app.backoffice.console.presentation.productcatalog.CheckProductCatalogUI;
 import eapli.base.app.backoffice.console.presentation.products.SpecifyNewProductUI;
 import eapli.base.app.backoffice.console.presentation.warehouse.WarehouseUI;
 import eapli.base.app.common.console.presentation.authz.MyUserMenu;
@@ -101,6 +102,7 @@ public class MainMenu extends AbstractUI {
     private static final int MY_USER_OPTION = 1;
     private static final int USERS_OPTION = 2;
     private static final int CUSTOMERS_OPTION = 4;
+    private static final int PRODUCT_CATALOG_OPTION = 5;
     private static final int TRACEABILITY_OPTION = 6;
     private static final int MEALS_OPTION = 7;
     private static final int REPORTING_DISHES_OPTION = 8;
@@ -113,6 +115,8 @@ public class MainMenu extends AbstractUI {
     private static final int SET_UP_NEW_WAREHOUSE = 1;
     private static final int WAREHOUSE = 2;
 
+    //Product Catalog
+    private static final int CHECK_PRODUCT_CATALOG=1;
 
     private static final String SEPARATOR_LABEL = "--------------";
 
@@ -166,6 +170,9 @@ public class MainMenu extends AbstractUI {
 
             final Menu customerMenu = buildUsersMenu();
             mainMenu.addSubMenu(CUSTOMERS_OPTION,customerMenu);
+
+            final Menu productCatalogMenu=buildProductCatalogMenu();
+            mainMenu.addSubMenu(PRODUCT_CATALOG_OPTION,productCatalogMenu);
 
         }
 
@@ -234,6 +241,12 @@ public class MainMenu extends AbstractUI {
         final Menu menuCategory = new Menu("Categories >");
         menuCategory.addItem(REGISTER_NEW_CATEGORY, "Register New Category", new RegisterNewCategoryUI()::show);
         return menuCategory;
+    }
+
+    private Menu buildProductCatalogMenu(){
+        final Menu menuProductCatalog= new Menu("Product Catalog >");
+        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG,"Check All Items",new CheckProductCatalogUI()::show);
+        return menuProductCatalog;
     }
 
 

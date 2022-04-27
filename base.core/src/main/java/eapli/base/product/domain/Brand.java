@@ -17,4 +17,8 @@ public class Brand implements ValueObject {
 
     public Brand() {
     }
+    @Override
+    public String toString(){
+        return this.brandName;
+    }
 }

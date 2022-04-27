@@ -64,4 +64,7 @@ public class Category implements AggregateRoot<String> {
     public String identity(){
         return this.name.toString();
     }
+
+    @Override
+    public String toString(){return this.name.toString();}
 }

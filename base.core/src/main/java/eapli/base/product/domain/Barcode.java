@@ -18,4 +18,9 @@ public class Barcode implements ValueObject {
     }
 
     public Barcode() {}
+
+    @Override
+    public String toString(){
+        return this.barcode;
+    }
 }

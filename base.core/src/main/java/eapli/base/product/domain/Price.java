@@ -20,4 +20,12 @@ public class Price implements ValueObject {
 
     }
 
+    public Double priceWithTaxes(){
+        return this.priceWiTaxes;
+    }
+
+    public Double priceWithoutTaxes(){
+        return this.priceWoTaxes;
+    }
+
 }

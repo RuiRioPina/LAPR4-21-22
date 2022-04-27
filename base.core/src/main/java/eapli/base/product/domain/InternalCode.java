@@ -17,4 +17,8 @@ public class InternalCode implements ValueObject {
 
     public InternalCode() {
     }
+    @Override
+    public String toString(){
+        return this.internalCode;
+    }
 }

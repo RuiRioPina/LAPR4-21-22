@@ -26,4 +26,15 @@ public class ProductDescription implements ValueObject {
     public ProductDescription() {
 
     }
+
+    public String shortDescription(){
+        return this.shortDescription;
+    }
+    public String extendedDescription(){
+        return this.extendedDescription;
+    }
+
+    public String technicalDescription(){
+        return this.technicalDescription;
+    }
 }
