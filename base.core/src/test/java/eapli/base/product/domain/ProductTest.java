@@ -7,7 +7,7 @@ public class ProductTest {
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureNullIsNotAllowed() {
-        Product instance = new Product(null, null, null, null, null, null, null, null, null);
+        Product instance = new Product(null, null, null,null, null, null, null, null, null, null);
     }
 
 }

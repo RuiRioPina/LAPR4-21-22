@@ -12,10 +12,10 @@ public class SpecifyNewProductController {
     private final ProductRepository productRepository = PersistenceContext.repositories().products();
     private final ListCategories svcCategories = new ListCategories();
 
-    public Product specifyNewProduct (Category category,Designation name, ProductDescription description, Brand brand,
+    public Product specifyNewProduct (Category category,Designation name, String photoPath, ProductDescription description, Brand brand,
                                       Price price, Reference reference, InternalCode internalCode,
                                       ProductionCode productionCode, Barcode barcode) {
-        return productRepository.save(new Product(category,name,description,brand,price,reference,internalCode,productionCode,barcode));
+        return productRepository.save(new Product(category,name,photoPath,description,brand,price,reference,internalCode,productionCode,barcode));
     }
 
     public Iterable<Category> categories () {

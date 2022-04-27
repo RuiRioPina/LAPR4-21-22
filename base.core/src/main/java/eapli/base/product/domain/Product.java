@@ -20,6 +20,8 @@ public class Product implements AggregateRoot<Long> {
     @Column(name = "name", nullable = false)
     private Designation name;
 
+    private  String photoPath;
+
     @Embedded
     @Column(name = "description")
     private ProductDescription description;
@@ -50,12 +52,13 @@ public class Product implements AggregateRoot<Long> {
     public Product() {
     }
 
-    public Product(Category category,Designation name, ProductDescription description, Brand brand, Price price,
+    public Product(Category category,Designation name, String photoPath, ProductDescription description, Brand brand, Price price,
                    Reference reference, InternalCode internalCode, ProductionCode productionCode,
                    Barcode barcode) {
-        Preconditions.noneNull(category,name,brand,price,internalCode,barcode);
+        Preconditions.noneNull(category,name,photoPath,brand,price,internalCode,barcode);
         this.category = category;
         this.name = name;
+        this.photoPath = photoPath;
         this.description = description;
         this.brand = brand;
         this.price = price;

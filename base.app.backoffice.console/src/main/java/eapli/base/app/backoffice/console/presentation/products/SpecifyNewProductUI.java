@@ -9,6 +9,8 @@ import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
 import eapli.framework.presentation.console.SelectWidget;
 
+import javax.swing.*;
+
 public class SpecifyNewProductUI extends AbstractUI {
 
     private final SpecifyNewProductController theController = new SpecifyNewProductController();
@@ -30,6 +32,13 @@ public class SpecifyNewProductUI extends AbstractUI {
                 System.out.println("This field can't be empty.");
             }
         } while (name.isEmpty());
+
+        System.out.println("Photo (check the new window opened)");
+        String currentDirectory = "photos";
+        JFileChooser chooser = new JFileChooser(currentDirectory);
+        chooser.showSaveDialog(null);
+        String photoPath = chooser.getSelectedFile().getName();
+        System.out.println(photoPath);
 
         String shortDescription;
         do {
@@ -107,7 +116,7 @@ public class SpecifyNewProductUI extends AbstractUI {
             }
         } while (barcode.isEmpty());
 
-        theController.specifyNewProduct(theProductCategory,Designation.valueOf(name),new ProductDescription(shortDescription,
+        theController.specifyNewProduct(theProductCategory,Designation.valueOf(name),photoPath,new ProductDescription(shortDescription,
                 extendedDescription, techDescription), new Brand(brand),new Price(priceWoTaxes, priceWiTaxes),
                 new Reference(reference), new InternalCode(internalCode), new ProductionCode(productionCode),
                 new Barcode(barcode));
