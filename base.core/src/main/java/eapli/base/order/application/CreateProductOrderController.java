@@ -24,9 +24,6 @@ public class CreateProductOrderController {
     private Order order = null;
     private OrderBuilder OB;
 
-    private final CustomerRepository cRepo = PersistenceContext.repositories().customers();
-    private final OrderRepository oRepo = PersistenceContext.repositories().orders();
-    private final ProductRepository pRepo = PersistenceContext.repositories().products();
     private final CheckProductCatalogService productCatalogService= new CheckProductCatalogService();
 
 
@@ -37,7 +34,9 @@ public class CreateProductOrderController {
     }
 
     public List<Customer> getCustomerList(){
-        return null;
+        List<Customer> actualList = new ArrayList<Customer>();
+        PersistenceContext.repositories().customers().findAllActive().iterator().forEachRemaining(actualList::add);
+        return actualList;
     }
 
     public void createOrder(Long customerId){
