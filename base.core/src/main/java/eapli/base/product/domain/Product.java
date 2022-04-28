@@ -86,6 +86,9 @@ public class Product implements AggregateRoot<Long> {
     public String getBarcodeString(){return this.barcode.toString();}
 
     public String getShortDescriptionString(){return this.description.shortDescription();}
+    public String getExtendedDescriptionString(){return this.description.extendedDescription();}
+    public String getTechnicalDescriptionString(){return this.description.technicalDescription();}
+
 
     public String getBrandString(){return this.brand.toString();}
 
