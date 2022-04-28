@@ -6,6 +6,7 @@ Class "WarehouseUI"{
 
 Class "WarehouseController"{
 +buildWarehouse(fileName)
++buildShelves()
 
 +repositories()
 +warehouses()
@@ -15,15 +16,59 @@ Class "WarehouseController"{
 
 
 
-Class "Warehouse"{
-     -Name name;
-     -Vat vat;
-     -Date dateOfBirth;
-     -PhoneNumber phoneNumber;
-     -Address address;
+class "Warehouse"{
+     -String name
+     -Double length
+     -square width
+     -String unit
+     -List<Aisle> aisle
+     -List<Aisle> AGVDocks
+     +toString()
 }
 
+class "Aisle"{
+     -Begin begin
+     -End end
+     -Depth depth
+     -String accessibility
+     -List<Row> rows
+     +toString()
+}
 
+class "Row"{
+     -Begin begin
+     -End end
+     -Integer numberShelves
+     -List<Shelve> shelves
+     +toString()
+}
+
+class "Shelve"{
+     -Integer position
+     -List<Bin> bin
+}
+
+class "Bin"{
+     -Product
+     +sameAs(other)
+     +identity()
+}
+
+class "Begin"{
+     -int lSquareBegin
+     -int wSquareBegin
+     +toString()
+}
+class "End"{
+     -int lSquareEnd
+     -int wSquareEnd
+     +toString()
+}
+class "Depth"{
+     -int lSquareDepth
+     -int wSquareDepth
+     +toString()
+}
 
 
 
@@ -40,7 +85,8 @@ class PersistenceContext {
 }
 
 class RepositoryFactory{
-+warehouses()
++warehouse(autoTx)
++warehouse()
 }
 
 class WarehouseRepository{
@@ -54,8 +100,15 @@ WarehouseBuilder "1" --> "*" Warehouse : builds
 
 Aisle "0..*" <-u- "1" Warehouse : contains
 Row "0..*" <-r- "1" Aisle : contains
-Shelf "0..*" <-u- "1" Row : contains
-Bin "0..*" <-l- "1" Shelf : contains
+Shelve "0..*" <-u- "1" Row : contains
+Bin "0..*" <-u- "1" Shelve : contains
+
+Begin "1" <-u- "1" Aisle : contains
+End "1" <-u- "1" Aisle : contains
+Depth "1" <-u- "1" Aisle : contains
+
+Begin "1" <-l- "1" Row : contains
+End "1" <-l- "1" Row : contains
 
 
 "WarehouseController" "1" --> "1" "PersistenceContext" :creates

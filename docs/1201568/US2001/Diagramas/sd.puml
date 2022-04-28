@@ -4,7 +4,7 @@ actor "WarehouseEmployee" as SC
 
 participant  "WarehouseUI <presentation>" as SYS
 participant ":WarehouseController <application>" as CTRL
-participant ":WarehouseBuilder<builder>" as CSB
+participant ":JsonParser" as CSB
 participant ":Warehouse<Domain>" as CUS
 participant ":PersistenceContext<persistence>" as PC
 participant ":RepositoryFactory<factory>" as RF
@@ -39,6 +39,13 @@ deactivate CUS
 CSB -> CTRL: warehouse
 
 deactivate CSB
+deactivate CUS
+CTRL->CUS: buildShelves()
+activate CUS
+
+CUS -> CTRL: warehouse
+deactivate CUS
+
 
 CTRL-> PC**: repositories()
 activate PC

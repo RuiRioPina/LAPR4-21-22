@@ -9,7 +9,7 @@ public class Shelve {
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "shelve_id", nullable = false)
     private Long id;
-    private int position;
+    private Integer position;
 
     @ManyToOne
     @JoinColumn(name="row_id", nullable=false)

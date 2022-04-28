@@ -62,11 +62,16 @@ public class AddCustomerUI extends AbstractUI {
 
         String response = Console.readLine("Birthday: This field is optional. Do you want to define it?");
         if (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
-            try {
-                birthday = inputBirthDate();
-            }catch (DateTimeException dateTimeException) {
-                System.out.println("There was an error while analysing the date introduce. Please try again!");
-            }
+            boolean passedValidation;
+            do {
+                try {
+                    birthday = inputBirthDate();
+                    passedValidation = true;
+                } catch (DateTimeException dateTimeException) {
+                    passedValidation = false;
+                    System.out.println("There was an error while analysing the date introduce. Please try again!");
+                }
+            } while (!passedValidation);
         }
         response = Console.readLine("Gender: This field is optional. Do you want to define it?");
         if (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
@@ -75,7 +80,7 @@ public class AddCustomerUI extends AbstractUI {
         }
         response = Console.readLine("Address: This field is optional. Do you want to define it?");
         String moreAddresses;
-        Address address = null;
+        Address address;
         List<Address> addresses = new ArrayList<>();
         if (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
             do {
@@ -221,8 +226,8 @@ public class AddCustomerUI extends AbstractUI {
         boolean passedValidation;
         String birthDate = null;
         do {
-            birthDate = Console.readLine("Birth Date");
-            if(birthDate != null) {
+            birthDate = Console.readLine("Birth Date (yyyy-mm-dd)");
+            if (birthDate != null) {
                 if (LocalDate.parse(birthDate).isBefore(LocalDate.now()) && LocalDate.parse(birthDate).isAfter(LocalDate.parse(birthDate).minusYears(150))) {
                     passedValidation = true;
                 } else if (!LocalDate.parse(birthDate).isBefore(LocalDate.now())) {
@@ -235,7 +240,7 @@ public class AddCustomerUI extends AbstractUI {
                     passedValidation = false;
                     System.out.println("There was some error.");
                 }
-            }else{
+            } else {
                 passedValidation = true;
             }
         } while (!passedValidation);
