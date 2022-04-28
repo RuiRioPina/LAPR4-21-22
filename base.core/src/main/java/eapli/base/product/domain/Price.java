@@ -5,7 +5,7 @@ import eapli.framework.domain.model.ValueObject;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class Price implements ValueObject {
+public class Price implements ValueObject,Comparable<Price> {
 
     private Double priceWoTaxes;
 
@@ -36,6 +36,11 @@ public class Price implements ValueObject {
 
     public Double priceWithoutTaxes(){
         return this.priceWoTaxes;
+    }
+
+    @Override
+    public int compareTo(final Price o1){
+        return this.priceWoTaxes.compareTo(o1.priceWithoutTaxes());
     }
 
 }
