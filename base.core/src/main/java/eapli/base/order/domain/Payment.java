@@ -1,18 +1,10 @@
 package eapli.base.order.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import eapli.framework.domain.model.ValueObject;
 
-@Entity
-public class Payment {
-    private Long id;
+import javax.persistence.Embeddable;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
+@Embeddable
+public class Payment implements ValueObject {
 
-    @Id
-    public Long getId() {
-        return id;
-    }
 }

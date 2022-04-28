@@ -1,18 +1,11 @@
 package eapli.base.order.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import eapli.framework.domain.model.ValueObject;
 
-@Entity
-public class OrderState {
-    private Long id;
+import javax.persistence.Embeddable;
 
-    public void setId(Long id) {
-        this.id = id;
-    }
 
-    @Id
-    public Long getId() {
-        return id;
-    }
+@Embeddable
+public class OrderState implements ValueObject {
+
 }

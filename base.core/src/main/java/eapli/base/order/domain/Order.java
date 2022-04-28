@@ -9,7 +9,9 @@ import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * A Product Order
@@ -50,30 +52,49 @@ public class Order implements Serializable, AggregateRoot<Long> {
     @Column(name = "total_amount", nullable = false)
     private Price totalAmount;
 
-    @OneToOne
+    @Embedded
     @Column(name = "order_line", nullable = true)
     private OrderLine orderLine;
 
-    @OneToOne
+    @Embedded
     @Column(name = "order_state", nullable = true)
     private OrderState orderState;
 
-    @OneToOne
+    @Embedded
     @Column(name = "payment", nullable = true)
     private Payment payment;
 
-    @OneToOne
+    @Embedded
     @Column(name = "order_line", nullable = true)
     private Shipment shipment;
 
-    public Order(LocalDate date, Long customerId, Price totalAmount) {
+    @ElementCollection
+    @CollectionTable(name="product_quantity")
+    @MapKeyJoinColumn(name="product_id")
+    @Column(name="quantity")
+    private Map<Product, Integer> productIntegerMap;
+
+    public Order(LocalDate date, Long customerId) {
         this.date = date;
         this.customerId = customerId;
-        this.totalAmount = totalAmount;
+        this.totalAmount = new Price((double) 0, (double) 0);
     }
 
     public Order() {
 
+    }
+
+    public Order(LocalDate date, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount) {
+        this.customerId = customerId;
+        this.date = date;
+        this.billingAddress = billingAddress;
+        this.deliveryAddress = deliveryAddress;
+        this.productIntegerMap = productIntegerMap;
+        this.totalAmount = totalAmount;
+    }
+
+    public void addProduct(Product product, int quantity){
+        this.productIntegerMap.put(product,quantity);
     }
 
     @Override
@@ -83,11 +104,6 @@ public class Order implements Serializable, AggregateRoot<Long> {
 
     @Override
     public Long identity() {
-        return null;
-    }
-
-    @Id
-    public Long getId() {
         return id;
     }
 
@@ -127,6 +143,10 @@ public class Order implements Serializable, AggregateRoot<Long> {
         return shipment;
     }
 
+    public Map<Product, Integer> getProductIntegerMap() {
+        return productIntegerMap;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
@@ -161,5 +181,9 @@ public class Order implements Serializable, AggregateRoot<Long> {
 
     public void setShipment(Shipment shipment) {
         this.shipment = shipment;
+    }
+
+    public void setProductIntegerMap(Map<Product, Integer> productIntegerMap) {
+        this.productIntegerMap = productIntegerMap;
     }
 }

@@ -29,6 +29,10 @@ public class Address implements ValueObject, Serializable {
         return id;
     }
 
+    public AddressType getAddressType(){
+        return this.addressType;
+    }
+
     public void setId(Long id) {
         this.id = id;
     }
