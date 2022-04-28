@@ -18,32 +18,49 @@
  * DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
-package eapli.base.warehousemanagement.repositories;
+package eapli.base.persistence.impl.jpa;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
+import eapli.base.Application;
 import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.warehousemanagement.domain.Warehouse;
-import eapli.framework.domain.repositories.DomainRepository;
+import eapli.base.warehousemanagement.repositories.WarehouseRepository;
+import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.authz.domain.model.Username;
+import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
 /**
  *
  * @author Jorge Santos ajs@isep.ipp.pt 02/04/2016
  */
-public interface WarehouseRepository
-        extends DomainRepository<Long, Warehouse> {
+class JpaWarehouseRepository
+        extends JpaAutoTxRepository<Warehouse, Long, Long>
+        implements WarehouseRepository {
 
-
-    /**
-     * returns the client user (utente) with the given mecanographic number
-     *
-     * @param number
-     * @return
-     */
-    default Optional<Warehouse> findById(final Long number) {
-        return ofIdentity(number);
+    public JpaWarehouseRepository(final TransactionalContext autoTx) {
+        super(autoTx, "id");
     }
 
-    public Iterable<Warehouse> findAllActive();
+    public JpaWarehouseRepository(final String puname) {
+        super(puname, Application.settings().getExtendedPersistenceProperties(),
+                "id");
+    }
+
+
+
+    @Override
+    public Optional<Warehouse> findById(final Long number) {
+        final Map<String, Object> params = new HashMap<>();
+        params.put("number", number);
+        return matchOne("e.id=:number", params);
+    }
+
+    @Override
+    public Iterable<Warehouse> findAllActive() {
+        return match("e.systemUser.active = true");
+    }
 }

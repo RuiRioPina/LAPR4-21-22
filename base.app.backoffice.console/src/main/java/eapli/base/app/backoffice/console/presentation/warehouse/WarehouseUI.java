@@ -1,13 +1,9 @@
 package eapli.base.app.backoffice.console.presentation.warehouse;
 
-import eapli.base.app.backoffice.console.presentation.productCategory.ProductCategoryPrinter;
-import eapli.base.product.application.SpecifyNewProductController;
-import eapli.base.product.domain.*;
-import eapli.base.productCategory.domain.Category;
-import eapli.framework.general.domain.model.Designation;
+import eapli.base.warehousemanagement.application.WarehouseController;
+import eapli.base.warehousemanagement.domain.Warehouse;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
-import eapli.framework.presentation.console.SelectWidget;
 
 import java.io.FileNotFoundException;
 
@@ -17,24 +13,39 @@ public class WarehouseUI extends AbstractUI {
 
     @Override
     protected boolean doShow() {
-
-        String fileName;
-        do {
-            fileName = Console.readLine("File Name");
-            if (fileName.isEmpty()) {
-                System.out.println("This field can't be empty.");
-            } else if (!fileName.contains(".json")) {
-                fileName = fileName + ".json";
-            }
-        } while (fileName.isEmpty());
-
-
-        try {
-            System.out.println(theController.buildWarehousePlant(fileName));
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+        String response = "y";
+        //boolean alreadyExistsInDatabase = theController.alreadyInDatabase();
+        boolean alreadyExistsInDatabase = false;
+        if (alreadyExistsInDatabase) {
+            response = Console.readLine("Warehouse plant is already database do you want still to import it?");
         }
+        /*&& theController.alreadyInDatabase()*/
+        if ((response.equalsIgnoreCase("y") || response.equalsIgnoreCase("yes")) ) {
+            String fileName;
+            do {
+                fileName = Console.readLine("File Name");
+                if (fileName.isEmpty()) {
+                    System.out.println("This field can't be empty.");
+                } else if (!fileName.contains(".json")) {
+                    fileName = fileName + ".json";
+                }
+            } while (fileName.isEmpty());
 
+
+            try {
+                Warehouse warehouse = theController.buildWarehousePlant(fileName);
+                theController.buildShelves(warehouse);
+//                if (alreadyExistsInDatabase) {
+//                    theController.deletePreviousWarehouse();
+//                    theController.saveWarehouse(warehouse);
+//                } else {
+//                    theController.saveWarehouse(warehouse);
+//                }
+                System.out.println(warehouse);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+        }
         return true;
     }
 
