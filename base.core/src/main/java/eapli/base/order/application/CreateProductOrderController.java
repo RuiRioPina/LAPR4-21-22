@@ -21,7 +21,6 @@ public class CreateProductOrderController {
 
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
 
-    private Order order = null;
     private OrderBuilder OB;
 
     private final CheckProductCatalogService productCatalogService= new CheckProductCatalogService();
@@ -50,11 +49,11 @@ public class CreateProductOrderController {
     }
 
     public boolean addProductToOrder(Product product, int quantity){
-        this.OB.addProduct(product,quantity);
+        return this.OB.addProduct(product,quantity).equals(OrderBuilder.class);
     }
 
-    public void saveOrder(){
-        this.OB.build();
+    public Order saveOrder(){
+        return this.OB.build();
     }
 
 }
