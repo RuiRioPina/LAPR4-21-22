@@ -43,7 +43,7 @@ public class CreateProductOrderController {
     }
 
     public List<Product> getProductList(){
-        List<Product> actualList = new ArrayList<Product>();
+        List<Product> actualList = new ArrayList<>();
         productCatalogService.allProducts().iterator().forEachRemaining(actualList::add);
         return actualList;
     }
