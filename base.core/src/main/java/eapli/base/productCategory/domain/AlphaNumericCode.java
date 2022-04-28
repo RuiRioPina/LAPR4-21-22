@@ -17,6 +17,7 @@ public class AlphaNumericCode implements ValueObject {
 
     }
     protected AlphaNumericCode(final String code){
+        if (!code.isEmpty()&& code.length()<=10 && code.matches("^[a-zA-Z0-9]*$"))
         this.code=code;
     }
 
