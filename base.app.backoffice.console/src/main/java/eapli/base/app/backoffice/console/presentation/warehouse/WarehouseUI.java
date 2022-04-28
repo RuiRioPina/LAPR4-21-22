@@ -20,7 +20,7 @@ public class WarehouseUI extends AbstractUI {
             response = Console.readLine("Warehouse plant is already database do you want still to import it?");
         }
         /*&& theController.alreadyInDatabase()*/
-        if ((response.equalsIgnoreCase("y") || response.equalsIgnoreCase("yes")) ) {
+        if ((response.equalsIgnoreCase("y") || response.equalsIgnoreCase("yes"))) {
             String fileName;
             do {
                 fileName = Console.readLine("File Name");
@@ -35,12 +35,7 @@ public class WarehouseUI extends AbstractUI {
             try {
                 Warehouse warehouse = theController.buildWarehousePlant(fileName);
                 theController.buildShelves(warehouse);
-//                if (alreadyExistsInDatabase) {
-//                    theController.deletePreviousWarehouse();
-//                    theController.saveWarehouse(warehouse);
-//                } else {
-//                    theController.saveWarehouse(warehouse);
-//                }
+                // saveWarehouse(warehouse, alreadyExistsInDatabase);
                 System.out.println(warehouse);
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -52,5 +47,14 @@ public class WarehouseUI extends AbstractUI {
     @Override
     public String headline() {
         return "Set up Warehouse Plant";
+    }
+
+    public void saveWarehouse(Warehouse warehouse, boolean alreadyExistsInDatabase) {
+        if (alreadyExistsInDatabase) {
+            theController.deletePreviousWarehouse();
+            theController.saveWarehouse(warehouse);
+        } else {
+            theController.saveWarehouse(warehouse);
+        }
     }
 }

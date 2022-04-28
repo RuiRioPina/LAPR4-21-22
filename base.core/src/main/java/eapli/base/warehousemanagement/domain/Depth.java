@@ -11,5 +11,10 @@ public class Depth {
     @SerializedName("wsquare")
     int wSquareDepth;
 
-
+    @Override
+    public String toString() {
+        return "Depth: " +
+                "lSquareDepth = " + lSquareDepth +
+                " | wSquareDepth = " + wSquareDepth;
+    }
 }

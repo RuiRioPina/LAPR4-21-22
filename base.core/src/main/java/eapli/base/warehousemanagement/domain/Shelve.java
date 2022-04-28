@@ -6,6 +6,7 @@ import java.util.List;
 @Entity
 public class Shelve {
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "shelve_id", nullable = false)
     private Long id;
     private int position;
@@ -26,4 +27,10 @@ public class Shelve {
         //ORM only
     }
 
+    @Override
+    public String toString() {
+        return "\nShelve: " +
+                "position=" + position + " " +
+                "bin=" + bin +" ";
+    }
 }

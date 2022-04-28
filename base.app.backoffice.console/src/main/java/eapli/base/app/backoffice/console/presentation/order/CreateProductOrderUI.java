@@ -44,9 +44,9 @@ public class CreateProductOrderUI implements Runnable{
             }
 
             quantity = Utils.readIntegerFromConsole("Select how many: \n");
-            if (ctrl.addProductToOrder(lProd.get(i+1), quantity)){
-                System.out.println( quantity + "x " + lProd.get(i+1).getName().toString() + " added successfully!");
-            }
+//            if (ctrl.addProductToOrder(lProd.get(i+1), quantity)){
+//                System.out.println( quantity + "x " + lProd.get(i+1).getName().toString() + " added successfully!");
+//            }
 
         }
 

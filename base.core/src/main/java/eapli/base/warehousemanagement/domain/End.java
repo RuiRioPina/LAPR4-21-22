@@ -11,4 +11,10 @@ public class End {
     @SerializedName("wsquare")
     int wSquareEnd;
 
+    @Override
+    public String toString() {
+        return "End: " +
+                "lSquareEnd = " + lSquareEnd +
+                " | wSquareEnd = " + wSquareEnd;
+    }
 }

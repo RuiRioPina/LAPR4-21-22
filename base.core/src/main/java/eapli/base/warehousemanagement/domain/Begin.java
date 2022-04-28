@@ -11,4 +11,10 @@ public class Begin {
     @SerializedName("wsquare")
     int wSquareBegin;
 
+    @Override
+    public String toString() {
+        return "Begin: " +
+                "lSquareBegin = " + lSquareBegin +
+                " | wSquareBegin = " + wSquareBegin;
+    }
 }

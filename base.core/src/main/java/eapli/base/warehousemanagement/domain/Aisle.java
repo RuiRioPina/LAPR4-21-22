@@ -39,4 +39,15 @@ public class Aisle {
     public List<Row> rows() {
         return row;
     }
+
+    @Override
+    public String toString() {
+        return "\nAisle:\n" +
+                "id=" + id + "\n" +
+                begin + "\n" +
+                end + "\n" +
+                depth + "\n" +
+                "accessibility = " + accessibility + "\n" +
+                "row = " + row + "\n";
+    }
 }

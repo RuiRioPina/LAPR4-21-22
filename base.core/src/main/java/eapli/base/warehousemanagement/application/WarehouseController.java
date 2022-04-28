@@ -15,7 +15,7 @@ public class WarehouseController {
 
     public Warehouse buildWarehousePlant(String fileName) throws FileNotFoundException {
         JsonParser jsonParser = new JsonParser();
-        return jsonParser.readJson();
+        return jsonParser.readJson(fileName);
     }
 
     public void buildShelves(Warehouse warehouse) throws FileNotFoundException {

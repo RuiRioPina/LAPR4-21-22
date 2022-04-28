@@ -46,5 +46,12 @@ public class Row {
         }
     }
 
-
+    @Override
+    public String toString() {
+        return "\nRow:\n" +
+                "id=" + id + "\n" +
+                begin + "\n" +
+                end + "\n" +
+                "Shelves:\n" + shelveList + "\n";
+    }
 }
