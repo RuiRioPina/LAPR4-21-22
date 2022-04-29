@@ -1,4 +1,4 @@
-# US2001
+# US1003
 =======================================
 
 
@@ -75,13 +75,6 @@ I hope this clarifies your doubt.
 ![Link](https://moodle.isep.ipp.pt/mod/forum/discuss.php?d=15758)
 
 
-##IMPORTANTE (informação dada pelo regente da cadeira de EAPLI)
-
-A planta do armazém encontra-se definida num ficheiro JSON, mas para os casos de uso indicados pelo cliente essa informação apenas é de leitura pelo que se decidirem criar classes correspondentes à estrutura contida no ficheiro JSON essas classes podem (devem) ser consideradas "transientes", i.e., não persistentes. O Foco do caso de uso 2001 é no upload do ficheiro JSON. A informação contida no ficheiro JSON deve ser utilizada para validar se a docking do AGV existe no caso de uso 2002 e se a localização dos produtos no caso de uso 1001 existe, mas para tal, de um ponto de vista de implementação, não é necessário transformar o ficheiro JSON em classes java persistentes.
-
-##Para futuras US
-Caso seja necessário realizar a persistência dos dados. A estrutura das anotações JPA, etc. já está realizada. É só necessário retirar o Transient de todos os atributos.
-
 ## 2.5 SSD
 
 ![SSD-Diagram](Diagramas/SSD.svg/)
@@ -102,9 +95,9 @@ Caso seja necessário realizar a persistência dos dados. A estrutura das anota�
 
 * Foi utilizado o CRUD (Create, Read, Update, Delete) para trabalhar sobre os warehouse.
 
-* Foi utilizado o GRASP
+* Foi utilizado o GRASP:
 
-###Apesar de não ser necessário para este Sprint. Foram feitos esforços para persistir a Warehouse. Após o email, decidiu-se não apagar, mas sim apenas declarar os como Transient.
+
 * Foram utilizados o padrão repository, de modo a isolar os objetos de domínio de lógica de bases de dados. Os nossos objetos
   de domínio, que por já são complexos contendo muitas regras de domínio para impor, beneficia de outra camada onde apenas
   teremos lógica de bases de dados. Isto ajuda-nos a reduzir código duplicado, fazendo com que a layer de repositório
