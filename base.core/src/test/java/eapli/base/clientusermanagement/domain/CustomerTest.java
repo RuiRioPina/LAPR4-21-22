@@ -29,6 +29,7 @@ import static org.junit.Assert.assertTrue;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.junit.Before;
 import org.junit.Test;
 
 import eapli.base.usermanagement.domain.BaseRoles;
@@ -42,74 +43,122 @@ import eapli.framework.infrastructure.authz.domain.model.SystemUserBuilder;
  * Created by Nuno Bettencourt [NMB] on 03/04/16.
  */
 public class CustomerTest {
+    Customer setUpCustomer;
+    @Before
+    public void setUp() throws Exception {
+        final Customer setUpCustomer = new CustomerBuilder("Manuel"
+                , "Pinto"
+                , "242921421"
+                , "1201564@isep.ipp.pt"
+                , "+3519182523")
+                .build();
 
-//    @Test
-//    public void ensureCustomerEqualsPassesForTheSameAttributes() throws Exception {
-//
-//        final Customer aCustomer = new CustomerBuilder("Jorge"
-//                , "Ferreira"
-//                , "1201564"
-//                , "1201564@isep.ipp.pt"
-//                , "929197091")
-//                .build();
-//
-//        final Customer anotherCustomer = new CustomerBuilder("Jorge"
-//                , "Ferreira"
-//                , "1201564"
-//                , "1201564@isep.ipp.pt"
-//                , "929197091")
-//                .build();
-//
-//
-//        final boolean expected = aCustomer.equals(anotherCustomer);
-//
-//        assertTrue(expected);
-//    }
-//
-//    @Test
-//    public void ensureCustomerEqualsFailsForDifferentAttributes() throws Exception {
-//        final Customer aCustomer = new CustomerBuilder("Jorge"
-//                , "Ferreira"
-//                , "1201564"
-//                , "1201564@isep.ipp.pt"
-//                , "929197091")
-//                .build();
-//
-//        final Customer anotherCustomer = new CustomerBuilder("Rui"
-//                , "Pina"
-//                , "1201568"
-//                , "1201568@isep.ipp.pt"
-//                , "916996827")
-//                .build();
-//
-//        final boolean expected = aCustomer.equals(anotherCustomer);
-//
-//        assertFalse(expected);
-//    }
-//
-//    @Test
-//    public void ensureCustomerEqualsAreTheSameForTheSameInstance() throws Exception {
-//        final Customer aCustomer = new Customer();
-//
-//        final boolean expected = aCustomer.equals(aCustomer);
-//
-//        assertTrue(expected);
-//    }
-//
-//
-//    @Test
-//    public void ensureClientUserIsTheSameAsItsInstance() throws Exception {
-//        final Customer aCustomer = new CustomerBuilder("Jorge"
-//                , "Ferreira"
-//                , "1201564"
-//                , "1201564@isep.ipp.pt"
-//                , "929197091")
-//                .build();
-//
-//        final boolean expected = aCustomer.sameAs(aCustomer);
-//
-//        assertTrue(expected);
-//    }
+    }
+
+    @Test
+    public void email() {
+
+    }
+
+    @Test
+    public void vat() {
+    }
+
+    @Test
+    public void name() {
+    }
+
+    @Test
+    public void user() {
+    }
+
+    @Test
+    public void testEquals() {
+    }
+
+    @Test
+    public void testHashCode() {
+    }
+
+    @Test
+    public void sameAs() {
+    }
+
+    @Test
+    public void identity() {
+    }
+
+    @Test
+    public void testToString() {
+    }
+
+  @Test
+  public void ensureCustomerEqualsPassesForTheSameAttributes() throws Exception {
+
+      final Customer aCustomer = new CustomerBuilder("Jorge"
+              , "Ferreira"
+              , "1201564"
+              , "1201564@isep.ipp.pt"
+              , "929197091")
+              .build();
+
+      final Customer anotherCustomer = new CustomerBuilder("Jorge"
+              , "Ferreira"
+              , "1201564"
+              , "1201564@isep.ipp.pt"
+              , "929197091")
+              .build();
+
+
+      final boolean expected = aCustomer.equals(anotherCustomer);
+
+      assertTrue(expected);
+  }
+
+  @Test
+  public void ensureCustomerEqualsFailsForDifferentAttributes() throws Exception {
+      final Customer aCustomer = new CustomerBuilder("Jorge"
+              , "Ferreira"
+              , "1201564"
+              , "1201564@isep.ipp.pt"
+              , "929197091")
+              .build();
+
+      final Customer anotherCustomer = new CustomerBuilder("Rui"
+              , "Pina"
+              , "1201568"
+              , "1201568@isep.ipp.pt"
+              , "916996827")
+              .build();
+
+      final boolean expected = aCustomer.equals(anotherCustomer);
+
+      assertFalse(expected);
+  }
+
+  @Test
+  public void ensureCustomerEqualsAreTheSameForTheSameInstance() throws Exception {
+      final Customer aCustomer = new Customer();
+
+      final boolean expected = aCustomer.equals(aCustomer);
+
+      assertTrue(expected);
+  }
+
+
+  @Test
+  public void ensureClientUserIsTheSameAsItsInstance() throws Exception {
+      final Customer aCustomer = new CustomerBuilder("Jorge"
+              , "Ferreira"
+              , "1201564"
+              , "1201564@isep.ipp.pt"
+              , "929197091")
+              .build();
+
+      final boolean expected = aCustomer.sameAs(aCustomer);
+
+      assertTrue(expected);
+  }
 
 
 }
