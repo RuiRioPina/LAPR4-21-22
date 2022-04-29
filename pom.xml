@@ -42,21 +42,7 @@
             <artifactId>eapli.framework.infrastructure.authz</artifactId>
             <version>${eapli.framework.authz.version}</version>
         </dependency>
-        <dependency>
-            <groupId>org.bitbucket.pag_isep.eapliframework</groupId>
-            <artifactId>eapli.framework.infrastructure.pubsub</artifactId>
-            <version>${eapli.framework.pubsub.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.h2database</groupId>
-            <artifactId>h2</artifactId>
-            <version>1.4.200</version>
-        </dependency>
-        <dependency>
-            <groupId>org.eclipse.persistence </groupId>
-            <artifactId>eclipselink</artifactId>
-            <version>2.7.10</version>
-        </dependency>
+
         <dependency>
             <groupId>org.eclipse.persistence</groupId>
             <artifactId>org.eclipse.persistence.jpa.modelgen.processor</artifactId>
