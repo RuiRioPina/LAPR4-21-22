@@ -1,4 +1,7 @@
 package eapli.base.agv.repositories;
 
-public class AGVRepository {
+import eapli.base.agv.domain.AGV;
+
+public interface AGVRepository {
+    Iterable<AGV> findAllActive();
 }

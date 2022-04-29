@@ -21,6 +21,7 @@
 package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
+import eapli.base.agv.repositories.AGVRepository;
 import eapli.base.order.repositories.OrderRepository;
 import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.repositories.CategoryRepository;
@@ -90,6 +91,7 @@ public class JpaRepositoryFactory implements RepositoryFactory {
     public CategoryRepository categories(){
         return new JpaCategoryRepository(Application.settings().getPersistenceUnitName());
     }
+
     @Override
     public CategoryRepository categories(final TransactionalContext autoTx){return new JpaCategoryRepository(autoTx);}
 
@@ -99,7 +101,23 @@ public class JpaRepositoryFactory implements RepositoryFactory {
     }
 
     @Override
-    public OrderRepository orders() {
-        return new JpaOrderRepository();
+    public OrderRepository orders(final TransactionalContext autoTx) {
+        return new JpaOrderRepository(autoTx);
     }
+
+    @Override
+    public JpaOrderRepository orders() {
+        return new JpaOrderRepository(Application.settings().getPersistenceUnitName());
+    }
+
+    @Override
+    public AGVRepository agvs(final TransactionalContext autoTx) {
+        return new JpaAGVRepository(autoTx);
+    }
+
+    @Override
+    public AGVRepository agvs() {
+        return new JpaAGVRepository(Application.settings().getPersistenceUnitName());
+    }
+
 }

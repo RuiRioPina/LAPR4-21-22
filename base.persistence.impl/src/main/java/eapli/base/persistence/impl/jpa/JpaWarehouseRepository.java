@@ -50,8 +50,6 @@ class JpaWarehouseRepository
                 "id");
     }
 
-
-
     @Override
     public Optional<Warehouse> findById(final Long number) {
         final Map<String, Object> params = new HashMap<>();

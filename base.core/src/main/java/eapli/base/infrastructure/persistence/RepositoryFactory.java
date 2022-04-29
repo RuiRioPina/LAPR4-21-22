@@ -20,6 +20,7 @@
  */
 package eapli.base.infrastructure.persistence;
 
+import eapli.base.agv.repositories.AGVRepository;
 import eapli.base.order.repositories.OrderRepository;
 import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.repositories.CategoryRepository;
@@ -110,4 +111,10 @@ public interface RepositoryFactory {
     ProductRepository products();
 
     OrderRepository orders();
+
+    OrderRepository orders(TransactionalContext autoTx);
+
+    AGVRepository agvs();
+
+    AGVRepository agvs(TransactionalContext autoTx);
 }
