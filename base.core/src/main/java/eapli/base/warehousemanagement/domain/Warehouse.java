@@ -80,7 +80,7 @@ public class Warehouse implements AggregateRoot<Long>, Serializable {
     }
 
     public void setJsonPath(String jsonPath) {
-        this.jsonPath = "/warehouse/" + jsonPath;
+        this.jsonPath = jsonPath;
     }
 
     public String getJsonPath() {

@@ -35,6 +35,7 @@ public class Aisle {
     @Override
     public String toString() {
         return "\nAisle:\n" +
+                "ID = "+ id + "\n" +
                 begin + "\n" +
                 end + "\n" +
                 depth + "\n" +
