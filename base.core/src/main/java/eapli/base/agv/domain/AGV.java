@@ -36,6 +36,19 @@ public class AGV implements DomainEntity<AGV> {
     private Warehouse warehouse;
 
 
+    public AGV(){
+
+    }
+
+    public AGV(Integer autonomy, Double capacity, Double weight, Double volume, AGVModel agvModel, AGVState agvState, Warehouse warehouse) {
+        this.autonomy = autonomy;
+        this.capacity = capacity;
+        this.weight = weight;
+        this.volume = volume;
+        this.agvModel = agvModel;
+        this.agvState = agvState;
+        this.warehouse = warehouse;
+    }
 
     public void setId(Long id) {
         this.id = id;

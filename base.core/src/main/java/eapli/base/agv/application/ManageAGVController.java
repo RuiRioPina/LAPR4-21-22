@@ -36,4 +36,8 @@ public class ManageAGVController {
         return false;
     }
 
+    public boolean saveAGV(){
+        return false;
+    }
+
 }

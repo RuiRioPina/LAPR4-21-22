@@ -10,9 +10,9 @@ public class AGVBuilder implements DomainFactory<AGV> {
     private Double weight;
     private Double volume;
 
-    private AGVState agvState;
-    private AGVModel agvModel;
-    private Warehouse warehouse;
+    private AGVState agvState = null;
+    private AGVModel agvModel = null;
+    private Warehouse warehouse = null;
 
     public AGVBuilder(){
 
@@ -33,8 +33,18 @@ public class AGVBuilder implements DomainFactory<AGV> {
         this.warehouse = warehouse;
     }
 
+    public AGVBuilder withAGVState(AGVState agvState){
+        this.agvState = agvState;
+        return this;
+    }
+
+    public AGVBuilder withAGVModel(AGVModel agvModel){
+        this.agvModel = agvModel;
+        return this;
+    }
+
     @Override
     public AGV build() {
-        return null;
+        return new AGV(this.autonomy,this.capacity,this.weight,this.volume,this.agvModel,this.agvState,this.warehouse);
     }
 }
