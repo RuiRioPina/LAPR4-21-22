@@ -26,21 +26,5 @@ public class WarehouseController {
         }
     }
 
-    public boolean alreadyInDatabase() {
-        int contagem = 0;
-        while (repo.findAllActive().iterator().hasNext()) {
-            contagem++;
-        }
-        return contagem > 0;
-    }
 
-    public void deletePreviousWarehouse() {
-        for (Warehouse warehouse : repo.findAllActive()) {
-            repo.remove(warehouse);
-        }
-    }
-
-    public void saveWarehouse(Warehouse warehouse) {
-        repo.save(warehouse);
-    }
 }

@@ -30,6 +30,7 @@ public class WarehouseUI extends AbstractUI {
                 try {
                     Warehouse warehouse = theController.buildWarehousePlant(fileName);
                     theController.buildShelves(warehouse);
+                    warehouse.setJsonPath(fileName);
                     // saveWarehouse(warehouse, alreadyExistsInDatabase);
                     System.out.println(warehouse);
                     passed = true;
@@ -47,12 +48,4 @@ public class WarehouseUI extends AbstractUI {
         return "Set up Warehouse Plant";
     }
 
-    public void saveWarehouse(Warehouse warehouse, boolean alreadyExistsInDatabase) {
-        if (alreadyExistsInDatabase) {
-            theController.deletePreviousWarehouse();
-            theController.saveWarehouse(warehouse);
-        } else {
-            theController.saveWarehouse(warehouse);
-        }
-    }
 }

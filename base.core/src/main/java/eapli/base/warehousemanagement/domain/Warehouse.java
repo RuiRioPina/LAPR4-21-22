@@ -10,6 +10,8 @@ import java.util.List;
 
 public class Warehouse implements AggregateRoot<Long>, Serializable {
 
+    private String jsonPath;
+
     @SerializedName("Warehouse")
     private String name;
 
@@ -58,9 +60,14 @@ public class Warehouse implements AggregateRoot<Long>, Serializable {
         return this.lWarehouseEmployee;
     }
 
+    public void setJsonPath(String jsonPath) {
+        this.jsonPath = "/warehouse/" + jsonPath;
+    }
+
     @Override
     public String toString() {
         return "Warehouse:\n" +
+                "jsonpath=" + jsonPath + "\n" +
                 "name='" + name + "\n" +
                 "length=" + length + "\n" +
                 "width=" + width + "\n" +
