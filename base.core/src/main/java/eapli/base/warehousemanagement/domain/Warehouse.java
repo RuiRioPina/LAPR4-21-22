@@ -46,9 +46,9 @@ public class Warehouse implements AggregateRoot<Long>, Serializable {
     @SerializedName("WarehouseEmployees")
     private List<SystemUser> lWarehouseEmployee;
 
-    @OneToMany
+    @Transient
     @SerializedName("AGVs")
-    private List<AGV> lAGV;
+    private List<AGV> agvs;
 
     @Transient
     @SerializedName("AGVDocks")
@@ -89,7 +89,8 @@ public class Warehouse implements AggregateRoot<Long>, Serializable {
                 "Aisles:" + aisle + "\n" +
                 "-----------------------\n" +
                 "AGV Dock:" + agvDocks + "\n" +
-                "-----------------------\n";
+                "-----------------------\n" +
+                "AGV:" + agvs +"\n";
 
     }
 }
