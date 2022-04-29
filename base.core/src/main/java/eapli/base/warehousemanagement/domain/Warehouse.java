@@ -83,6 +83,10 @@ public class Warehouse implements AggregateRoot<Long>, Serializable {
         this.jsonPath = "/warehouse/" + jsonPath;
     }
 
+    public String getJsonPath() {
+        return jsonPath;
+    }
+
     @Override
     public String toString() {
         return "Warehouse:\n" +
