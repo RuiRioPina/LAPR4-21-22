@@ -24,7 +24,7 @@ Produto é um elemento fulcral de todo o sistema e tem relações com armazéns,
 
 - 3. Sistema valida os dados necessários e regista-os, informando o sucesso da operação.
 
-**Esclarecimento(s) do Cliente**
+**Esclarecimento(s) do Cliente Relevante(s)**
 
 **1. ** Product Registration 
 
@@ -49,6 +49,26 @@ Some information regarding each of those (product) attributes:
 Mandatory attributes: internal code, short and extended description.
 
 In accordance with the specification document, other atributes might also be mandatory.
+
+**2. ** Currency
+
+- The project must be prepared to easily support several currencies.
+
+- The system should work adopting a base currency (e.g.: EUR) and, according to the customer location, be able to present prices on other currencies (e.g. USD) using an external currency converter.
+
+- During the prototype development, using a currency converter should not be a major concern.
+
+The system adopts a base currency (EUR). If needed, a converter will be implemented.
+
+**3. ** Barcode
+
+- Barcodes are manually introduced by users since each product barcode is provided by the product manufacture.
+
+**4. ** Product vs Category
+
+- "By simplicity, a category consists only of an alphanumeric code, and a description. Each product belongs mandatorily to a single category."
+ 
+- As so, and contrary to what is suggested in your question, there is no hierarchy between categories.
 
 # 3. Design
 
