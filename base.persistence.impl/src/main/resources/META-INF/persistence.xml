@@ -23,6 +23,14 @@
     <class>eapli.base.warehousemanagement.domain.Shelve</class>
     <class>eapli.base.warehousemanagement.domain.Bin</class>
     <class>eapli.base.warehousemanagement.domain.AGVDocks</class>
+    <class>eapli.base.order.domain.Order</class>
+    <class>eapli.base.order.domain.OrderState</class>
+    <class>eapli.base.order.domain.Shipment</class>
+    <class>eapli.base.order.domain.Payment</class>
+    <class>eapli.base.order.domain.OrderLine</class>
+    <class>eapli.base.agv.domain.AGV</class>
+    <class>eapli.base.agv.domain.AGVState</class>
+    <class>eapli.base.agv.domain.AGVModel</class>
 
     <class>java.time.LocalDate</class>
 
