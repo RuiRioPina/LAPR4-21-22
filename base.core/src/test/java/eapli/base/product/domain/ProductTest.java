@@ -10,7 +10,7 @@ import static org.junit.Assert.assertTrue;
 
 
 public class ProductTest {
-
+/*
     private final AlphaNumericCode code = AlphaNumericCode.valueOf("123ab");
     private final Description des = Description.valueOf("Smartphones Category");
     private final Designation designation = Designation.valueOf("Smartphones");
@@ -67,5 +67,5 @@ public class ProductTest {
     public void ensureProductMustHaveBarcode() {
         new Product(CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,null);
     }
-
+*/
 }

@@ -72,16 +72,13 @@ public class SpecifyNewProductUI extends AbstractUI {
         Double priceWoTaxes = Console.readDouble("Price without Taxes");
         Double priceWiTaxes = Console.readDouble("Price with Taxes");
 
-        String reference;
+        String barcode;
         do {
-            reference = Console.readLine("Reference");
-            if (!reference.matches("^[a-zA-Z0-9]*$") && !reference.isEmpty()){
-                System.out.println("Reference must be alphanumeric.");
+            barcode = Console.readLine("Barcode");
+            if (barcode.isEmpty()) {
+                System.out.println("This field can´t be empty.");
             }
-            if (reference.length() > 23) {
-                System.out.println("Reference must have a maximum of 23 chars.");
-            }
-        } while (!reference.matches("^[a-zA-Z0-9]*$") && !reference.isEmpty() || reference.length() > 23);
+        } while (barcode.isEmpty());
 
         String internalCode;
         do {
@@ -97,6 +94,9 @@ public class SpecifyNewProductUI extends AbstractUI {
             }
         } while (internalCode.isEmpty() || !internalCode.matches("^[a-zA-Z0-9]*$") || internalCode.length() > 23);
 
+        ProductBuilder productBuilder = new ProductBuilder(theProductCategory,name,photoPath,shortDescription,extendedDescription,techDescription,
+                brand,priceWiTaxes,priceWoTaxes,internalCode,barcode);
+
         String productionCode;
         do {
             productionCode = Console.readLine("Production Code");
@@ -108,18 +108,27 @@ public class SpecifyNewProductUI extends AbstractUI {
             }
         }  while (!productionCode.matches("^[a-zA-Z0-9]*$") && !productionCode.isEmpty() || productionCode.length()>23);
 
-        String barcode;
+        productBuilder.withProductionCode(productionCode);
+
+        String reference;
         do {
-            barcode = Console.readLine("Barcode");
-            if (barcode.isEmpty()) {
-                System.out.println("This field can´t be empty.");
+            reference = Console.readLine("Reference");
+            if (!reference.matches("^[a-zA-Z0-9]*$") && !reference.isEmpty()){
+                System.out.println("Reference must be alphanumeric.");
             }
-        } while (barcode.isEmpty());
+            if (reference.length() > 23) {
+                System.out.println("Reference must have a maximum of 23 chars.");
+            }
+        } while (!reference.matches("^[a-zA-Z0-9]*$") && !reference.isEmpty() || reference.length() > 23);
+
+        productBuilder.withReference(reference);
+
+
 
         theController.specifyNewProduct(theProductCategory,Designation.valueOf(name),photoPath,new ProductDescription(shortDescription,
                 extendedDescription, techDescription), new Brand(brand),new Price(priceWoTaxes, priceWiTaxes),
                 new Reference(reference), new InternalCode(internalCode), new ProductionCode(productionCode),
-                new Barcode(barcode));
+                new Barcode(barcode),"");
 
         return true;
     }

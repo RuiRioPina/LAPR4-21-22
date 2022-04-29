@@ -49,12 +49,14 @@ public class Product implements AggregateRoot<Long> {
 
     private boolean active;
 
+    private String location;
+
     public Product() {
     }
 
     public Product(Category category,Designation name, String photoPath, ProductDescription description, Brand brand, Price price,
                    Reference reference, InternalCode internalCode, ProductionCode productionCode,
-                   Barcode barcode) {
+                   Barcode barcode, String location) {
         Preconditions.noneNull(category,name,photoPath,brand,price,internalCode,barcode);
         this.category = category;
         this.name = name;
@@ -66,6 +68,7 @@ public class Product implements AggregateRoot<Long> {
         this.internalCode = internalCode;
         this.productionCode = productionCode;
         this.barcode = barcode;
+        this.location = location;
         this.active = true;
     }
 
