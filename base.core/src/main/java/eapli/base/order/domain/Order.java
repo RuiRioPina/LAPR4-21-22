@@ -40,12 +40,12 @@ public class Order implements Serializable, AggregateRoot<Long> {
     @Column(name = "customer_id", nullable = false)
     private Long customerId;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
-    @Column(name = "billing_address")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "billing_address")
     private Address billingAddress;
 
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "order")
-    @Column(name = "delivery_address")
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "delivery_address")
     private Address deliveryAddress;
 
     @Embedded
