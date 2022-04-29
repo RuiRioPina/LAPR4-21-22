@@ -3,6 +3,8 @@ package eapli.base.productcatalog;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.product.domain.Product;
 import eapli.base.product.repositories.ProductRepository;
+import eapli.base.productCategory.domain.Category;
+import eapli.base.productCategory.repositories.CategoryRepository;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
 import eapli.framework.infrastructure.authz.application.AuthzRegistry;
 
@@ -13,16 +15,23 @@ public class CheckProductCatalogService {
 
     private final ProductRepository productRepository= PersistenceContext.repositories().products();
 
+    private final CategoryRepository categoryRepository=PersistenceContext.repositories().categories();
     public Iterable<Product> allProducts(){
         return productRepository.findAll();
     }
-//    public List<Product> allProductsWithCategory(String category){
-//        List<Product> finalList;
-//        Iterable<Product> productList= allProducts();
-//        for (Product product:productList){
-//            if (product.getCategoryString().equals(category){
-//                finalList.ad
-//            }
-//        }
-//    }
+    public Iterable<Product> allProductsWithoutRestrictions(int num){
+        return productRepository.findAllProducts(num);
+    }
+
+    public Iterable<Product> allProductsWithCategory(String category,int num){
+        return productRepository.findProductsWithCategory(category,num);
+    }
+
+    public Iterable<Product> allProductsWithBrand(String brand,int num){
+        return productRepository.findProductsWithBrand(brand,num);
+    }
+
+    public Iterable<Category> allCategories(){
+        return categoryRepository.findAll();
+    }
 }

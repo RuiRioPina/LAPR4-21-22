@@ -13,4 +13,23 @@ public class InMemoryProductRepository extends InMemoryDomainAutoNumberRepositor
         InMemoryInitializer.init();
     }
 
+    @Override
+    public Iterable<Product> findAllProducts(int num){
+        throw new UnsupportedOperationException();
+    }
+    @Override
+    public Iterable<Product> findProductsWithCategory(String categoryName,int num) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Iterable<Product> findProductsWithBrand(String brand,int num) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public String createSortMode(int num){
+        throw new UnsupportedOperationException();
+    }
+
 }

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.general.domain.model.Description;
 import eapli.framework.general.domain.model.Designation;
+import eapli.framework.validations.Preconditions;
 
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlElement;
@@ -35,6 +36,10 @@ public class Category implements AggregateRoot<String> {
     }
 
     public Category(AlphaNumericCode alphanumericCode,Description description,Designation name){
+        Preconditions.noneNull(alphanumericCode,description,name);
+        Preconditions.nonEmpty(alphanumericCode.toString());
+        Preconditions.nonEmpty(description.toString());
+        Preconditions.nonEmpty(name.toString());
         this.alphanumericCode=alphanumericCode;
         this.description=description;
         this.name=name;

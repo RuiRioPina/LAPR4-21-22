@@ -28,13 +28,13 @@ public class ProductBootstrapper implements Action {
         registerCategory(ac,description,designation);
 
         AlphaNumericCode ac1 = AlphaNumericCode.valueOf("124");
-        Description description1 = Description.valueOf("Laptops Category");
+        Description description1 = Description.valueOf("Laptops Category (Portable PCs");
         Designation designation1 = Designation.valueOf("Laptops");
 
         registerCategory(ac1,description1,designation1);
 
         AlphaNumericCode ac2 = AlphaNumericCode.valueOf("126");
-        Description description2 = Description.valueOf("TV's Category");
+        Description description2 = Description.valueOf("TV's Category(Televisions Category");
         Designation designation2 = Designation.valueOf("Tv's");
 
         registerCategory(ac2,description2,designation2);
