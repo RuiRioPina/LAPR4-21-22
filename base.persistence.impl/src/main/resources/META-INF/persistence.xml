@@ -17,12 +17,12 @@
     <class>eapli.base.clientusermanagement.domain.Gender</class>
     <class>eapli.base.clientusermanagement.domain.PhoneNumber</class>
     <class>eapli.base.clientusermanagement.domain.Vat</class>
-<!--    <class>eapli.base.warehousemanagement.domain.Warehouse</class>-->
-<!--    <class>eapli.base.warehousemanagement.domain.Aisle</class>-->
-<!--    <class>eapli.base.warehousemanagement.domain.Row</class>-->
-<!--    <class>eapli.base.warehousemanagement.domain.Shelve</class>-->
-<!--    <class>eapli.base.warehousemanagement.domain.Bin</class>-->
-<!--    <class>eapli.base.warehousemanagement.domain.AGVDocks</class>-->
+    <class>eapli.base.warehousemanagement.domain.Warehouse</class>
+    <class>eapli.base.warehousemanagement.domain.Aisle</class>
+    <class>eapli.base.warehousemanagement.domain.Row</class>
+    <class>eapli.base.warehousemanagement.domain.Shelve</class>
+    <class>eapli.base.warehousemanagement.domain.Bin</class>
+    <class>eapli.base.warehousemanagement.domain.AGVDocks</class>
 
     <class>java.time.LocalDate</class>
 

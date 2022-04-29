@@ -6,13 +6,14 @@ import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.List;
 
 @Entity
 @Table
-public class Warehouse implements AggregateRoot<Long> {
+public class Warehouse implements AggregateRoot<Long>, Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "warehouse_id", nullable = false)
     private Long id;
 
@@ -20,20 +21,21 @@ public class Warehouse implements AggregateRoot<Long> {
     @SerializedName("Warehouse")
     private String name;
 
-    @Column
     @SerializedName("Length")
+    @Column(name = "length", nullable = false)
     private Double length;
 
-    @Column
+
     @SerializedName("Width")
+    @Column(name = "width", nullable = false)
     private Double width;
 
-    @Column
     @SerializedName("Square")
+    @Column(name = "square", nullable = false)
     private Double square;
 
-    @Column
     @SerializedName("Unit")
+    @Column(name = "unit", nullable = false)
     private String unit;
 
     @OneToMany
@@ -77,15 +79,17 @@ public class Warehouse implements AggregateRoot<Long> {
 
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("Warehouse{");
-        sb.append(", name='").append(name).append('\'');
-        sb.append(", length=").append(length);
-        sb.append(", width=").append(width);
-        sb.append(", square=").append(square);
-        sb.append(", unit='").append(unit).append('\'');
-        sb.append(", aisle=").append(aisle);
-        sb.append(", agvDocks=").append(agvDocks);
-        sb.append('}');
-        return sb.toString();
+        return "Warehouse:\n" +
+                "name='" + name + "\n" +
+                "length=" + length + "\n" +
+                "width=" + width + "\n" +
+                "square=" + square + "\n" +
+                "unit=" + unit + "\n" +
+                "-----------------------\n" +
+                "Aisles:" + aisle + "\n" +
+                "-----------------------\n" +
+                "AGV Dock:" + agvDocks + "\n" +
+                "-----------------------\n";
+
     }
 }

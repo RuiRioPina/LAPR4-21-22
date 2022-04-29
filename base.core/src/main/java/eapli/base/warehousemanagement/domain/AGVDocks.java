@@ -10,19 +10,24 @@ public class AGVDocks {
     @SerializedName("Id")
     private String id;
 
+    @Transient
     @ManyToOne
     @JoinColumn(name="warehouse_id", nullable=false)
     private Warehouse warehouse;
 
+    @Transient
     @Embedded
     @SerializedName("begin")
     private Begin begin;
+    @Transient
     @Embedded
     @SerializedName("end")
     private End end;
+    @Transient
     @Embedded
     @SerializedName("depth")
     private Depth depth;
+    @Transient
     @Column
     @SerializedName("accessibility")
     private String accessibility;
@@ -31,16 +36,13 @@ public class AGVDocks {
         return id;
     }
 
-
     @Override
     public String toString() {
-        final StringBuffer sb = new StringBuffer("AGVDocks{");
-        sb.append("id=").append(id);
-        sb.append(", begin=").append(begin);
-        sb.append(", end=").append(end);
-        sb.append(", depth=").append(depth);
-        sb.append(", accessibility='").append(accessibility).append('\'');
-        sb.append('}');
-        return sb.toString();
+        return "\nAGVDock: \n" +
+                "id=" + id + "\n" +
+                begin + "\n" +
+                end + "\n" +
+                depth + "\n" +
+                "accessibility=" + accessibility;
     }
 }

@@ -1,19 +1,14 @@
 package eapli.base.order.application;
 
 import eapli.base.clientusermanagement.domain.Customer;
-import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.order.domain.Order;
 import eapli.base.order.domain.OrderBuilder;
-import eapli.base.order.repositories.OrderRepository;
 import eapli.base.product.domain.Product;
-import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productcatalog.CheckProductCatalogService;
-import eapli.base.usermanagement.domain.BaseRoles;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
 import eapli.framework.infrastructure.authz.application.AuthzRegistry;
 
-import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 

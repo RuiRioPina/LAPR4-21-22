@@ -10,10 +10,13 @@ import java.io.FileReader;
 
 public class JsonParser {
 
-    public Warehouse readJson() throws FileNotFoundException {
+    public Warehouse readJson(String fileName) throws FileNotFoundException {
         GsonBuilder builder = new GsonBuilder();
         Gson gson = builder.create();
-        BufferedReader bufferedReader = new BufferedReader(new FileReader("warehouse/warehouse1.json"));
+        if(!fileName.contains(".json")) {
+            fileName = fileName + ".json";
+        }
+        BufferedReader bufferedReader = new BufferedReader(new FileReader("warehouse/"+ fileName));
         return gson.fromJson(bufferedReader, Warehouse.class);
     }
 }
