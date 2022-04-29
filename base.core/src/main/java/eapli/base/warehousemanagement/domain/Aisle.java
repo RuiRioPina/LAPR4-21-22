@@ -9,6 +9,9 @@ import java.util.List;
 
 public class Aisle {
 
+    @SerializedName("Id")
+    private int id;
+
 
     @SerializedName("begin")
     private Begin begin;

@@ -5,41 +5,56 @@ import eapli.base.agv.domain.AGV;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.List;
 
+@Entity
 public class Warehouse implements AggregateRoot<Long>, Serializable {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id", nullable = false)
+    private Long id;
 
+    @Column
     private String jsonPath;
 
+    @Transient
     @SerializedName("Warehouse")
     private String name;
 
+    @Transient
     @SerializedName("Length")
     private Double length;
 
-
+    @Transient
     @SerializedName("Width")
     private Double width;
 
+    @Transient
     @SerializedName("Square")
     private Double square;
 
+    @Transient
     @SerializedName("Unit")
     private String unit;
 
+    @Transient
     @SerializedName("Aisles")
     private List<Aisle> aisle;
-
+    @Transient
     @SerializedName("WarehouseEmployees")
     private List<SystemUser> lWarehouseEmployee;
-
+    @Transient
     @SerializedName("AGVs")
     private List<AGV> agvs;
-
+    @Transient
     @SerializedName("AGVDocks")
     private List<AGVDocks> agvDocks;
 
+    public Long getId() {
+        return id;
+    }
 
 
     @Override
@@ -56,7 +71,11 @@ public class Warehouse implements AggregateRoot<Long>, Serializable {
         return aisle;
     }
 
-    public List<SystemUser> getlWarehouseEmployee(){
+    public List<AGVDocks> agvDocks() {
+        return agvDocks;
+    }
+
+    public List<SystemUser> getlWarehouseEmployee() {
         return this.lWarehouseEmployee;
     }
 
@@ -78,7 +97,7 @@ public class Warehouse implements AggregateRoot<Long>, Serializable {
                 "-----------------------\n" +
                 "AGV Dock:" + agvDocks + "\n" +
                 "-----------------------\n" +
-                "AGV:" + agvs +"\n";
+                "AGV:" + agvs + "\n";
 
     }
 }

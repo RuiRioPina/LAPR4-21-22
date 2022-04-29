@@ -18,11 +18,6 @@
     <class>eapli.base.clientusermanagement.domain.PhoneNumber</class>
     <class>eapli.base.clientusermanagement.domain.Vat</class>
     <class>eapli.base.warehousemanagement.domain.Warehouse</class>
-    <class>eapli.base.warehousemanagement.domain.Aisle</class>
-    <class>eapli.base.warehousemanagement.domain.Row</class>
-    <class>eapli.base.warehousemanagement.domain.Shelve</class>
-    <class>eapli.base.warehousemanagement.domain.Bin</class>
-    <class>eapli.base.warehousemanagement.domain.AGVDocks</class>
     <class>eapli.base.order.domain.Order</class>
     <class>eapli.base.order.domain.OrderState</class>
     <class>eapli.base.order.domain.Shipment</class>
@@ -42,7 +37,7 @@
       <property name="javax.persistence.jdbc.user" value="sa"/>
       <property name="javax.persistence.jdbc.password" value="eapli"/>
       <property name="javax.persistence.jdbc.driver" value="org.h2.Driver"/>
-      <property name="javax.persistence.schema-generation.database.action" value="create"/>
+      <property name="javax.persistence.schema-generation.database.action" value="drop-and-create"/>
       <!-- <property name="eclipselink.logging.level" value="FINE"/> -->
       <!-- <property name = "hibernate.show_sql" value = "true" /> -->
       <property name="hibernate.dialect" value="org.hibernate.dialect.H2Dialect"/>

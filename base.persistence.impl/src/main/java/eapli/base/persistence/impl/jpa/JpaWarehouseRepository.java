@@ -33,6 +33,8 @@ import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.authz.domain.model.Username;
 import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
+import javax.persistence.TypedQuery;
+
 /**
  *
  * @author Jorge Santos ajs@isep.ipp.pt 02/04/2016
@@ -59,6 +61,9 @@ class JpaWarehouseRepository
 
     @Override
     public Iterable<Warehouse> findAllActive() {
-        return match("e.systemUser.active = true");
+        final TypedQuery<Warehouse> query = entityManager().createQuery(
+                "SELECT w FROM Warehouse w WHERE w.id = w.id",
+                Warehouse.class);
+        return query.getResultList();
     }
 }
