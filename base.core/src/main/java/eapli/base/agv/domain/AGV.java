@@ -1,11 +1,12 @@
 package eapli.base.agv.domain;
 
 import eapli.base.warehousemanagement.domain.Warehouse;
+import eapli.framework.domain.model.DomainEntity;
 
 import javax.persistence.*;
 
 @Entity
-public class AGV {
+public class AGV implements DomainEntity<AGV> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -43,5 +44,15 @@ public class AGV {
     @Id
     public Long getId() {
         return id;
+    }
+
+    @Override
+    public boolean sameAs(Object other) {
+        return false;
+    }
+
+    @Override
+    public AGV identity() {
+        return null;
     }
 }

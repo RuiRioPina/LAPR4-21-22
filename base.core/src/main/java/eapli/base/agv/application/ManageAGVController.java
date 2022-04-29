@@ -1,6 +1,5 @@
 package eapli.base.agv.application;
 
-import eapli.base.agv.domain.AGV;
 import eapli.base.agv.domain.AGVBuilder;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.warehousemanagement.domain.Warehouse;
@@ -9,21 +8,18 @@ import eapli.framework.infrastructure.authz.application.AuthorizationService;
 import eapli.framework.infrastructure.authz.application.AuthzRegistry;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 
-import java.util.List;
 
 public class ManageAGVController {
 
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
-    private SystemUser warehouseEmployee;
-    private AGVBuilder AB = new AGVBuilder();
+    private final AGVBuilder AB = new AGVBuilder();
 
     public ManageAGVController(){
 
     }
 
     public SystemUser getWarehouseEmployeeLoggedIn(){
-         this.warehouseEmployee = authz.session().get().authenticatedUser();
-        return this.warehouseEmployee;
+        return authz.session().get().authenticatedUser();
     }
 
     public Warehouse getWarehouseFromWE(SystemUser systemUser){
@@ -36,6 +32,8 @@ public class ManageAGVController {
         return null;
     }
 
-
+    public boolean createAGV(){
+        return false;
+    }
 
 }
