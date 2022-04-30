@@ -15,8 +15,9 @@ public class OrderBuilder implements DomainFactory<Order> {
     private Address deliveryAddress = null;
     private Price totalAmount = new Price((double) 0, (double) 0);
     private Map<Product, Integer> productIntegerMap;
-    private Payment payment = null;
-    private Shipment shipment = null;
+    //both payment and shipment defaulted to PAYPAL and STANDARD respectively since they aren't of much use for the current SPRINT
+    private Payment payment = Payment.PAYPAL;
+    private Shipment shipment = Shipment.STANDARD;
 
     public OrderBuilder(){
 
