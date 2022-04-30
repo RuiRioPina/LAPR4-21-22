@@ -1,4 +1,4 @@
-# US1003
+# US2001
 =======================================
 
 
@@ -10,6 +10,11 @@ A interpretação feita deste requisito foi no sentido de importar a planta de u
 
 # 2. Análise
 
+## Nota importante: 
+* A User Story era desenvolvido de modo à Warehouse estar persistida na base de dados. Isto é: A planta da warehouse era transformada em Objetos e estes eram persistidos.
+* Após o email do Regente de EAPLI no dia 28/04/2022, a equipa viu que o levantamento dos requisitos não estavam em conformidade com a realidade. Os requisitos seriam apenas persistir o path do JSON e fazer verificações dos AGVDocks e dos Product Locations.
+* Como a estrutura em objetos do Warehouse já estava toda realizada para ser persistida, esta estrutura foi reutilizada para fazer as validações do Product Location e do AGV base dock. Aquando de criar um produto ou configurar um AGV é pedido através de input selecionado a localização pretendida entre as possíveis. Caso já esteja lá algum produto ou AGV o user é avisado de tal.
+
 ## 2.1 Sequência das ações
 
 * O sistema irá perguntar o nome do ficheiro a introduzir. Apenas será necessário o nome do ficheiro, já que estes serão
@@ -20,6 +25,8 @@ guardados num diretório pré-definido (warehouses).
 n/a.
 
 ## 2.3 Pós Condições
+
+Validar o base dock dos AGV e o product Location do Product.
 
 ## 2.4 Perguntas ao cliente
 
@@ -93,10 +100,9 @@ I hope this clarifies your doubt.
 
 ## 3.3. Padrões Aplicados
 
-* Foi utilizado o CRUD (Create, Read, Update, Delete) para trabalhar sobre os warehouse.
+* Foi utilizado o CRUD (Create, Read, Update, Delete) para guardar o path do JSON da warehouse.
 
-* Foi utilizado o GRASP:
-
+* Foi utilizado o GRASP
 
 * Foram utilizados o padrão repository, de modo a isolar os objetos de domínio de lógica de bases de dados. Os nossos objetos
   de domínio, que por já são complexos contendo muitas regras de domínio para impor, beneficia de outra camada onde apenas
