@@ -43,9 +43,9 @@ CTRL-> CSB: setName(name)
 
 
 note over CTRL, CSB:Set the  rest of the information
-CTRL-> CSB: createCustomer()
+CTRL-> CSB: build()
 activate CSB
-CSB -> CUS : createCustomer(name, VAT, email, mobile, phone number, birthdate, gender, address)
+CSB -> CUS** : createCustomer(name, VAT, email, mobile, phone number, birthdate, gender, address)
 CUS -> CSB: customer
 
 CSB -> CTRL: customer
