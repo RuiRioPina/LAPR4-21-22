@@ -1,5 +1,6 @@
 package eapli.base.agv.domain;
 
+import eapli.base.warehousemanagement.domain.AGVDocks;
 import eapli.base.warehousemanagement.domain.Warehouse;
 import eapli.framework.domain.model.DomainEntity;
 
@@ -24,31 +25,48 @@ public class AGV implements DomainEntity<AGV> {
     @Column(name = "volume")
     private Double volume;
 
-    @Embedded
+    @Column(name= "short_description")
+    private String shortDescription;
+
+    /*@Enumerated
     @Column(name = "agv_model", nullable = false)
     private AGVModel agvModel;
+     */
 
-    @Embedded
-    @Column(name = "avg_state", nullable = false)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "agv_state")
     private AGVState agvState;
 
-    @ManyToOne
-    private Warehouse warehouse;
+    /*
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "agv")
+    @Column(name = "agv_dock")
+    private AGVDocks agvDocks;
+     */
 
-
-    public AGV(){
-
-    }
-
-    public AGV(Integer autonomy, Double capacity, Double weight, Double volume, AGVModel agvModel, AGVState agvState, Warehouse warehouse) {
+    public AGV(Integer autonomy, Double capacity, Double weight, Double volume, String shortDescription) {
         this.autonomy = autonomy;
         this.capacity = capacity;
         this.weight = weight;
         this.volume = volume;
-        this.agvModel = agvModel;
-        this.agvState = agvState;
-        this.warehouse = warehouse;
+        this.shortDescription = shortDescription;
+        this.agvState = AGVState.INACTIVE;
     }
+
+    public AGV() {
+        
+    }
+
+    /*
+    public AGV(Integer autonomy, Double capacity, Double weight, Double volume, String shortDescription, AGVDocks agvDock) {
+        this.autonomy = autonomy;
+        this.capacity = capacity;
+        this.weight = weight;
+        this.volume = volume;
+        this.shortDescription = shortDescription;
+        this.agvState = AGVState.INACTIVE;
+        this.agvDocks = agvDock;
+    }
+     */
 
     public void setId(Long id) {
         this.id = id;
@@ -66,6 +84,6 @@ public class AGV implements DomainEntity<AGV> {
 
     @Override
     public AGV identity() {
-        return null;
+        return this;
     }
 }
