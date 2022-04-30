@@ -140,13 +140,13 @@ public class Customer implements Serializable, AggregateRoot<Long> {
 
         Customer customer = (Customer) o;
 
-        if (!name.toString().equals(customer.name.toString())) return false;
-        if (!vat.toString().equals(customer.vat.toString())) return false;
-        if (!email.toString().equals(customer.email.toString())) return false;
-        if (!phoneNumber.toString().equals(customer.phoneNumber.toString())) return false;
-        if (birthDate != null ? !birthDate.toString().equals(customer.birthDate.toString()) : customer.birthDate != null) return false;
-        if (gender.toString() != customer.gender.toString()) return false;
-        return address != null ? address.toString().equals(customer.address.toString()) : customer.address == null;
+        if (!name.equals(customer.name)) return false;
+        if (!vat.equals(customer.vat)) return false;
+        if (!email.equals(customer.email)) return false;
+        if (!phoneNumber.equals(customer.phoneNumber)) return false;
+        if (birthDate != null ? !birthDate.equals(customer.birthDate) : customer.birthDate != null) return false;
+        if (gender != customer.gender) return false;
+        return address != null ? address.equals(customer.address) : customer.address == null;
     }
 
     @Override
