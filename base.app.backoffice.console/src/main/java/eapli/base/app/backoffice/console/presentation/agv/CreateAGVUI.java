@@ -2,6 +2,7 @@ package eapli.base.app.backoffice.console.presentation.agv;
 
 import eapli.base.agv.application.CreateAGVController;
 import eapli.base.agv.domain.AGV;
+import eapli.base.agv.domain.DockingPoint;
 import eapli.base.app.backoffice.console.presentation.Utils.Utils;
 import eapli.base.warehousemanagement.domain.AGVDocks;
 import eapli.framework.presentation.console.AbstractUI;
@@ -73,11 +74,11 @@ public class CreateAGVUI extends AbstractUI {
 
         this.ctrl.createAGV(autonomy, capacity, weight, volume, shortDescription);
 
-        List<AGVDocks> lAGVdocks = this.ctrl.getFreeDocks();
+        List<DockingPoint> lAGVdocks = this.ctrl.getFreeDocks();
 
         if (this.ctrl.checkAGVDockAvailability(lAGVdocks)){
             System.out.println("The warehouse has free AGV docks!\n");
-            AGVDocks agvDock = (AGVDocks) Utils.selectsObject(lAGVdocks);
+            DockingPoint agvDock = (DockingPoint) Utils.selectsObject(lAGVdocks);
 
             this.ctrl.setAGVDock(agvDock);
             System.out.print("\n" +

@@ -2,6 +2,7 @@ package eapli.base.agv.application;
 
 import eapli.base.agv.domain.AGV;
 import eapli.base.agv.domain.AGVBuilder;
+import eapli.base.agv.domain.DockingPoint;
 import eapli.base.agv.repositories.AGVRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.warehousemanagement.domain.AGVDocks;
@@ -19,7 +20,7 @@ public class CreateAGVController {
     private AGVBuilder AB;
     private WarehouseInfo WI = new WarehouseInfo();
     private AGVRepository aRepo = PersistenceContext.repositories().agvs();
-    private List<AGVDocks> lFreeDocks;
+    private List<DockingPoint> lFreeDocks;
 
     public CreateAGVController() throws FileNotFoundException {
 
@@ -29,13 +30,15 @@ public class CreateAGVController {
         this.AB = AB.createAGV(autonomy,capacity,weight,volume,shortDescription);
     }
 
-    public void setAGVDock(AGVDocks agvDock) {
+    public void setAGVDock(DockingPoint agvDock) {
         this.AB = AB.withAGVDock(agvDock);
     }
 
-    public List<AGVDocks> getFreeDocks(){
-        this.lFreeDocks = this.WI.getAVGDocks();
-        AGVDocks agvDock;
+    public List<DockingPoint> getFreeDocks(){
+        for (AGVDocks agvDock :this.WI.getAVGDocks()) {
+            this.lFreeDocks.add(new DockingPoint(agvDock.getId()));
+        }
+        DockingPoint agvDock;
         for (AGV agv: aRepo.findAllActive()) {
             agvDock = agv.getAGVDock();
             this.lFreeDocks.remove(agvDock);
@@ -43,7 +46,7 @@ public class CreateAGVController {
         return this.lFreeDocks;
     }
 
-    public boolean checkAGVDockAvailability(List<AGVDocks> lFreeDocks){
+    public boolean checkAGVDockAvailability(List<DockingPoint> lFreeDocks){
         return !lFreeDocks.isEmpty();
     }
 

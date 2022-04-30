@@ -14,7 +14,7 @@ public class AGVBuilder implements DomainFactory<AGV> {
 
     private AGVState agvState = null;
 
-    private AGVDocks agvDocks;
+    private DockingPoint agvDocks;
     //private AGVModel agvModel = null;
 
     public AGVBuilder(){
@@ -35,7 +35,7 @@ public class AGVBuilder implements DomainFactory<AGV> {
         return this;
     }
 
-    public AGVBuilder withAGVDock(AGVDocks agvDock){
+    public AGVBuilder withAGVDock(DockingPoint agvDock){
         this.agvDocks = agvDock;
         return this;
     }

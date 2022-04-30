@@ -1,9 +1,14 @@
 package eapli.base.warehousemanagement.domain;
 
 import com.google.gson.annotations.SerializedName;
+import eapli.base.agv.domain.AGV;
+
 import javax.persistence.*;
 
 public class AGVDocks {
+
+    @SerializedName("id")
+    private int id;
 
     @JoinColumn(name="warehouse_id", nullable=false)
     private Warehouse warehouse;
@@ -20,6 +25,9 @@ public class AGVDocks {
     @SerializedName("accessibility")
     private String accessibility;
 
+    public int getId(){
+        return this.id;
+    }
 
     @Override
     public String toString() {
