@@ -133,21 +133,6 @@ public class Customer implements Serializable, AggregateRoot<Long> {
         return this.systemUser;
     }
 
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-
-        Customer customer = (Customer) o;
-
-        if (!name.equals(customer.name)) return false;
-        if (!vat.equals(customer.vat)) return false;
-        if (!email.equals(customer.email)) return false;
-        if (!phoneNumber.equals(customer.phoneNumber)) return false;
-        if (birthDate != null ? !birthDate.equals(customer.birthDate) : customer.birthDate != null) return false;
-        if (gender != customer.gender) return false;
-        return address != null ? address.equals(customer.address) : customer.address == null;
-    }
 
     @Override
     public int hashCode()

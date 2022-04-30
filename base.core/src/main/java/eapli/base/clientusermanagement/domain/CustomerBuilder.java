@@ -24,6 +24,7 @@ import eapli.framework.domain.model.DomainFactory;
 import eapli.framework.general.domain.model.EmailAddress;
 import eapli.framework.infrastructure.authz.domain.model.Name;
 import eapli.framework.infrastructure.authz.domain.model.SystemUser;
+import eapli.framework.validations.Preconditions;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -57,6 +58,8 @@ public class CustomerBuilder implements DomainFactory<Customer> {
 
     public CustomerBuilder(final String firstName, final String lastName, final String vatId, final String email
                            , final String phoneNumber){
+        Preconditions.noneNull(firstName, lastName, vatId, email, phoneNumber);
+
         this.firstName=firstName;
         this.lastName=lastName;
         this.vatId=vatId;
