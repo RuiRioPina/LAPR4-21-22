@@ -43,8 +43,8 @@ public class CreateAGVController {
         return this.lFreeDocks;
     }
 
-    public boolean checkAGVDockAvailability(){
-        return !this.lFreeDocks.isEmpty();
+    public boolean checkAGVDockAvailability(List<AGVDocks> lFreeDocks){
+        return !lFreeDocks.isEmpty();
     }
 
     public String showAGVBuilder(){
