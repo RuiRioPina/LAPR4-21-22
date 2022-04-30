@@ -50,6 +50,7 @@ public class Product implements AggregateRoot<Long> {
     private boolean active;
 
     @Embedded
+    @Column(name = "storageArea")
     private StorageArea storageArea;
 
     public Product() {

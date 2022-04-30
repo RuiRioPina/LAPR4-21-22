@@ -2,11 +2,12 @@ package eapli.base.persistence.impl.jpa;
 
 import eapli.base.product.domain.Brand;
 import eapli.base.product.domain.Product;
+import eapli.base.product.domain.StorageArea;
 import eapli.base.product.repositories.ProductRepository;
 import eapli.framework.general.domain.model.Designation;
 
 import javax.persistence.TypedQuery;
-import java.lang.reflect.Type;
+import java.util.List;
 
 
 public class JpaProductRepository extends BasepaRepositoryBase <Product,Long,Long>
@@ -14,6 +15,14 @@ implements ProductRepository {
 
     public JpaProductRepository() {
         super("id");
+    }
+
+    public boolean validateProductLocation (StorageArea location) {
+        final TypedQuery<Product> query = super.createQuery(
+                "SELECT p FROM Product p WHERE p.storageArea = :location1",Product.class);
+        query.setParameter("location1",location);
+        List<Product> p  = query.getResultList();
+        return p.size() <= 0;
     }
 
     @Override

@@ -1,6 +1,7 @@
 package eapli.base.persistence.impl.inmemory;
 
 import eapli.base.product.domain.Product;
+import eapli.base.product.domain.StorageArea;
 import eapli.base.product.repositories.ProductRepository;
 import eapli.framework.infrastructure.repositories.impl.inmemory.InMemoryDomainAutoNumberRepository;
 
@@ -12,6 +13,9 @@ public class InMemoryProductRepository extends InMemoryDomainAutoNumberRepositor
     static {
         InMemoryInitializer.init();
     }
+
+    @Override
+    public boolean validateProductLocation(StorageArea storageArea) { throw new UnsupportedOperationException(); }
 
     @Override
     public Iterable<Product> findAllProducts(int num){
