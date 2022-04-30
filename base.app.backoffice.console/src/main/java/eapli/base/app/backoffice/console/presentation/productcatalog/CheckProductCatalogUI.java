@@ -1,6 +1,7 @@
 package eapli.base.app.backoffice.console.presentation.productcatalog;
 
 import eapli.base.app.backoffice.console.presentation.products.ProductPrinter;
+import eapli.base.product.domain.Brand;
 import eapli.base.product.domain.Product;
 import eapli.base.productCategory.domain.Category;
 import eapli.base.productcatalog.CheckProductCatalogController;
@@ -19,6 +20,8 @@ public class CheckProductCatalogUI extends AbstractUI {
     final int BRAND_MODE = 3;
 
     final int DESCRIPTION_MODE = 4;
+
+    final int BRAND_CATEGORY_MODE =5;
 
     final int NO_SORT = 1;
     final int NAME_SORT_MODE = 2;
@@ -94,6 +97,11 @@ public class CheckProductCatalogUI extends AbstractUI {
         }
 
         if (this.mode == BRAND_MODE) {
+            System.out.println("Available Brands:");
+            Iterable<Brand> brands = theController.allBrands();
+            for (Brand brand:brands){
+                System.out.println(brand.toString());
+            }
             final String brand = Console.readLine("Please type the name of the brand you wish to search:");
             Product selectedProduct = null;
             final Iterable<Product> allProductsWithBrand = this.theController.allProductsWithBrand(brand,sort_mode);
@@ -122,6 +130,34 @@ public class CheckProductCatalogUI extends AbstractUI {
                 }
             }
             final SelectWidget<Product> selector = new SelectWidget<>("Products:", productList, new ProductPrinter());
+            do {
+                try {
+                    selector.show();
+                    selectedProduct = selector.selectedElement();
+                    System.out.println(selectedProduct.toString());
+                } catch (NullPointerException e) {
+                    System.out.println("Exiting...");
+                }
+
+            } while (selectedProduct != null);
+        }
+        if (this.mode == BRAND_CATEGORY_MODE) {
+            System.out.println("Available Brands:");
+            Iterable<Brand> brands = theController.allBrands();
+            for (Brand brand:brands){
+                System.out.println(brand.toString());
+            }
+            final String brand = Console.readLine("Please type the name of the brand you wish to search:");
+            System.out.println("Available Categories:");
+            Iterable<Category> categories=theController.allCategories();
+            for (Category category:categories ){
+                System.out.println(category.toString());
+            }
+            final String category = Console.readLine("Please type the name of the category you wish to search:");
+            Product selectedProduct = null;
+            final Iterable<Product> allProductsWithBrandCategory = this.theController.allProductsWithBrandCategory(brand,category,sort_mode);
+            //sortList(productList,sort_mode);
+            final SelectWidget<Product> selector = new SelectWidget<>("Products:", allProductsWithBrandCategory, new ProductPrinter());
             do {
                 try {
                     selector.show();

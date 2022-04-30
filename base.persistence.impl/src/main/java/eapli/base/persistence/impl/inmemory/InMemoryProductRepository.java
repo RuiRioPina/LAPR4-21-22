@@ -1,5 +1,6 @@
 package eapli.base.persistence.impl.inmemory;
 
+import eapli.base.product.domain.Brand;
 import eapli.base.product.domain.Product;
 import eapli.base.product.domain.StorageArea;
 import eapli.base.product.repositories.ProductRepository;
@@ -32,7 +33,16 @@ public class InMemoryProductRepository extends InMemoryDomainAutoNumberRepositor
     }
 
     @Override
+    public Iterable<Product> findProductsWithBrandCategory(String brand,String category,int num){
+        throw new UnsupportedOperationException();
+    }
+    @Override
     public String createSortMode(int num){
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
+    public Iterable<Brand> findAllBrands(){
         throw new UnsupportedOperationException();
     }
 

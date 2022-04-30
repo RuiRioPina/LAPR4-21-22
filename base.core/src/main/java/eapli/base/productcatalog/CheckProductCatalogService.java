@@ -1,6 +1,7 @@
 package eapli.base.productcatalog;
 
 import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.product.domain.Brand;
 import eapli.base.product.domain.Product;
 import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.domain.Category;
@@ -30,8 +31,14 @@ public class CheckProductCatalogService {
     public Iterable<Product> allProductsWithBrand(String brand,int num){
         return productRepository.findProductsWithBrand(brand,num);
     }
+    public Iterable<Product> allProductsWithBrandCategory(String brand,String category,int num){
+        return productRepository.findProductsWithBrandCategory(brand,category,num);
+    }
 
     public Iterable<Category> allCategories(){
         return categoryRepository.findAll();
+    }
+    public Iterable<Brand> allBrands(){
+        return productRepository.findAllBrands();
     }
 }

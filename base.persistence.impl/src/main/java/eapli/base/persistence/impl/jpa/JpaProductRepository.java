@@ -4,8 +4,10 @@ import eapli.base.product.domain.Brand;
 import eapli.base.product.domain.Product;
 import eapli.base.product.domain.StorageArea;
 import eapli.base.product.repositories.ProductRepository;
+import eapli.base.productCategory.domain.Category;
 import eapli.framework.general.domain.model.Designation;
 
+import javax.persistence.Cache;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -46,6 +48,20 @@ implements ProductRepository {
         return query.getResultList();
     }
 
+    @Override
+    public Iterable<Product> findProductsWithBrandCategory(String brand,String category,int num){
+        Brand brandName= new Brand(brand);
+        Designation categoryDesignation= Designation.valueOf(category);
+        final TypedQuery<Product> query= entityManager().createQuery("SELECT p from Product  p JOIN p.category cat where  cat.name =:name AND p.brand = :brand "+createSortMode(num),Product.class);
+        query.setParameter("name",categoryDesignation);
+        query.setParameter("brand",brandName);
+        return query.getResultList();
+    }
+    @Override
+    public Iterable<Brand> findAllBrands(){
+    final TypedQuery<Brand> query= entityManager().createQuery("select  DISTINCT p.brand from Product p",Brand.class);
+    return query.getResultList();
+    }
 
 
     @Override
@@ -61,4 +77,5 @@ implements ProductRepository {
         }
         return null;
     }
+
 }

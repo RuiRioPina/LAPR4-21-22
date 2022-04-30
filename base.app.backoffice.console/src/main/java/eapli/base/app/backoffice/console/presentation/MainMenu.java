@@ -124,6 +124,8 @@ public class MainMenu extends AbstractUI {
     private static final int CHECK_PRODUCT_CATALOG_BRAND=3;
     private static final int CHECK_PRODUCT_CATALOG_DESCRIPTION=4;
 
+    private static final int CHECK_PRODUCT_CATALOG_BRAND_CATEGORY=5;
+
     private static final String SEPARATOR_LABEL = "--------------";
 
     private final AuthorizationService authz = AuthzRegistry.authorizationService();
@@ -257,6 +259,7 @@ public class MainMenu extends AbstractUI {
         menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_CATEGORY,"Check Based On Category",new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_CATEGORY)::show);
         menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_BRAND,"Check Based On Brand",new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_BRAND)::show);
         menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_DESCRIPTION,"Check Based On Description",new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_DESCRIPTION)::show);
+        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_BRAND_CATEGORY,"Check Based On Brand and Categpry",new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_BRAND_CATEGORY)::show);
         return menuProductCatalog;
     }
 

@@ -1,5 +1,6 @@
 package eapli.base.product.repositories;
 
+import eapli.base.product.domain.Brand;
 import eapli.base.product.domain.Product;
 import eapli.base.product.domain.StorageArea;
 import eapli.framework.domain.repositories.DomainRepository;
@@ -20,7 +21,10 @@ public interface ProductRepository extends DomainRepository<Long, Product> {
 
     Iterable<Product> findProductsWithBrand(String brand,int num);
 
+    Iterable<Product> findProductsWithBrandCategory(String brand,String category,int num);
+
 
      String createSortMode(int num);
 
+     Iterable<Brand> findAllBrands();
 }

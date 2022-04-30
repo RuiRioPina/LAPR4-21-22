@@ -1,5 +1,6 @@
 package eapli.base.productcatalog;
 
+import eapli.base.product.domain.Brand;
 import eapli.base.product.domain.Product;
 import eapli.base.productCategory.domain.Category;
 import eapli.framework.application.UseCaseController;
@@ -21,7 +22,14 @@ public class CheckProductCatalogController {
         return svc.allProductsWithBrand(brandName,num);
     }
 
+    public Iterable<Product> allProductsWithBrandCategory(String brandName,String categoryName,int num){
+        return svc.allProductsWithBrandCategory(brandName,categoryName,num);
+    }
     public Iterable<Category> allCategories(){
         return svc.allCategories();
+    }
+
+    public Iterable<Brand> allBrands(){
+        return svc.allBrands();
     }
 }
