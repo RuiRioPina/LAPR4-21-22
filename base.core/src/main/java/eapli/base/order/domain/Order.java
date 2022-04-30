@@ -52,9 +52,11 @@ public class Order implements Serializable, AggregateRoot<Long> {
     @Column(name = "total_amount", nullable = false)
     private Price totalAmount;
 
+    /*
     @Embedded
     @Column(name = "order_line", nullable = true)
     private OrderLine orderLine;
+     */
 
     @Enumerated(EnumType.STRING)
     @Column(name = "order_state", nullable = true)
@@ -139,9 +141,11 @@ public class Order implements Serializable, AggregateRoot<Long> {
         return customerId;
     }
 
+    /*
     public OrderLine getOrderLine() {
         return orderLine;
     }
+     */
 
     public OrderState getOrderState() {
         return orderState;
@@ -179,9 +183,11 @@ public class Order implements Serializable, AggregateRoot<Long> {
         this.date = date;
     }
 
+    /*
     public void setOrderLine(OrderLine orderLine) {
         this.orderLine = orderLine;
     }
+     */
 
     public void setOrderState(OrderState orderState) {
         this.orderState = orderState;
