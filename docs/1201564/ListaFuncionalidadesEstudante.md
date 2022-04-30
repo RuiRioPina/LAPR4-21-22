@@ -5,8 +5,8 @@
 ### Índice das Funcionalidade Desenvolvidas ###
 
 
-| Sprint | Funcionalidade     |
-|--------|--------------------|
-| **A**  | [US1001](../SprintA/US1001/DomainModel.puml) |
-| **A**  | [US1002](../SprintA/US1002/) |
-| **A**  | [US1003](../SprintA/US1003/) |
+| Sprint | Funcionalidade               |
+|--------|------------------------------|
+| **A**  | [SPRINT A](../SprintA/)      |
+| **B**  | [US1001](../1201564/US1001/) |
+| **B**  | [US1900](../1201564/US1900/) |

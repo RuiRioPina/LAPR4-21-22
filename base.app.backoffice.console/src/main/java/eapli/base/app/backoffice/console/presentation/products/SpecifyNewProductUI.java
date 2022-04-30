@@ -174,7 +174,7 @@ public class SpecifyNewProductUI extends AbstractUI {
         theController.specifyNewProduct(theProductCategory,storageArea,Designation.valueOf(name),photoPath,new ProductDescription(shortDescription,
                 extendedDescription, techDescription), new Brand(brand),new Price(priceWoTaxes, priceWiTaxes),
                 new Reference(reference), new InternalCode(internalCode), new ProductionCode(productionCode),
-                new Barcode(barcode),"");
+                new Barcode(barcode));
 
         return true;
     }

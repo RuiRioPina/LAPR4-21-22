@@ -14,7 +14,7 @@ public class SpecifyNewProductController {
 
     public Product specifyNewProduct (Category category,StorageArea storageArea,Designation name, String photoPath, ProductDescription description, Brand brand,
                                       Price price, Reference reference, InternalCode internalCode,
-                                      ProductionCode productionCode, Barcode barcode, String Location) {
+                                      ProductionCode productionCode, Barcode barcode) {
         return productRepository.save(new Product(storageArea,category,name,photoPath,description,brand,price,reference,internalCode,productionCode,barcode));
     }
 

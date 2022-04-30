@@ -16,6 +16,8 @@ Produto é um elemento fulcral de todo o sistema e tem relações com armazéns,
 
 * Cada produto pertence obrigatoriamente a uma categoria, logo é necessário estas existirem à priori [US1005].
 
+* Cada produto tem uma localização na warehouse, então este tem de estar configurado no sistema à priori.
+
 **Fluxo Básico**
 
 - 1. Sales Clerk inicia a especificação de um novo produto.
@@ -66,9 +68,14 @@ The system adopts a base currency (EUR). If needed, a converter will be implemen
 
 **4. ** Product vs Category
 
-- "By simplicity, a category consists only of an alphanumeric code, and a description. Each product belongs mandatorily to a single category."
+- By simplicity, a category consists only of an alphanumeric code, and a description. Each product belongs mandatorily to a single category.
  
 - As so, and contrary to what is suggested in your question, there is no hierarchy between categories.
+
+
+**5. ** Product Location
+
+- The products’ location in the warehouse, which corresponds to a storage area i.e., the aisle identifier, the row identifier, and the shelf identifier. All these identifiers are numeric. Products with an unknown location cannot the ordered.
 
 # 3. Design
 
@@ -89,58 +96,64 @@ The system adopts a base currency (EUR). If needed, a converter will be implemen
 ## 3.4. Testes 
 
 	@Test(expected = IllegalArgumentException.class)
-		public void ensureNullIsNotAllowed() {
-		Product instance = new Product(null, null, null, null, null, null, null, null, null);
-	}
-
-     @Test(expected = IllegalArgumentException.class)
     public void ensureNullIsNotAllowed() {
-        new Product(null, null, null,null, null, null, null, null, null, null);
+        new Product(null, null,null, null,null, null, null, null, null, null, null);
     }
 
     @Test
     public void product() {
-        new Product(CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+        new Product(STORAGEAREA,CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
         assertTrue(true);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureProductMustHavePrice() {
-        new Product(CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,null,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+        new Product(STORAGEAREA,CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,null,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureProductMustHaveCategory() {
-        new Product(null,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+        new Product(STORAGEAREA,null,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureProductMustHaveInternalCode() {
-        new Product(CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,null,PRODUCTION_CODE,BARCODE);
+        new Product(STORAGEAREA,CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,null,PRODUCTION_CODE,BARCODE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureProductMustHaveBrand() {
-        new Product(CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,null,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+        new Product(STORAGEAREA,CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,null,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureProductMustHaveName() {
-        new Product(CATEGORY,Designation.valueOf(" "),PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
-        new Product(CATEGORY,null,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+        new Product(STORAGEAREA,CATEGORY,Designation.valueOf(" "),PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+        new Product(STORAGEAREA,CATEGORY,null,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureProductMustHaveBarcode() {
-        new Product(CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,null);
+        new Product(STORAGEAREA,CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,null);
     }
+
+    @Test
+    public void ensureProductIsTheSameAsItsInstance() {
+        Product p =new Product(STORAGEAREA,CATEGORY,DESIGNATION,PHOTO,DESCRIPTION,BRAND,PRICE,REFERENCE,INTERNAL_CODE,PRODUCTION_CODE,BARCODE);
+        final boolean expected = p.sameAs(p);
+        assertTrue(expected);
+    }
+
 # 4. Implementação
 
 ## Construtor do Produto
-    public Product (Category category, Designation name, ProductDescription description, Brand brand, Price price, Reference reference, InternalCode internalCode, ProductionCode productionCode, Barcode barcode) {
-        Preconditions.noneNull(category, name, brand, price, internalCode, barcode);
+    public Product(StorageArea storageArea, Category category,Designation name, String photoPath, ProductDescription description, Brand brand,
+                    Price price,Reference reference, InternalCode internalCode, ProductionCode productionCode, Barcode barcode) {
+        Preconditions.noneNull(category,name,photoPath,brand,price,internalCode,barcode);
+        this.storageArea = storageArea;
         this.category = category;
         this.name = name;
+        this.photoPath = photoPath;
         this.description = description;
         this.brand = brand;
         this.price = price;
@@ -148,9 +161,10 @@ The system adopts a base currency (EUR). If needed, a converter will be implemen
         this.internalCode = internalCode;
         this.productionCode = productionCode;
         this.barcode = barcode;
+        this.active = true;
     }
 
-## SpecifyNewProductUI
+## SpecifyNewProductUI 
 
     public class SpecifyNewProductUI extends AbstractUI {
 
@@ -176,12 +190,12 @@ The system adopts a base currency (EUR). If needed, a converter will be implemen
 
         (...)
 
-        Double priceWoTaxes = Console.readDouble("Price without Taxes");
-        Double priceWiTaxes = Console.readDouble("Price with Taxes");
+        Double priceWoTaxes = Console.readDouble("Price without Taxes €");
+        Double priceWiTaxes = Console.readDouble("Price with Taxes €");
 
         (...)
 
-        theController.specifyNewProduct(theProductCategory,Designation.valueOf(name),new ProductDescription(shortDescription,
+        theController.specifyNewProduct(theProductCategory,storageArea,Designation.valueOf(name),photoPath,new ProductDescription(shortDescription,
                 extendedDescription, techDescription), new Brand(brand),new Price(priceWoTaxes, priceWiTaxes),
                 new Reference(reference), new InternalCode(internalCode), new ProductionCode(productionCode),
                 new Barcode(barcode));
@@ -202,13 +216,13 @@ The system adopts a base currency (EUR). If needed, a converter will be implemen
     private final ProductRepository productRepository = PersistenceContext.repositories().products();
     private final ListCategories svcCategories = new ListCategories();
 
-    public Product specifyNewProduct (Category category,Designation name, ProductDescription description, Brand brand, Price price, Reference reference, InternalCode internalCode, ProductionCode productionCode, Barcode barcode) {
-        return productRepository.save(new Product(category,name,description,brand,price,reference,internalCode,productionCode,barcode));
-        }
+    public Product specifyNewProduct (Category category,StorageArea storageArea,Designation name, String photoPath, ProductDescription description, Brand brand,
+                                      Price price, Reference reference, InternalCode internalCode, ProductionCode productionCode, Barcode barcode) {
+        return productRepository.save(new Product(storageArea,category,name,photoPath,description,brand,price,reference,internalCode,productionCode,barcode));
+    }
 
     public Iterable<Category> categories () {
         return svcCategories.allCategories();
-        }
     }
 
 - Issue #10
