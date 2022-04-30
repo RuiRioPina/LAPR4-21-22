@@ -15,6 +15,8 @@ public class OrderBuilder implements DomainFactory<Order> {
     private Address deliveryAddress = null;
     private Price totalAmount = new Price((double) 0, (double) 0);
     private Map<Product, Integer> productIntegerMap;
+    private Payment payment = null;
+    private Shipment shipment = null;
 
     public OrderBuilder(){
 
@@ -50,7 +52,31 @@ public class OrderBuilder implements DomainFactory<Order> {
     @Override
     public Order build() {
         this.calculateTotalAmount();
-        Order order = new Order(LocalDate.now(), this.customerId, this.deliveryAddress, this.billingAddress, this.productIntegerMap, this.totalAmount);
+        Order order = new Order(LocalDate.now(), this.customerId, this.deliveryAddress, this.billingAddress, this.productIntegerMap, this.totalAmount, this.payment, this.shipment);
         return order;
+    }
+
+    @Override
+    public String toString(){
+        return "Order: \n" +
+                "----------------------------" + "\n" +
+                "Customer Id:                " + this.customerId + "\n" +
+                "Billing Address:            " + this.billingAddress + "\n" +
+                "Delivery Address:           " + this.deliveryAddress + "\n" +
+                "Total Amount With Taxes:    " + String.format("%.2f", this.totalAmount.priceWithTaxes()) + "\n" +
+                "Total Amount Without Taxes: " + String.format("%.2f", this.totalAmount.priceWithoutTaxes()) + "\n" +
+                "----------------------------" + "\n" +
+                "Products Ordered: \n" +
+                productListToString() +
+                "----------------------------" + "\n";
+    }
+
+    private String productListToString() {
+        String productList = "";
+        for (Product product: this.productIntegerMap.keySet()) {
+            productList += String.format(this.productIntegerMap.get(product).toString() + " x " + product.getName() + "\n");
+        }
+
+        return productList;
     }
 }

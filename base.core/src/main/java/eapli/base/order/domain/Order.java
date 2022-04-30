@@ -56,16 +56,16 @@ public class Order implements Serializable, AggregateRoot<Long> {
     @Column(name = "order_line", nullable = true)
     private OrderLine orderLine;
 
-    @Embedded
+    @Enumerated(EnumType.STRING)
     @Column(name = "order_state", nullable = true)
     private OrderState orderState;
 
-    @Embedded
+    @Enumerated(EnumType.STRING)
     @Column(name = "payment", nullable = true)
     private Payment payment;
 
-    @Embedded
-    @Column(name = "order_line", nullable = true)
+    @Enumerated(EnumType.STRING)
+    @Column(name = "shipment", nullable = true)
     private Shipment shipment;
 
     @ElementCollection
@@ -91,6 +91,18 @@ public class Order implements Serializable, AggregateRoot<Long> {
         this.deliveryAddress = deliveryAddress;
         this.productIntegerMap = productIntegerMap;
         this.totalAmount = totalAmount;
+    }
+
+    public Order(LocalDate now, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount, Payment payment, Shipment shipment) {
+        this.customerId = customerId;
+        this.date = now;
+        this.billingAddress = billingAddress;
+        this.deliveryAddress = deliveryAddress;
+        this.productIntegerMap = productIntegerMap;
+        this.totalAmount = totalAmount;
+        this.shipment = shipment;
+        this.payment = payment;
+        this.orderState = OrderState.REGISTERED;
     }
 
     public void addProduct(Product product, int quantity){
@@ -185,5 +197,49 @@ public class Order implements Serializable, AggregateRoot<Long> {
 
     public void setProductIntegerMap(Map<Product, Integer> productIntegerMap) {
         this.productIntegerMap = productIntegerMap;
+    }
+
+    public String shortToString(){
+        return "Order: \n" +
+                "----------------------------" + "\n" +
+                "Id:                         " + this.id + "\n" +
+                "Customer Id:                " + this.customerId + "\n" +
+                "Date Created:               " + this.date.toString() + "\n" +
+                "Billing Address:            " + this.billingAddress + "\n" +
+                "Delivery Address:           " + this.deliveryAddress + "\n" +
+                "Total Amount With Taxes:    " + String.format("%.2f", this.totalAmount.priceWithTaxes()) + "\n" +
+                "Total Amount Without Taxes: " + String.format("%.2f", this.totalAmount.priceWithoutTaxes()) + "\n" +
+                "----------------------------" + "\n" +
+                "Products Ordered: \n" +
+                productListToString() +
+                "----------------------------" + "\n";
+    }
+
+    @Override
+    public String toString(){
+        return "Order: \n" +
+                "----------------------------" + "\n" +
+                "Id:                         " + this.id + "\n" +
+                "Customer Id:                " + this.customerId + "\n" +
+                "Date Created:               " + this.date.toString() + "\n" +
+                "Billing Address:            " + this.billingAddress + "\n" +
+                "Delivery Address:           " + this.deliveryAddress + "\n" +
+                "Total Amount With Taxes:    " + String.format("%.2f", this.totalAmount.priceWithTaxes()) + "\n" +
+                "Total Amount Without Taxes: " + String.format("%.2f", this.totalAmount.priceWithoutTaxes()) + "\n" +
+                "Payment:                    " + this.payment + "\n" +
+                "Shipment:                   " + this.shipment + "\n" +
+                "----------------------------" + "\n" +
+                "Products Ordered: \n" +
+                productListToString() +
+                "----------------------------" + "\n";
+    }
+
+    private String productListToString() {
+        String productList = "";
+        for (Product product: this.productIntegerMap.keySet()) {
+            productList += String.format(this.productIntegerMap.get(product).toString() + " x " + product.getName() + "\n");
+        }
+
+        return productList;
     }
 }
