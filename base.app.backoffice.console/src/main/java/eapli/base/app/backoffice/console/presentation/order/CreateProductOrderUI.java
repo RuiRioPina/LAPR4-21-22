@@ -5,30 +5,29 @@ import eapli.base.clientusermanagement.domain.Customer;
 import eapli.base.order.application.CreateProductOrderController;
 import eapli.base.order.domain.Order;
 import eapli.base.product.domain.Product;
+import eapli.framework.presentation.console.AbstractUI;
 
 import java.util.List;
 
-public class CreateProductOrderUI implements Runnable{
+public class CreateProductOrderUI extends AbstractUI {
 
     private final CreateProductOrderController ctrl = new CreateProductOrderController();
-    private List<Product> lProd;
-    private Customer customer;
 
 
     @Override
-    public void run() {
-        this.customer = (Customer) Utils.selectsObject(this.ctrl.getCustomerList());
+    public boolean doShow() {
+        Customer customer = (Customer) Utils.selectsObject(this.ctrl.getCustomerList());
 
-        assert this.customer != null;
-        this.ctrl.createOrder(this.customer.identity());
+        assert customer != null;
+        this.ctrl.createOrder(customer.identity());
 
-        this.lProd =  this.ctrl.getProductList();
+        List<Product> lProd = this.ctrl.getProductList();
 
         int n = 1;
 
         System.out.print("Product List: \n" +
                             "--------------------------------------------------------------\n");
-        for (Product prod:this.lProd ) {
+        for (Product prod: lProd) {
             System.out.println(n + " - " + prod.getName());
             n++;
         }
@@ -37,23 +36,34 @@ public class CreateProductOrderUI implements Runnable{
         System.out.print("--------------------------------------------------------------\n");
 
         int i = -1;
-        int quantity = -1;
+        int quantity;
         while(i != 0) {
             i = Utils.readIntegerFromConsole("Select a Product to add to order: \n");
             if(i == 0) {
                 break;
             }
             quantity = Utils.readIntegerFromConsole("Select how many: \n");
-            if (this.ctrl.addProductToOrder(this.lProd.get(i+1), quantity)){
-                System.out.println( quantity + "x " + this.lProd.get(i+1).getName().toString() + " added successfully! \n");
+            if (this.ctrl.addProductToOrder(lProd.get(i+1), quantity)){
+                System.out.println( quantity + "x " + lProd.get(i+1).getName().toString() + " added successfully! \n");
             }
         }
 
-        
+        System.out.println("Resulting order class: ");
+        System.out.println(this.ctrl.showOrderBuilder());
 
-        Order order = this.ctrl.saveOrder();
+        Order newOrder = this.ctrl.saveOrder();
 
-        System.out.println(order.toString());
+        if(newOrder != null) {
+            System.out.print("\nOperation successfully completed!");
+        } else {
+            System.out.println("\nOh no! Something went wrong when creating the Order!");
+        }
 
+        return false;
+    }
+
+    @Override
+    public String headline() {
+        return "Place Order";
     }
 }

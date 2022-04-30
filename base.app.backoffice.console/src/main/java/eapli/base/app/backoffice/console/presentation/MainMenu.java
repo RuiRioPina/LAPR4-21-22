@@ -23,6 +23,7 @@
  */
 package eapli.base.app.backoffice.console.presentation;
 
+import eapli.base.app.backoffice.console.presentation.order.CreateProductOrderUI;
 import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNewCategoryUI;
 import eapli.base.app.backoffice.console.presentation.clientuser.AddCustomerUI;
 import eapli.base.app.backoffice.console.presentation.productcatalog.CheckProductCatalogUI;
@@ -111,6 +112,7 @@ public class MainMenu extends AbstractUI {
     private static final int MAIN_MENU_CATEGORY=3;
     // PRODUCTS
     private static final int SPECIFY_NEW_PRODUCT = 1;
+    private static final int CREATE_PRODUCT_ORDER = 2;
     // WAREHOUSE
     private static final int SET_UP_NEW_WAREHOUSE = 1;
     private static final int WAREHOUSE = 2;
@@ -230,6 +232,8 @@ public class MainMenu extends AbstractUI {
     private Menu buildSalesClerkMenu() {
         final Menu menu = new Menu("Products >");
         menu.addItem(SPECIFY_NEW_PRODUCT, "Specify New Product", new SpecifyNewProductUI()::show);
+        menu.addItem(CREATE_PRODUCT_ORDER,"Place New Product Order", new CreateProductOrderUI()::show);
+
         final Menu menuCategory = new Menu("Categories >");
         menuCategory.addItem(REGISTER_NEW_CATEGORY, "Register New Category", new RegisterNewCategoryUI()::show);
         return menu;

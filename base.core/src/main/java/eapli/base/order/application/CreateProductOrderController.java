@@ -1,9 +1,11 @@
 package eapli.base.order.application;
 
 import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.order.domain.Order;
 import eapli.base.order.domain.OrderBuilder;
+import eapli.base.order.repositories.OrderRepository;
 import eapli.base.product.domain.Product;
 import eapli.base.productcatalog.CheckProductCatalogService;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
@@ -18,6 +20,9 @@ public class CreateProductOrderController {
 
     private OrderBuilder OB;
 
+    private CustomerRepository cRepo = PersistenceContext.repositories().customers();
+    private OrderRepository oRepo = PersistenceContext.repositories().orders();
+
     private final CheckProductCatalogService productCatalogService= new CheckProductCatalogService();
 
 
@@ -29,7 +34,7 @@ public class CreateProductOrderController {
 
     public List<Customer> getCustomerList(){
         List<Customer> actualList = new ArrayList<Customer>();
-        PersistenceContext.repositories().customers().findAllActive().iterator().forEachRemaining(actualList::add);
+        this.cRepo.findAllActive().iterator().forEachRemaining(actualList::add);
         return actualList;
     }
 
@@ -47,8 +52,12 @@ public class CreateProductOrderController {
         return this.OB.addProduct(product,quantity).equals(OrderBuilder.class);
     }
 
+    public String showOrderBuilder(){
+        return this.OB.toString();
+    }
+
     public Order saveOrder(){
-        return this.OB.build();
+        return this.oRepo.save(this.OB.build());
     }
 
 }
