@@ -22,10 +22,9 @@ package eapli.base.warehousemanagement.repositories;
 
 import java.util.Optional;
 
-import eapli.base.clientusermanagement.domain.Customer;
 import eapli.base.warehousemanagement.domain.Warehouse;
 import eapli.framework.domain.repositories.DomainRepository;
-import eapli.framework.infrastructure.authz.domain.model.Username;
+import eapli.framework.infrastructure.authz.domain.model.SystemUser;
 
 /**
  *
@@ -36,7 +35,7 @@ public interface WarehouseRepository
 
 
     /**
-     * returns the client user (utente) with the given mecanographic number
+     * returns the client user (utente) with the given mechanographic number
      *
      * @param number
      * @return
@@ -45,5 +44,14 @@ public interface WarehouseRepository
         return ofIdentity(number);
     }
 
-    public Iterable<Warehouse> findAllActive();
+    Iterable<Warehouse> findAllActive();
+
+    default Warehouse findWarehouseFromUser(SystemUser systemUser){
+        for (Warehouse warehouse: this.findAllActive() ) {
+            if(warehouse.getlWarehouseEmployee().contains(systemUser)){
+                return warehouse;
+            }
+        }
+        return null;
+    }
 }
