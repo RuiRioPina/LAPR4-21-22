@@ -9,17 +9,19 @@ import eapli.base.warehousemanagement.repositories.WarehouseRepository;
 
 import java.io.FileNotFoundException;
 import java.util.Iterator;
-import java.util.List;
 
 public class WarehouseController {
     private final WarehouseRepository repo = PersistenceContext.repositories().warehouse();
 
     public Warehouse buildWarehousePlant(String fileName) throws FileNotFoundException {
         JsonParser jsonParser = new JsonParser();
-        return jsonParser.readJson(fileName);
+        Warehouse warehouse = jsonParser.readJson(fileName);
+        buildShelves(warehouse);
+        warehouse.setJsonPath(fileName);
+        return warehouse;
     }
 
-    public void buildShelves(Warehouse warehouse) throws FileNotFoundException {
+    public void buildShelves(Warehouse warehouse)   {
         for (Aisle aile : warehouse.aisles()) {
             for (Row row : aile.rows()) {
                 row.convertShelveNumberToPosition();

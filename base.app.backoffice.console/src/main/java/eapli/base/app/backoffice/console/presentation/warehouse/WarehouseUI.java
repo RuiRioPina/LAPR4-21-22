@@ -16,9 +16,6 @@ public class WarehouseUI extends AbstractUI {
     @Override
     protected boolean doShow() {
         WarehouseInfo warehouseInfo = null;
-
-
-
         String response = "y";
         boolean alreadyExistsInDatabase = theController.alreadyInDatabase();
         if (alreadyExistsInDatabase) {
@@ -34,8 +31,6 @@ public class WarehouseUI extends AbstractUI {
 
                 try {
                     Warehouse warehouse = theController.buildWarehousePlant(fileName);
-                    theController.buildShelves(warehouse);
-                    warehouse.setJsonPath(fileName);
                     saveWarehouse(warehouse, alreadyExistsInDatabase);
                     System.out.println(warehouse);
                     passed = true;

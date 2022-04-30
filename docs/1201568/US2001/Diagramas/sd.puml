@@ -22,7 +22,7 @@ SYS-> SC: asks the name of the file
 
 SC-> SYS: introduces file name
 
-SYS-> CTRL : buildWarehouse(filename)
+SYS-> CTRL : buildWarehousePlant(filename)
 
 activate CTRL
 CTRL-> CSB **: create
@@ -39,10 +39,12 @@ deactivate CUS
 CSB -> CTRL: warehouse
 
 deactivate CSB
-deactivate CUS
 CTRL->CUS: buildShelves()
 activate CUS
-
+deactivate CUS
+CTRL->CUS: setJsonPath()
+activate CUS
+deactivate CUS
 CUS -> CTRL: warehouse
 deactivate CUS
 

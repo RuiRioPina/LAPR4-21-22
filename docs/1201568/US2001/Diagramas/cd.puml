@@ -6,6 +6,10 @@ Class "WarehouseUI"{
 
 Class "WarehouseController"{
 +buildWarehouse(fileName)
++saveWarehouse(warehouse)
++deletePreviousWarehouse()
++alreadyInDatabase()
++findWarehouse()
 +buildShelves()
 
 +repositories()
@@ -17,6 +21,7 @@ Class "WarehouseController"{
 
 
 class "Warehouse"{
+     -String jsonPath
      -String name
      -Double length
      -square width
@@ -49,7 +54,7 @@ class "Shelve"{
 }
 
 class "Bin"{
-     -Product
+     -Product product
      +sameAs(other)
      +identity()
 }
@@ -74,8 +79,8 @@ class "Depth"{
 
 
 
-class WarehouseBuilder {
-+readFromJson((fileName)
+class JsonParser {
++readJson(fileName)
 }
 
 class PersistenceContext {
@@ -95,8 +100,8 @@ class WarehouseRepository{
 
 
 WarehouseUI ..> WarehouseController
-WarehouseController..> WarehouseBuilder
-WarehouseBuilder "1" --> "*" Warehouse : builds
+WarehouseController..> JsonParser
+JsonParser "1" --> "*" Warehouse : reads and saves the path
 
 Aisle "0..*" <-u- "1" Warehouse : contains
 Row "0..*" <-r- "1" Aisle : contains
@@ -121,6 +126,6 @@ End "1" <-l- "1" Row : contains
 
 "WarehouseController" "1" --> "1..*" "Warehouse" :saves
 
-"Warehouse" "1" --> "1" "WarehouseRepository" :in
+"Warehouse" "1" --> "1" "WarehouseRepository" : saves path to JSON in
 
 @enduml
