@@ -23,6 +23,7 @@
  */
 package eapli.base.app.backoffice.console.presentation;
 
+import eapli.base.app.backoffice.console.presentation.agv.CreateAGVUI;
 import eapli.base.app.backoffice.console.presentation.order.CreateProductOrderUI;
 import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNewCategoryUI;
 import eapli.base.app.backoffice.console.presentation.clientuser.AddCustomerUI;
@@ -47,6 +48,8 @@ import eapli.framework.presentation.console.menu.HorizontalMenuRenderer;
 import eapli.framework.presentation.console.menu.MenuItemRenderer;
 import eapli.framework.presentation.console.menu.MenuRenderer;
 import eapli.framework.presentation.console.menu.VerticalMenuRenderer;
+
+import java.io.FileNotFoundException;
 
 /**
  * TODO split this class in more specialized classes for each menu
@@ -115,8 +118,8 @@ public class MainMenu extends AbstractUI {
     private static final int CREATE_PRODUCT_ORDER = 2;
     // WAREHOUSE
     private static final int SET_UP_NEW_WAREHOUSE = 1;
-    private static final int WAREHOUSE = 2;
-
+    private static final int CREATE_AGV = 2;
+    private static final int WAREHOUSE = 3;
     //Product Catalog
     private static final int CHECK_PRODUCT_CATALOG=1;
 
@@ -244,6 +247,11 @@ public class MainMenu extends AbstractUI {
     private Menu buildWarehouseEmployeeMenu() {
         final Menu menu = new Menu("Warehouse Management Menu");
         menu.addItem(SET_UP_NEW_WAREHOUSE, "Set Up New Warehouse", new WarehouseUI()::show);
+        try {
+            menu.addItem(CREATE_AGV, "Configure New AGV", new CreateAGVUI()::show);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
         return menu;
     }
 
