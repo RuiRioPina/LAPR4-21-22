@@ -107,6 +107,10 @@ public class Product implements AggregateRoot<Long> {
         return this.price;
     }
 
+    public StorageArea getStorageArea() {
+        return storageArea;
+    }
+
     @Override
     public String toString(){
         return String.format("Category:%s\nName:%s\nShort Description:%s\nExtended Description:%s\nTechincal Description:%s\nBrand:%s\nPrice without Taxes:%.2f\nPrice with Taxes:%.2f\nBarcode:%s\n",getCategoryString(),name.toString(),description.shortDescription(),description.extendedDescription(),description.technicalDescription(),getBrandString(),price.priceWithoutTaxes(),price.priceWithTaxes(),getBarcodeString());

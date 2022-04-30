@@ -49,6 +49,14 @@ implements ProductRepository {
     }
 
     @Override
+    public Iterable<Product> findProductsWithShelveNumber(int shelveNumber) {
+        final TypedQuery<Product> query= entityManager().createQuery("SELECT p from Product  p WHERE p.storageArea.shelfNumber = :shelveNumber ",Product.class);
+        query.setParameter("shelveNumber",shelveNumber);
+        return query.getResultList();
+    }
+
+
+    @Override
     public Iterable<Product> findProductsWithBrandCategory(String brand,String category,int num){
         Brand brandName= new Brand(brand);
         Designation categoryDesignation= Designation.valueOf(category);

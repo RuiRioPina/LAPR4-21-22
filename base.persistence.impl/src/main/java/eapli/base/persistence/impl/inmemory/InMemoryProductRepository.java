@@ -33,6 +33,11 @@ public class InMemoryProductRepository extends InMemoryDomainAutoNumberRepositor
     }
 
     @Override
+    public Iterable<Product> findProductsWithShelveNumber(int shelveNumber) {
+        throw new UnsupportedOperationException();
+    }
+
+    @Override
     public Iterable<Product> findProductsWithBrandCategory(String brand,String category,int num){
         throw new UnsupportedOperationException();
     }
