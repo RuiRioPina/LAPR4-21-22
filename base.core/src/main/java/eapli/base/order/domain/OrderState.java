@@ -3,9 +3,17 @@ package eapli.base.order.domain;
 import eapli.framework.domain.model.ValueObject;
 
 import javax.persistence.Embeddable;
+import java.io.Serializable;
 
-
-@Embeddable
-public class OrderState implements ValueObject {
+public enum OrderState implements ValueObject, Serializable {
+    REGISTERED,
+    PAYMENT_PENDING,
+    TO_BE_PREPARED,
+    BEING_PREPARED,
+    READY_FOR_PACKAGING,
+    READY_FOR_CARRIER,
+    DISPATCHED,
+    DELIVERED,
+    RECEIVED;
 
 }
