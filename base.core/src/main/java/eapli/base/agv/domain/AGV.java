@@ -2,6 +2,7 @@ package eapli.base.agv.domain;
 
 import eapli.base.warehousemanagement.domain.AGVDocks;
 import eapli.framework.domain.model.AggregateRoot;
+import eapli.framework.validations.Preconditions;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -39,12 +40,13 @@ public class AGV implements Serializable, AggregateRoot<Long> {
 
 
     @SuppressWarnings("JpaAttributeTypeInspection")
-    @OneToOne(cascade = CascadeType.ALL, mappedBy = "agv")
-    @Column(name = "agv_dock")
+    @OneToOne(cascade = CascadeType.ALL, mappedBy = "agv_id")
+    @JoinColumn(name = "agv_dock")
     private AGVDocks agvDocks;
 
 
     public AGV(Integer autonomy, Double capacity, Double weight, Double volume, String shortDescription) {
+        Preconditions.noneNull(autonomy,capacity,weight,volume,shortDescription);
         this.autonomy = autonomy;
         this.capacity = capacity;
         this.weight = weight;
@@ -58,6 +60,7 @@ public class AGV implements Serializable, AggregateRoot<Long> {
     }
 
     public AGV(Integer autonomy, Double capacity, Double weight, Double volume, String shortDescription, AGVDocks agvDock) {
+        Preconditions.noneNull(autonomy,capacity,weight,volume,shortDescription,agvDock);
         this.autonomy = autonomy;
         this.capacity = capacity;
         this.weight = weight;
