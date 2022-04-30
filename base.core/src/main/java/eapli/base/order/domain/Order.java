@@ -87,6 +87,7 @@ public class Order implements Serializable, AggregateRoot<Long> {
     }
 
     public Order(LocalDate date, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount) {
+
         this.customerId = customerId;
         this.date = date;
         this.billingAddress = billingAddress;
@@ -103,7 +104,7 @@ public class Order implements Serializable, AggregateRoot<Long> {
         this.productIntegerMap = productIntegerMap;
         this.totalAmount = totalAmount;
         this.shipment = shipment;
-        this.payment = payment;
+        this.payment = Payment.PAYPAL;
         this.orderState = OrderState.REGISTERED;
     }
 
