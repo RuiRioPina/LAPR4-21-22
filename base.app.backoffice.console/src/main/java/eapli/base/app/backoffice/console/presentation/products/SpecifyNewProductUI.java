@@ -23,15 +23,18 @@ public class SpecifyNewProductUI extends AbstractUI {
 
     private final SpecifyNewProductController theController = new SpecifyNewProductController();
     private final ProductRepository repo = PersistenceContext.repositories().products();
+
     @Override
     protected boolean doShow() {
 
-        final Iterable<Category> productCategories = this.theController.categories();
-
-        final SelectWidget<Category> selector = new SelectWidget<>("Product Categories:", productCategories,
-                new ProductCategoryPrinter());
-        selector.show();
-        final Category theProductCategory = selector.selectedElement();
+        Category theProductCategory;
+        do {
+            theProductCategory = selectCategory();
+            if (theProductCategory == null) {
+                MainMenu menu = new MainMenu();
+                menu.mainLoop();
+            }
+        } while (theProductCategory == null);
 
         System.out.println("Product Location");
 
@@ -44,34 +47,36 @@ public class SpecifyNewProductUI extends AbstractUI {
 
         StorageArea storageArea;
         boolean validation = false;
+        Aisle theAisle; int aisleId;
+        Row theRow; int rowId;
+        Shelf theShelf; int shelfPosition;
+
         do {
-            assert warehouseInfo != null;
-            final Iterable<Aisle> aisles = warehouseInfo.getAisles();
-            final SelectWidget<Aisle> aisleSelector = new SelectWidget<>("Aisles: ", aisles, new AislePrinter());
-            aisleSelector.show();
-            final Aisle theAisle = aisleSelector.selectedElement();
-            int aisleId = theAisle.getId();
+        assert warehouseInfo != null;
+        do {
+            theAisle = selectAisle(warehouseInfo);
+        } while (theAisle == null);
+        aisleId = theAisle.getId();
 
-            final Iterable<Row> rows = warehouseInfo.getRows(theAisle);
-            final SelectWidget<Row> rowsSelector = new SelectWidget<>("Rows: ", rows, new RowsPrinter());
-            rowsSelector.show();
-            final Row theRow = rowsSelector.selectedElement();
-            int rowId = theRow.getId();
+        do {
+            theRow = selectRow(warehouseInfo, theAisle);
+        } while (theRow == null);
+        rowId = theRow.getId();
 
-            final Iterable<Shelf> shelves = warehouseInfo.getShelves(theRow);
-            final SelectWidget<Shelf> shelfSelector = new SelectWidget<>("Shelves: ", shelves, new ShelfPrinter(aisleId, rowId));
-            shelfSelector.show();
-            final Shelf theShelf = shelfSelector.selectedElement();
-            int shelfPosition = theShelf.getPosition();
+        do {
+            theShelf = selectShelf(warehouseInfo, theRow, aisleId, rowId);
+        } while (theShelf == null);
+        shelfPosition = theShelf.getPosition();
 
-            storageArea = new StorageArea(aisleId, rowId, shelfPosition);
-            validation = repo.validateProductLocation(storageArea);
-            if (!validation) {
-                System.out.println("--------------------------------------------------------------------------------------");
-                System.out.println("There's already a product on this storage area. Please try again and choose other location.");
-                System.out.println("--------------------------------------------------------------------------------------");
-            }
-        }while (!validation);
+        storageArea = new StorageArea(aisleId, rowId, shelfPosition);
+        validation = repo.validateProductLocation(storageArea);
+        if (!validation) {
+            System.out.println("--------------------------------------------------------------------------------------");
+            System.out.println("There's already a product on this storage area. Please try again and choose other location.");
+            System.out.println("--------------------------------------------------------------------------------------");
+        }
+    } while (!validation);
+
         System.out.println(storageArea);
         String name;
         do {
@@ -99,7 +104,7 @@ public class SpecifyNewProductUI extends AbstractUI {
         String extendedDescription;
         do {
             extendedDescription = Console.readLine("Extended Description");
-            if (extendedDescription.length() < 20 || extendedDescription.length() > 100){
+            if (extendedDescription.length() < 20 || extendedDescription.length() > 100) {
                 System.out.println("This field must have a minimum of 20 chars and a maximum of 100 chars.");
             }
         } while (extendedDescription.length() < 20 || extendedDescription.length() > 100);
@@ -109,10 +114,10 @@ public class SpecifyNewProductUI extends AbstractUI {
         String brand;
         do {
             brand = Console.readLine("Brand");
-            if(brand.isEmpty()){
+            if (brand.isEmpty()) {
                 System.out.println("This field can't be empty.");
             }
-            if(brand.length() > 50) {
+            if (brand.length() > 50) {
                 System.out.println("Brand name must have a maximum of 50 chars.");
             }
         } while (brand.isEmpty() || brand.length() > 50);
@@ -131,10 +136,10 @@ public class SpecifyNewProductUI extends AbstractUI {
         String internalCode;
         do {
             internalCode = Console.readLine("Internal Code");
-            if(internalCode.isEmpty()){
+            if (internalCode.isEmpty()) {
                 System.out.println("This field can't be empty.");
             }
-            if (!internalCode.matches("^[a-zA-Z0-9]*$")){
+            if (!internalCode.matches("^[a-zA-Z0-9]*$")) {
                 System.out.println("Internal Code must be alphanumeric.");
             }
             if (internalCode.length() > 23) {
@@ -142,26 +147,26 @@ public class SpecifyNewProductUI extends AbstractUI {
             }
         } while (internalCode.isEmpty() || !internalCode.matches("^[a-zA-Z0-9]*$") || internalCode.length() > 23);
 
-        ProductBuilder productBuilder = new ProductBuilder(theProductCategory,storageArea,name,photoPath,shortDescription,extendedDescription,techDescription,
-                brand,priceWiTaxes,priceWoTaxes,internalCode,barcode);
+        ProductBuilder productBuilder = new ProductBuilder(theProductCategory, storageArea, name, photoPath, shortDescription, extendedDescription, techDescription,
+                brand, priceWiTaxes, priceWoTaxes, internalCode, barcode);
 
         String productionCode;
         do {
             productionCode = Console.readLine("Production Code");
-            if (!productionCode.matches("^[a-zA-Z0-9]*$") && !productionCode.isEmpty()){
+            if (!productionCode.matches("^[a-zA-Z0-9]*$") && !productionCode.isEmpty()) {
                 System.out.println("Production Code must be alphanumeric.");
             }
             if (productionCode.length() > 23) {
                 System.out.println("Production Code must have a maximum of 23 chars.");
             }
-        }  while (!productionCode.matches("^[a-zA-Z0-9]*$") && !productionCode.isEmpty() || productionCode.length()>23);
+        } while (!productionCode.matches("^[a-zA-Z0-9]*$") && !productionCode.isEmpty() || productionCode.length() > 23);
 
         productBuilder.withProductionCode(productionCode);
 
         String reference;
         do {
             reference = Console.readLine("Reference");
-            if (!reference.matches("^[a-zA-Z0-9]*$") && !reference.isEmpty()){
+            if (!reference.matches("^[a-zA-Z0-9]*$") && !reference.isEmpty()) {
                 System.out.println("Reference must be alphanumeric.");
             }
             if (reference.length() > 23) {
@@ -171,16 +176,48 @@ public class SpecifyNewProductUI extends AbstractUI {
 
         productBuilder.withReference(reference);
 
-        theController.specifyNewProduct(theProductCategory,storageArea,Designation.valueOf(name),photoPath,new ProductDescription(shortDescription,
-                extendedDescription, techDescription), new Brand(brand),new Price(priceWoTaxes, priceWiTaxes),
+        theController.specifyNewProduct(theProductCategory, storageArea, Designation.valueOf(name), photoPath, new ProductDescription(shortDescription,
+                        extendedDescription, techDescription), new Brand(brand), new Price(priceWoTaxes, priceWiTaxes),
                 new Reference(reference), new InternalCode(internalCode), new ProductionCode(productionCode),
                 new Barcode(barcode));
 
         return true;
     }
 
+
     @Override
     public String headline() {
         return "Specify New Product";
+    }
+
+    private Category selectCategory() {
+        final Iterable<Category> productCategories = this.theController.categories();
+        final SelectWidget<Category> selector = new SelectWidget<>("Product Categories:", productCategories,
+                new ProductCategoryPrinter());
+        selector.show();
+        return selector.selectedElement();
+    }
+
+    public Aisle selectAisle(WarehouseInfo warehouseInfo) {
+        assert warehouseInfo != null;
+        final Iterable<Aisle> aisles = warehouseInfo.getAisles();
+        final SelectWidget<Aisle> aisleSelector = new SelectWidget<>("Aisles: ", aisles, new AislePrinter());
+        aisleSelector.show();
+        return aisleSelector.selectedElement();
+    }
+
+    private Row selectRow(WarehouseInfo warehouseInfo, Aisle theAisle) {
+        assert warehouseInfo != null;
+        Iterable<Row> rows = warehouseInfo.getRows(theAisle);
+        final SelectWidget<Row> rowsSelector = new SelectWidget<>("Rows: ", rows, new RowsPrinter());
+        rowsSelector.show();
+        return rowsSelector.selectedElement();
+    }
+
+    private Shelf selectShelf(WarehouseInfo warehouseInfo, Row theRow, int aisleId, int rowId) {
+        final Iterable<Shelf> shelves = warehouseInfo.getShelves(theRow);
+        final SelectWidget<Shelf> shelfSelector = new SelectWidget<>("Shelves: ", shelves, new ShelfPrinter(aisleId, rowId));
+        shelfSelector.show();
+        return shelfSelector.selectedElement();
     }
 }

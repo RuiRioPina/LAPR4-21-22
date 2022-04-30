@@ -1,9 +1,11 @@
 package eapli.base.product.domain;
 
+import eapli.framework.domain.model.ValueObject;
+
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class StorageArea {
+public class StorageArea implements ValueObject {
 
     private int aisleId;
     private int rowId;
