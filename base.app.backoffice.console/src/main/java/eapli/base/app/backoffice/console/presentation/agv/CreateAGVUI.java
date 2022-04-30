@@ -1,9 +1,16 @@
 package eapli.base.app.backoffice.console.presentation.agv;
 
-public class CreateAGVUI implements Runnable {
+import eapli.framework.presentation.console.AbstractUI;
+
+public class CreateAGVUI extends AbstractUI {
+
     @Override
-    public void run() {
+    protected boolean doShow() {
+        return false;
+    }
 
-
+    @Override
+    public String headline() {
+        return null;
     }
 }
