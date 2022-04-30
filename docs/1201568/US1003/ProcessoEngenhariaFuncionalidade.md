@@ -32,7 +32,7 @@ o género e vários endereços (shipment e billing). *
 * GÉNERO: Male | Female
 * ENDEREÇO SHIPMENT E BILLING: Street name, door number, postal code, city, country.
 
-## 2.5 Pré Condições
+## 2.4 Pré Condições
 
 n/a.
 
