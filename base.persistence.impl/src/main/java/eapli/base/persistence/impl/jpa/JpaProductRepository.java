@@ -4,10 +4,8 @@ import eapli.base.product.domain.Brand;
 import eapli.base.product.domain.Product;
 import eapli.base.product.domain.StorageArea;
 import eapli.base.product.repositories.ProductRepository;
-import eapli.base.productCategory.domain.Category;
 import eapli.framework.general.domain.model.Designation;
 
-import javax.persistence.Cache;
 import javax.persistence.TypedQuery;
 import java.util.List;
 
@@ -49,8 +47,12 @@ implements ProductRepository {
     }
 
     @Override
-    public Iterable<Product> findProductsWithShelveNumber(int shelveNumber) {
-        final TypedQuery<Product> query= entityManager().createQuery("SELECT p from Product  p WHERE p.storageArea.shelfNumber = :shelveNumber ",Product.class);
+    public Iterable<Product> findProductsWithShelveNumber(int aisleId, int rowId, int shelveNumber) {
+        final TypedQuery<Product> query= entityManager().createQuery("SELECT p from Product  p WHERE p.storageArea.shelfNumber = :shelveNumber " +
+                                                                        "AND  p.storageArea.aisleId = :aisleId AND p.storageArea.rowId = :rowId"
+                                                                        ,Product.class);
+        query.setParameter("aisleId",aisleId);
+        query.setParameter("rowId",rowId);
         query.setParameter("shelveNumber",shelveNumber);
         return query.getResultList();
     }

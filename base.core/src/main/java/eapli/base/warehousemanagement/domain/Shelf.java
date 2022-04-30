@@ -34,20 +34,25 @@ public class Shelf {
                 "bin=" + bin + " ";
     }
 
-    public String shelfPrint() {
+
+
+    public Integer getPosition() {
+        return position;
+    }
+
+    public String shelfPrint(int aisleId, int rowId) {
         String productString;
-        Iterator<Product> it = repo.findProductsWithShelveNumber(id).iterator();
+        Iterator<Product> it = repo.findProductsWithShelveNumber(aisleId, rowId, id).iterator();
         if (it.hasNext() && it.next().getName().toString() != null) {
-            productString = "Product: " + repo.findProductsWithShelveNumber(id).iterator().next().getName().toString();
+            productString = "Product: " + repo.findProductsWithShelveNumber(aisleId, rowId, id)
+                    .iterator()
+                    .next()
+                    .getName()
+                    .toString();
         } else {
             return "Position: " + position;
         }
         return "Position: " + position + "   " +
                 productString;
     }
-
-    public Integer getPosition() {
-        return position;
-    }
-
 }

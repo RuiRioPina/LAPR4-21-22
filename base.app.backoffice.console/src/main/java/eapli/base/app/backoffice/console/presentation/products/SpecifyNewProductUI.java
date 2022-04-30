@@ -49,29 +49,29 @@ public class SpecifyNewProductUI extends AbstractUI {
             final Iterable<Aisle> aisles = warehouseInfo.getAisles();
             final SelectWidget<Aisle> aisleSelector = new SelectWidget<>("Aisles: ", aisles, new AislePrinter());
             aisleSelector.show();
-            final Aisle theAisler = aisleSelector.selectedElement();
-            int aislerId = theAisler.getId();
+            final Aisle theAisle = aisleSelector.selectedElement();
+            int aisleId = theAisle.getId();
 
-            final Iterable<Row> rows = warehouseInfo.getRows(theAisler);
+            final Iterable<Row> rows = warehouseInfo.getRows(theAisle);
             final SelectWidget<Row> rowsSelector = new SelectWidget<>("Rows: ", rows, new RowsPrinter());
             rowsSelector.show();
             final Row theRow = rowsSelector.selectedElement();
             int rowId = theRow.getId();
 
             final Iterable<Shelf> shelves = warehouseInfo.getShelves(theRow);
-            final SelectWidget<Shelf> shelfSelector = new SelectWidget<>("Shelves: ", shelves, new ShelfPrinter());
+            final SelectWidget<Shelf> shelfSelector = new SelectWidget<>("Shelves: ", shelves, new ShelfPrinter(aisleId, rowId));
             shelfSelector.show();
             final Shelf theShelf = shelfSelector.selectedElement();
             int shelfPosition = theShelf.getPosition();
 
-            storageArea = new StorageArea(aislerId, rowId, shelfPosition);
+            storageArea = new StorageArea(aisleId, rowId, shelfPosition);
             validation = repo.validateProductLocation(storageArea);
-            if (validation == false) {
+            if (!validation) {
                 System.out.println("--------------------------------------------------------------------------------------");
                 System.out.println("There's already a product on this storage area. Please try again and choose other location.");
                 System.out.println("--------------------------------------------------------------------------------------");
             }
-        }while (validation == false);
+        }while (!validation);
         System.out.println(storageArea);
         String name;
         do {

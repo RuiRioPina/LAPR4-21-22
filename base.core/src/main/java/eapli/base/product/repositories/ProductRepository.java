@@ -21,7 +21,7 @@ public interface ProductRepository extends DomainRepository<Long, Product> {
 
     Iterable<Product> findProductsWithBrand(String brand,int num);
 
-    Iterable<Product> findProductsWithShelveNumber(int shelveNumber);
+    Iterable<Product> findProductsWithShelveNumber(int aisleId, int rowId, int shelveNumber);
 
 
     Iterable<Product> findProductsWithBrandCategory(String brand,String category,int num);
