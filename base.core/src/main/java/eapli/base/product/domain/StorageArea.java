@@ -22,4 +22,5 @@ public class StorageArea {
     public String toString() {
         return "Aisle ID = " + aisleId + " | Row ID = " + rowId + " | Shelf Number = " + shelfNumber;
     }
+
 }

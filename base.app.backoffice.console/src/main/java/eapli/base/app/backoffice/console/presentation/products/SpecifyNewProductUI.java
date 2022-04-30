@@ -2,8 +2,10 @@ package eapli.base.app.backoffice.console.presentation.products;
 
 import eapli.base.app.backoffice.console.presentation.MainMenu;
 import eapli.base.app.backoffice.console.presentation.productCategory.ProductCategoryPrinter;
+import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.product.application.SpecifyNewProductController;
 import eapli.base.product.domain.*;
+import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.domain.Category;
 import eapli.base.warehousemanagement.domain.Aisle;
 import eapli.base.warehousemanagement.domain.Row;
@@ -20,7 +22,7 @@ import java.io.FileNotFoundException;
 public class SpecifyNewProductUI extends AbstractUI {
 
     private final SpecifyNewProductController theController = new SpecifyNewProductController();
-
+    private final ProductRepository repo = PersistenceContext.repositories().products();
     @Override
     protected boolean doShow() {
 
@@ -40,26 +42,36 @@ public class SpecifyNewProductUI extends AbstractUI {
             e.printStackTrace();
         }
 
-        assert warehouseInfo != null;
-        final Iterable <Aisle> aisles = warehouseInfo.getAisles();
-        final SelectWidget<Aisle> aisleSelector = new SelectWidget<>("Aisles: ", aisles, new AislePrinter());
-        aisleSelector.show();
-        final Aisle theAisler = aisleSelector.selectedElement();
-        int aislerId = theAisler.getId();
+        StorageArea storageArea;
+        boolean validation = false;
+        do {
+            assert warehouseInfo != null;
+            final Iterable<Aisle> aisles = warehouseInfo.getAisles();
+            final SelectWidget<Aisle> aisleSelector = new SelectWidget<>("Aisles: ", aisles, new AislePrinter());
+            aisleSelector.show();
+            final Aisle theAisler = aisleSelector.selectedElement();
+            int aislerId = theAisler.getId();
 
-        final Iterable <Row> rows = warehouseInfo.getRows(theAisler);
-        final SelectWidget<Row> rowsSelector = new SelectWidget<>("Rows: ", rows, new RowsPrinter());
-        rowsSelector.show();
-        final Row theRow = rowsSelector.selectedElement();
-        int rowId = theRow.getId();
+            final Iterable<Row> rows = warehouseInfo.getRows(theAisler);
+            final SelectWidget<Row> rowsSelector = new SelectWidget<>("Rows: ", rows, new RowsPrinter());
+            rowsSelector.show();
+            final Row theRow = rowsSelector.selectedElement();
+            int rowId = theRow.getId();
 
-        final Iterable <Shelf> shelves = warehouseInfo.getShelves(theRow);
-        final SelectWidget<Shelf> shelfSelector = new SelectWidget<>("Shelves: ", shelves, new ShelfPrinter());
-        shelfSelector.show();
-        final Shelf theShelf = shelfSelector.selectedElement();
-        int shelfPosition = theShelf.getPosition();
+            final Iterable<Shelf> shelves = warehouseInfo.getShelves(theRow);
+            final SelectWidget<Shelf> shelfSelector = new SelectWidget<>("Shelves: ", shelves, new ShelfPrinter());
+            shelfSelector.show();
+            final Shelf theShelf = shelfSelector.selectedElement();
+            int shelfPosition = theShelf.getPosition();
 
-        StorageArea storageArea = new StorageArea(aislerId,rowId,shelfPosition);
+            storageArea = new StorageArea(aislerId, rowId, shelfPosition);
+            validation = repo.validateProductLocation(storageArea);
+            if (validation == false) {
+                System.out.println("--------------------------------------------------------------------------------------");
+                System.out.println("There's already a product on this storage area. Please try again and choose other location.");
+                System.out.println("--------------------------------------------------------------------------------------");
+            }
+        }while (validation == false);
         System.out.println(storageArea);
         String name;
         do {
@@ -162,7 +174,7 @@ public class SpecifyNewProductUI extends AbstractUI {
         theController.specifyNewProduct(theProductCategory,storageArea,Designation.valueOf(name),photoPath,new ProductDescription(shortDescription,
                 extendedDescription, techDescription), new Brand(brand),new Price(priceWoTaxes, priceWiTaxes),
                 new Reference(reference), new InternalCode(internalCode), new ProductionCode(productionCode),
-                new Barcode(barcode),"");
+                new Barcode(barcode));
 
         return true;
     }

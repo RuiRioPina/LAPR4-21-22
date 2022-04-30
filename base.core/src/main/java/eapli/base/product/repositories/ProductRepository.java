@@ -1,7 +1,7 @@
 package eapli.base.product.repositories;
 
 import eapli.base.product.domain.Product;
-import eapli.base.product.domain.ProductDescription;
+import eapli.base.product.domain.StorageArea;
 import eapli.framework.domain.repositories.DomainRepository;
 
 
@@ -14,7 +14,7 @@ public interface ProductRepository extends DomainRepository<Long, Product> {
 
     static final public int SORT_BY_PRICE=3;
 
-
+    boolean validateProductLocation (StorageArea storageArea);
     Iterable<Product> findAllProducts(int num);
     Iterable<Product> findProductsWithCategory(String category,int num);
 
