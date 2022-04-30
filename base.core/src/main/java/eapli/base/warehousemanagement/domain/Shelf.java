@@ -26,4 +26,13 @@ public class Shelf {
                 "position=" + position + " " +
                 "bin=" + bin + " ";
     }
+
+    public String shelfPrint () {
+        return "Position: " + position;
+    }
+
+    public Integer getPosition() {
+        return position;
+    }
+
 }

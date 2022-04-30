@@ -12,7 +12,6 @@ public class Aisle {
     @SerializedName("Id")
     private int id;
 
-
     @SerializedName("begin")
     private Begin begin;
 
@@ -41,5 +40,16 @@ public class Aisle {
                 depth + "\n" +
                 "accessibility = " + accessibility + "\n" +
                 "row = " + row + "\n";
+    }
+
+    public String aislePrinter () {
+        return "ID - " + id +" Begin: " + "L Square = " + begin.lSquareBegin + " | " + "W Square = " + begin.wSquareBegin + " - " +
+                "End: " + "L Square = " + end.lSquareEnd + " | " + "W Square = " + end.wSquareEnd + " - " +
+                "Depth: " + "L Square = " + depth.lSquareDepth + " | " + "W Square = " + depth.wSquareDepth + " - " +
+                "Acessibility = " + accessibility;
+    }
+
+    public int getId() {
+        return id;
     }
 }

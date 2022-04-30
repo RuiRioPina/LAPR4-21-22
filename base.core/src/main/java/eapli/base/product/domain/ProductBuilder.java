@@ -6,6 +6,7 @@ import eapli.framework.general.domain.model.Designation;
 public class ProductBuilder {
 
     private Category category;
+    private StorageArea storageArea;
     private String name;
     private String photoPath;
     private String shortDescription;
@@ -18,12 +19,12 @@ public class ProductBuilder {
     private String internalCode;
     private String productionCode;
     private String barcode;
-    private String location;
 
     public ProductBuilder() {
     }
 
-    public ProductBuilder(Category category, String name, String photoPath, String shortDescription, String extendedDescription, String technicalDescription, String brandName, Double priceWiTaxes, Double priceWoTaxes, String internalCode, String barcode) {
+    public ProductBuilder(Category category, StorageArea storageArea, String name, String photoPath, String shortDescription, String extendedDescription, String technicalDescription, String brandName, Double priceWiTaxes, Double priceWoTaxes, String internalCode, String barcode) {
+        this.storageArea = storageArea;
         this.category = category;
         this.name = name;
         this.photoPath = photoPath;
@@ -47,17 +48,12 @@ public class ProductBuilder {
         return this;
     }
 
-    public ProductBuilder withLocation (final String Location) {
-        this.location = location;
-        return this;
-    }
-
     public Product build() {
-        return new Product(category, Designation.valueOf(name), photoPath,
+        return new Product(storageArea,category,Designation.valueOf(name), photoPath,
                 new ProductDescription(shortDescription,extendedDescription,technicalDescription),
                 new Brand(brandName),new Price(priceWoTaxes,priceWoTaxes),new Reference(reference),
                 new InternalCode(internalCode), new ProductionCode(productionCode),
-                new Barcode(barcode),location);
+                new Barcode(barcode));
     }
 
 }

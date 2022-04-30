@@ -1,15 +1,21 @@
 package eapli.base.app.backoffice.console.presentation.products;
 
+import eapli.base.app.backoffice.console.presentation.MainMenu;
 import eapli.base.app.backoffice.console.presentation.productCategory.ProductCategoryPrinter;
 import eapli.base.product.application.SpecifyNewProductController;
 import eapli.base.product.domain.*;
 import eapli.base.productCategory.domain.Category;
+import eapli.base.warehousemanagement.domain.Aisle;
+import eapli.base.warehousemanagement.domain.Row;
+import eapli.base.warehousemanagement.domain.Shelf;
+import eapli.base.warehousemanagement.domain.WarehouseInfo;
 import eapli.framework.general.domain.model.Designation;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
 import eapli.framework.presentation.console.SelectWidget;
 
 import javax.swing.*;
+import java.io.FileNotFoundException;
 
 public class SpecifyNewProductUI extends AbstractUI {
 
@@ -25,6 +31,36 @@ public class SpecifyNewProductUI extends AbstractUI {
         selector.show();
         final Category theProductCategory = selector.selectedElement();
 
+        System.out.println("Product Location");
+
+        WarehouseInfo warehouseInfo = null;
+        try {
+            warehouseInfo = new WarehouseInfo();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+
+        assert warehouseInfo != null;
+        final Iterable <Aisle> aisles = warehouseInfo.getAisles();
+        final SelectWidget<Aisle> aisleSelector = new SelectWidget<>("Aisles: ", aisles, new AislePrinter());
+        aisleSelector.show();
+        final Aisle theAisler = aisleSelector.selectedElement();
+        int aislerId = theAisler.getId();
+
+        final Iterable <Row> rows = warehouseInfo.getRows(theAisler);
+        final SelectWidget<Row> rowsSelector = new SelectWidget<>("Rows: ", rows, new RowsPrinter());
+        rowsSelector.show();
+        final Row theRow = rowsSelector.selectedElement();
+        int rowId = theRow.getId();
+
+        final Iterable <Shelf> shelves = warehouseInfo.getShelves(theRow);
+        final SelectWidget<Shelf> shelfSelector = new SelectWidget<>("Shelves: ", shelves, new ShelfPrinter());
+        shelfSelector.show();
+        final Shelf theShelf = shelfSelector.selectedElement();
+        int shelfPosition = theShelf.getPosition();
+
+        StorageArea storageArea = new StorageArea(aislerId,rowId,shelfPosition);
+        System.out.println(storageArea);
         String name;
         do {
             name = Console.readLine("Name");
@@ -69,8 +105,8 @@ public class SpecifyNewProductUI extends AbstractUI {
             }
         } while (brand.isEmpty() || brand.length() > 50);
 
-        Double priceWoTaxes = Console.readDouble("Price without Taxes");
-        Double priceWiTaxes = Console.readDouble("Price with Taxes");
+        Double priceWoTaxes = Console.readDouble("Price without Taxes €");
+        Double priceWiTaxes = Console.readDouble("Price with Taxes €");
 
         String barcode;
         do {
@@ -94,7 +130,7 @@ public class SpecifyNewProductUI extends AbstractUI {
             }
         } while (internalCode.isEmpty() || !internalCode.matches("^[a-zA-Z0-9]*$") || internalCode.length() > 23);
 
-        ProductBuilder productBuilder = new ProductBuilder(theProductCategory,name,photoPath,shortDescription,extendedDescription,techDescription,
+        ProductBuilder productBuilder = new ProductBuilder(theProductCategory,storageArea,name,photoPath,shortDescription,extendedDescription,techDescription,
                 brand,priceWiTaxes,priceWoTaxes,internalCode,barcode);
 
         String productionCode;
@@ -123,9 +159,7 @@ public class SpecifyNewProductUI extends AbstractUI {
 
         productBuilder.withReference(reference);
 
-
-
-        theController.specifyNewProduct(theProductCategory,Designation.valueOf(name),photoPath,new ProductDescription(shortDescription,
+        theController.specifyNewProduct(theProductCategory,storageArea,Designation.valueOf(name),photoPath,new ProductDescription(shortDescription,
                 extendedDescription, techDescription), new Brand(brand),new Price(priceWoTaxes, priceWiTaxes),
                 new Reference(reference), new InternalCode(internalCode), new ProductionCode(productionCode),
                 new Barcode(barcode),"");

@@ -42,4 +42,14 @@ public class Row {
                 end + "\n" +
                 "Shelves:\n" + shelfList + "\n";
     }
+
+    public int getId() {
+        return id;
+    }
+
+    public String rowPrinter () {
+        return "ID - " + id + " Begin: " + "L Square = " + begin.lSquareBegin + " | " + "W Square = " + begin.wSquareBegin + " - " +
+                "End: " + "L Square = " + end.lSquareEnd + " | " + "W Square = " + end.wSquareEnd + " - Number of Shelves = "
+                + numberShelves;
+    }
 }
