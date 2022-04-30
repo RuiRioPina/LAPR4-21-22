@@ -1,13 +1,13 @@
 package eapli.base.agv.domain;
 
 import eapli.base.warehousemanagement.domain.AGVDocks;
-import eapli.base.warehousemanagement.domain.Warehouse;
-import eapli.framework.domain.model.DomainEntity;
+import eapli.framework.domain.model.AggregateRoot;
 
 import javax.persistence.*;
+import java.io.Serializable;
 
 @Entity
-public class AGV implements DomainEntity<AGV> {
+public class AGV implements Serializable, AggregateRoot<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -37,11 +37,12 @@ public class AGV implements DomainEntity<AGV> {
     @Column(name = "agv_state")
     private AGVState agvState;
 
-    /*
+
+    @SuppressWarnings("JpaAttributeTypeInspection")
     @OneToOne(cascade = CascadeType.ALL, mappedBy = "agv")
     @Column(name = "agv_dock")
     private AGVDocks agvDocks;
-     */
+
 
     public AGV(Integer autonomy, Double capacity, Double weight, Double volume, String shortDescription) {
         this.autonomy = autonomy;
@@ -53,10 +54,9 @@ public class AGV implements DomainEntity<AGV> {
     }
 
     public AGV() {
-        
+
     }
 
-    /*
     public AGV(Integer autonomy, Double capacity, Double weight, Double volume, String shortDescription, AGVDocks agvDock) {
         this.autonomy = autonomy;
         this.capacity = capacity;
@@ -66,15 +66,14 @@ public class AGV implements DomainEntity<AGV> {
         this.agvState = AGVState.INACTIVE;
         this.agvDocks = agvDock;
     }
-     */
 
     public void setId(Long id) {
         this.id = id;
     }
 
-    @Id
-    public Long getId() {
-        return id;
+
+    public AGVDocks getAGVDock() {
+        return this.agvDocks;
     }
 
     @Override
@@ -83,7 +82,7 @@ public class AGV implements DomainEntity<AGV> {
     }
 
     @Override
-    public AGV identity() {
-        return this;
+    public Long identity() {
+        return this.id;
     }
 }
