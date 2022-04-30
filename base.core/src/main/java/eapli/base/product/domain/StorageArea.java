@@ -18,7 +18,8 @@ public class StorageArea {
     public StorageArea() {
     }
 
-    public String toString2() {
+    @Override
+    public String toString() {
         return "Aisle ID = " + aisleId + " | Row ID = " + rowId + " | Shelf Number = " + shelfNumber;
     }
 

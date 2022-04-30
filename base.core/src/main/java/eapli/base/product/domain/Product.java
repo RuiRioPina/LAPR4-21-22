@@ -2,6 +2,7 @@ package eapli.base.product.domain;
 
 import eapli.base.productCategory.domain.Category;
 import eapli.framework.domain.model.AggregateRoot;
+import eapli.framework.domain.model.DomainEntities;
 import eapli.framework.general.domain.model.Designation;
 import eapli.framework.validations.Preconditions;
 import javax.persistence.*;
@@ -76,7 +77,7 @@ public class Product implements AggregateRoot<Long> {
 
     @Override
     public boolean sameAs(Object other) {
-        return false;
+        return DomainEntities.areEqual(this, other);
     }
 
     @Override
