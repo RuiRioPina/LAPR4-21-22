@@ -51,6 +51,25 @@ public class CreateProductOrderUI extends AbstractUI {
         System.out.println("Resulting order class: ");
         System.out.println(this.ctrl.showOrderBuilder());
 
+        String confirmation = null;
+        do {
+            confirmation= Utils.readLineFromConsole("Do you wish to confirm the creation of this order?(Y/N)\n");
+            if(confirmation.equalsIgnoreCase("y")) {
+                Order newOrder = this.ctrl.saveOrder();
+
+                if(newOrder != null) {
+                    System.out.print("\nOperation successfully completed!");
+                } else {
+                    System.out.println("\nOh no! Something went wrong when creating the Order!");
+                }
+            } else if (confirmation.equalsIgnoreCase("n")) {
+                System.out.print("\nOperation successfully canceled!");
+            } else {
+                System.out.println("Enter Y to confirm, or N to cancel the order!");
+            }
+        }while(!confirmation.equalsIgnoreCase("y") || !confirmation.equalsIgnoreCase("n"));
+
+
         Order newOrder = this.ctrl.saveOrder();
 
         if(newOrder != null) {
