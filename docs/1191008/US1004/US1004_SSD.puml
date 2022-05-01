@@ -27,7 +27,7 @@ SYS -> ACT : shows end result and asks for confirmation
 deactivate SYS
 ACT -> SYS : confirms submission
 activate SYS
-SYS -> ACT : saves resulting products order & informs of successful operation
+SYS -> ACT : saves resulting products productOrder & informs of successful operation
 deactivate SYS
 deactivate ACT
 

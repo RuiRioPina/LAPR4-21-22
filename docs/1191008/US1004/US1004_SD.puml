@@ -67,7 +67,7 @@ loop
 UI -> ACT : shows list of products
 deactivate UI
 
-ACT -> UI : selects one to add to order & quantity
+ACT -> UI : selects one to add to productOrder & quantity
 activate UI
 UI -> CTRL : addProductToOrder(Product, int no)
 activate CTRL
