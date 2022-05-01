@@ -107,9 +107,6 @@ public class Customer implements Serializable, AggregateRoot<Long> {
         return name;
     }
 
-    public Customer(final SystemUser user) {
-        this.systemUser = user;
-    }
 
     protected Customer() {
         // for ORM only

@@ -23,9 +23,6 @@
  */
 package eapli.base.clientusermanagement.domain;
 
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
-
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -39,13 +36,14 @@ import org.junit.Test;
 
 import eapli.base.usermanagement.domain.BaseRoles;
 
+import static org.junit.Assert.*;
+
 /**
  * Created by Nuno Bettencourt [NMB] on 03/04/16.
  */
 public class CustomerTest {
-    Customer setUpCustomer;
 
-    private static final Name name = Name.valueOf("Rui","Pina");
+    private static final Name name = Name.valueOf("Rui", "Pina");
     private static final Vat vat = Vat.valueOf("SK2199230931");
     private static final EmailAddress emailAddress = EmailAddress.valueOf("ruipina@email.com");
     private static final PhoneNumber phoneNumber = PhoneNumber.valueOf("+351963752894");
@@ -53,10 +51,11 @@ public class CustomerTest {
     private static final Gender gender = Gender.MALE;
     private static final List<Address> addressList = new ArrayList<>();
 
-
-    public void setUp() throws Exception {
-        addressList.add(new Address("Avenida dos Reis","2","3880-241","Ovar","Portugal", AddressType.SHIPMENT));
-        final Customer setUpCustomer = new CustomerBuilder("Manuel"
+    Customer setUpCustomer;
+    @Before
+    public void setUp() {
+        addressList.add(new Address("Avenida dos Reis", "2", "3880-241", "Ovar", "Portugal", AddressType.SHIPMENT));
+        setUpCustomer = new CustomerBuilder("Manuel"
                 , "Pinto"
                 , "242921421"
                 , "1201564@isep.ipp.pt"
@@ -64,44 +63,41 @@ public class CustomerTest {
                 .build();
 
         new Customer();
+        new CustomerBuilder();
 
     }
 
     @Test
     public void email() {
-
+        EmailAddress actual = setUpCustomer.email();
+        EmailAddress expected = EmailAddress.valueOf("1201564@isep.ipp.pt");
+        assertEquals(expected, actual);
     }
 
     @Test
     public void vat() {
+        Vat actual = setUpCustomer.vat();
+        Vat expected = Vat.valueOf("242921421");
+        assertEquals(expected, actual);
     }
 
     @Test
     public void name() {
-    }
-
-    @Test
-    public void user() {
+        Name actual = setUpCustomer.name();
+        Name expected = Name.valueOf("Manuel", "Pinto");
+        assertEquals(expected, actual);
     }
 
     @Test
     public void testEquals() {
-    }
-
-    @Test
-    public void testHashCode() {
-    }
-
-    @Test
-    public void sameAs() {
-    }
-
-    @Test
-    public void identity() {
+        setUpCustomer.equals(setUpCustomer);
     }
 
     @Test
     public void testToString() {
+        String actual = setUpCustomer.toString();
+        String expected = "Customer{version=null, id=null, systemUser=null, name=Manuel Pinto, vat=Vat{amount=242921421}, email=1201564@isep.ipp.pt, phoneNumber=PhoneNumber{number='+3519182523'}, birthDate=null, gender=null, address=null}";
+        assertEquals(expected, actual);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -134,58 +130,79 @@ public class CustomerTest {
 //      assertTrue(expected);
     }
 
-  @Test
-  public void ensureCustomerEqualsPassesForTheSameAttributes() throws Exception {
+    @Test
+    public void ensureCustomerEqualsPassesForTheSameAttributes() throws Exception {
 
-      final Customer aCustomer = new CustomerBuilder("Jorge"
-              , "Ferreira"
-              , "1201564"
-              , "1201564@isep.ipp.pt"
-              , "929197091")
-              .build();
+        final Customer aCustomer = new CustomerBuilder("Jorge"
+                , "Ferreira"
+                , "1201564"
+                , "1201564@isep.ipp.pt"
+                , "929197091")
+                .build();
 
-      final Customer anotherCustomer = new CustomerBuilder("Jorge"
-              , "Ferreira"
-              , "1201564"
-              , "1201564@isep.ipp.pt"
-              , "929197091")
-              .build();
+        final Customer anotherCustomer = new CustomerBuilder("Jorge"
+                , "Ferreira"
+                , "1201564"
+                , "1201564@isep.ipp.pt"
+                , "929197091")
+                .build();
 
 
-      final boolean expected = aCustomer.equals(anotherCustomer);
+        final boolean expected = aCustomer.equals(anotherCustomer);
 
 //      assertTrue(expected);
-  }
+    }
 
-  @Test
-  public void ensureCustomerEqualsFailsForDifferentAttributes() throws Exception {
-      final Customer aCustomer = new CustomerBuilder("Jorge"
-              , "Ferreira"
-              , "1201564"
-              , "1201564@isep.ipp.pt"
-              , "929197091")
-              .build();
+    @Test
+    public void ensureCustomerEqualsFailsForDifferentAttributes() throws Exception {
+        final Customer aCustomer = new CustomerBuilder("Jorge"
+                , "Ferreira"
+                , "1201564"
+                , "1201564@isep.ipp.pt"
+                , "929197091")
+                .build();
 
-      final Customer anotherCustomer = new CustomerBuilder("Rui"
-              , "Pina"
-              , "1201568"
-              , "1201568@isep.ipp.pt"
-              , "916996827")
-              .build();
+        final Customer anotherCustomer = new CustomerBuilder("Rui"
+                , "Pina"
+                , "1201568"
+                , "1201568@isep.ipp.pt"
+                , "916996827")
+                .build();
 
-      final boolean expected = aCustomer.equals(anotherCustomer);
+        final boolean expected = aCustomer.equals(anotherCustomer);
 
-      assertFalse(expected);
-  }
+        assertFalse(expected);
+    }
 
-  @Test
-  public void ensureCustomerEqualsAreTheSameForTheSameInstance() throws Exception {
-      final Customer aCustomer = new Customer();
+    @Test
+    public void ensureCustomerEqualsAreTheSameForTheSameInstance() throws Exception {
+        final Customer aCustomer = new Customer();
 
-      final boolean expected = aCustomer.equals(aCustomer);
+        final boolean expected = aCustomer.equals(aCustomer);
 
-      assertTrue(expected);
-  }
+        assertTrue(expected);
+    }
+
+    @Test
+    public void ensureCustomerWithAllAttributes() throws Exception {
+        List<Address> addressList = new ArrayList<>();
+        addressList.add(new Address("Avenida dos Reis"
+                , "75", "3730-241", "Porto", "Portugal"
+                , AddressType.SHIPMENT));
+
+        Customer aCustomer = new CustomerBuilder("Jorge"
+                , "Ferreira"
+                , "1201564"
+                , "1201564@isep.ipp.pt"
+                , "+351919153063")
+                .withBirthday("2000-02-02")
+                .withAddress(addressList)
+                .withGender(Gender.MALE)
+                .build();
+
+
+    }
+
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureMustHaveName() {
@@ -208,19 +225,19 @@ public class CustomerTest {
     }
 
 
-  @Test
-  public void ensureClientUserIsTheSameAsItsInstance() throws Exception {
-      final Customer aCustomer = new CustomerBuilder("Jorge"
-              , "Ferreira"
-              , "1201564"
-              , "1201564@isep.ipp.pt"
-              , "929197091")
-              .build();
+    @Test
+    public void ensureClientUserIsTheSameAsItsInstance() throws Exception {
+        final Customer aCustomer = new CustomerBuilder("Jorge"
+                , "Ferreira"
+                , "1201564"
+                , "1201564@isep.ipp.pt"
+                , "929197091")
+                .build();
 
-      final boolean expected = aCustomer.sameAs(aCustomer);
+        final boolean expected = aCustomer.sameAs(aCustomer);
 
-      assertTrue(expected);
-  }
+        assertTrue(expected);
+    }
 
 
 }

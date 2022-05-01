@@ -56,9 +56,6 @@ public class Address implements ValueObject, Serializable {
         //Only for ORM
     }
 
-    public static Address valueOf(String address) {
-        throw new NotImplementedException();
-    }
 
     @Override
     public String toString() {

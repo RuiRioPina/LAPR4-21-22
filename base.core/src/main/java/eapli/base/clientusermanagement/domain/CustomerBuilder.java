@@ -67,10 +67,10 @@ public class CustomerBuilder implements DomainFactory<Customer> {
         this.phoneNumber=phoneNumber;
     }
 
-    public CustomerBuilder withSystemUser(final SystemUser systemUser) {
-        this.systemUser = systemUser;
-        return this;
-    }
+//    public CustomerBuilder withSystemUser(final SystemUser systemUser) {
+//        this.systemUser = systemUser;
+//        return this;
+//    }
     public CustomerBuilder withBirthday(final String birthday) {
         this.birthday = birthday;
         return this;
