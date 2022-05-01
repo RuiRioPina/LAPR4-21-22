@@ -41,12 +41,12 @@ class Administrator << (E,#FFFFFF) >> <<Root>>{
 package "Shopping Cart" <<rectangle>>{
 
 class "Shopping Cart" << (E,#FFFFFF) >> << Root >>
-
-}
-
 class "ShoppingCartLine" << (V,#FFFFFF) >>
 
 "Shopping Cart" "1" --> "1..*" ShoppingCartLine
+
+}
+
 
 
 package Customer <<rectangle>>{
@@ -76,120 +76,32 @@ class AddressType << (E,#FFFFFF) >> << Enum >>
 package Warehouse <<rectangle>>{
 
 class Warehouse << (V,#FFFFFF) >> <<Root>>
-
-class Aisle << (E,#FFFFFF) >>
-
-class Rows << (E,#FFFFFF) >>
-
-class Shelf << (E,#FFFFFF) >>
-
-
-Warehouse "1" --> "1..*" Aisle
-Aisle "1" --> "1..*" Rows
-Rows "1" --> "1..*" Shelf
-
-}
-
-package Bin <<rectangle>>{
-class Bin << (E,#FFFFFF) >>
-
 }
 
 
 
-package AGVDock <<rectangle>>{
-
-class AGVDock << (E,#FFFFFF) >> <<Root>>
 
 
-
-
-
-AGVDock "1" --> "0..1" AGV: houses
-}
 
 package AGV <<rectangle>>{
 class AGV << (E,#FFFFFF) >>
 class AGVState << (V,#FFFFFF) >>
+class DockingPoint << (V,#FFFFFF) >>
+
 
 class AGVModel << (V,#FFFFFF) >>
 
 AGV "1" --> "1" AGVState
 AGV "0..*" --> "1" AGVModel
+AGV "1" --> "1" DockingPoint
+
 }
 
 package Survey <<rectangle>>{
 
 class Survey << (E,#FFFFFF) >> <<Root>> {
--description
+-grammar
 }
-
-
-class "Alphanumeric code" << (V,#FFFFFF) >>
-
-class "Period of days" << (V,#FFFFFF) >>
-
-class "Rules" << (V,#FFFFFF) >>
-
-    Survey "1" --> "1" "Alphanumeric code"
-    Survey "1" --> "1" "Period of days"
-    Survey "1" --> "1..*" "Rules"
-
-
-
-class QuestionType << (E,#FFFFFF) >> <<Root>>
-
-
-
-class Section << (E,#FFFFFF) >> << root >>  {
--description
-}
-class "Section Id" << (V,#FFFFFF) >>
-
-class Repeatability << (V,#FFFFFF) >>
-
-class "Section Title"  << (V,#FFFFFF) >>
-
-Section "1" --> "1" "Section Id"
-
-Section "1" --> "1" "Section Title"
-
-Section "1" --> "1" Repeatability
-
-
-
-
-class Question << (E,#FFFFFF) >> << root >>{
--question
--instruction
--additionalInfo
-}
-
-Question "1" --> "1..*" "Question Id"
-
-
-
-
-
-
-class Questionnaire << (E,#FFFFFF) >> <<Root>> {
--welcomeMessage
--finalMessage
-}
-
-class "Questionnaire Id" << (V,#FFFFFF) >>
-
-class "Questionnaire Title"  << (V,#FFFFFF) >>
-
- class "Obligatoriness" << (V,#FFFFFF) >>
-
-class "Question Id" << (V,#FFFFFF) >>
-
-Questionnaire "1" --> "1..*" Section
-
-Questionnaire "1" --> "1" "Questionnaire Id"
-
-Questionnaire "1" --> "1" "Questionnaire Title"
 
 }
 
@@ -226,6 +138,8 @@ package Product <<rectangle>>{
     class Barcode << (V,#AAAAAA) >>
     class "Production Code" << (V,#AAAAAA) >>
     class Price << (V,#AAAAAA) >>
+    class "Storage Area" << (V,#FFFFFF) >>
+
 
     Product --> "1" Description
     Product --> "1" Brand
@@ -234,13 +148,16 @@ package Product <<rectangle>>{
     Product --> "1" Barcode
     Product --> "1" "Production Code"
     Product --> "1..*" Price
+    Product --> "1" "Storage Area"
 
 }
 
 package "Product Category" <<Rectangle>>{
 
     class "Product Category" << (E,#FFFFFF) >> <<Root>>
+    class "Alphanumeric code" << (V,#FFFFFF) >>
 
+    "Product Category" --> "Alphanumeric code"
 }
 
 
@@ -249,12 +166,7 @@ package "Product Category" <<Rectangle>>{
 
 
 
-"Product Category" "1" --> "0..*" Product
-Survey "1" --> "0..*" Questionnaire
-Warehouse"1" --> "0..*" AGVDock
-Section "1" --> "1..*" Question
-Section "1" --> "1" "Obligatoriness"
-Question "1" --> "1" "Obligatoriness"
+"Product Category" "1" --> "0..*" Product : caracterizes
 SystemUser "1" --|> "0..1" Customer
 SystemUser "1" --|> "0..1" WarehouseEmployee
 SystemUser "1" --|> "0..1" SalesClerk
@@ -274,9 +186,8 @@ WarehouseEmployee "1" --> "1..*" "Warehouse" :works
 Administrator "1" --> "1..*" "Role" :manages
 Role "1" --> "1..*" SystemUser :caracterizes the permissions of
 Order "*" --> "1" Warehouse: when state is "to be prepared"
-QuestionType "1" --> "0..*" Question
-Shelf "1" --> "1..*" Bin
-Bin "1" --> "1" Product: stores
-AGV "1" --> "1" Product: transports to its dock
+Warehouse "1" --> "1..*" Product: stores
+AGV "1" --> "1" Product: transports to AGV's docking point
+Warehouse "1" --> "0..1" AGV: houses
 
 @enduml
