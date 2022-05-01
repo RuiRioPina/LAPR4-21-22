@@ -7,6 +7,6 @@
 
 | Sprint | Funcionalidade     |
 |--------|--------------------|
-| **A**  | [US1001](../SprintA/US1001/DomainModel.puml) |
-| **A**  | [US1002](../SprintA/US1002/) |
-| **A**  | [US1003](../SprintA/US1003/) |
+| **B**  | [US9001](/US9001/) |
+| **B**  | [US1002](/US1002/) |
+| **B**  | [US1005](/US1005/) |

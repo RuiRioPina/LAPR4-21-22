@@ -7,7 +7,7 @@ public class ProductPrinter implements Visitor<Product> {
 
     @Override
     public void visit(final Product visitee){
-        System.out.printf("Name: %s, Code: %s, Short Description:%s, Brand: %s, Category: %s,Unit Price:%f",visitee.getName(),visitee.getBarcodeString(),visitee.getShortDescriptionString(),visitee.getBrandString(),visitee.getCategoryString(),visitee.getUnitPriceDouble());
+        System.out.printf("Name: %s, Code: %s, Short Description:%s, Brand: %s, Category: %s,Unit Price:%.2f",visitee.getName(),visitee.getBarcodeString(),visitee.getShortDescriptionString(),visitee.getBrandString(),visitee.getCategoryString(),visitee.getUnitPriceDouble());
 
     }
 }
