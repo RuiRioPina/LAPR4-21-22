@@ -211,8 +211,8 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
                 "Id:                         " + this.id + "\n" +
                 "Customer Id:                " + this.customerId + "\n" +
                 "Date Created:               " + this.date.toString() + "\n" +
-                "Billing Address:            " + this.billingAddress + "\n" +
-                "Delivery Address:           " + this.deliveryAddress + "\n" +
+                "Billing Address:            " + this.billingAddress.shortToString() + "\n" +
+                "Delivery Address:           " + this.deliveryAddress.shortToString() + "\n" +
                 "Total Amount With Taxes:    " + String.format("%.2f", this.totalAmount.priceWithTaxes()) + "\n" +
                 "Total Amount Without Taxes: " + String.format("%.2f", this.totalAmount.priceWithoutTaxes()) + "\n" +
                 "----------------------------" + "\n" +
@@ -228,8 +228,8 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
                 "Id:                         " + this.id + "\n" +
                 "Customer Id:                " + this.customerId + "\n" +
                 "Date Created:               " + this.date.toString() + "\n" +
-                "Billing Address:            " + this.billingAddress + "\n" +
-                "Delivery Address:           " + this.deliveryAddress + "\n" +
+                "Billing Address:            " + this.billingAddress.shortToString() + "\n" +
+                "Delivery Address:           " + this.deliveryAddress.shortToString() + "\n" +
                 "Total Amount With Taxes:    " + String.format("%.2f", this.totalAmount.priceWithTaxes()) + "\n" +
                 "Total Amount Without Taxes: " + String.format("%.2f", this.totalAmount.priceWithoutTaxes()) + "\n" +
                 "Payment:                    " + this.payment + "\n" +
