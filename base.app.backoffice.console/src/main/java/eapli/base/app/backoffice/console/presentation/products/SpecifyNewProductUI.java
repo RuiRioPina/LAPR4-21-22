@@ -17,6 +17,7 @@ import eapli.framework.presentation.console.AbstractUI;
 import eapli.framework.presentation.console.SelectWidget;
 
 import javax.swing.*;
+import java.awt.*;
 import java.io.FileNotFoundException;
 import java.util.NoSuchElementException;
 
@@ -97,9 +98,14 @@ public class SpecifyNewProductUI extends AbstractUI {
 
             System.out.println("Photo (check the new window opened)");
             String currentDirectory = "photos";
-            JFileChooser chooser = new JFileChooser(currentDirectory);
-            chooser.showSaveDialog(null);
-            String photoPath = chooser.getSelectedFile().getName();
+            String photoPath;
+            try {
+                JFileChooser chooser = new JFileChooser(currentDirectory);
+                chooser.showSaveDialog(null);
+                photoPath = chooser.getSelectedFile().getName();
+            } catch (HeadlessException a) {
+                photoPath = "photos/" + Console.readLine("Insert photo name");
+            }
             System.out.println(photoPath);
 
             String shortDescription;
