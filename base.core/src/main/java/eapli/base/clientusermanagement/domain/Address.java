@@ -70,6 +70,10 @@ public class Address implements ValueObject, Serializable {
         return sb.toString();
     }
 
+    public String shortToString(){
+        return this.streetName + ", " + this.doorNumber + ", " + this.city;
+    }
+
     public void setCustomer(Customer customer) {
         this.customer = customer;
     }

@@ -29,10 +29,10 @@ public class JpaAGVRepository extends JpaAutoTxRepository<AGV,Long, Long> implem
     }
 
     @Override
-    public boolean validateAgvBaseLocation(DockingPoint dockingPoint) {
-        final TypedQuery<AGV> query = super.createQuery(
-                "SELECT a FROM AGV a where a.agv_dock = :dockingPoint",AGV.class);
-        query.setParameter("agvdockid",dockingPoint);
+    public boolean validateAgvBaseLocation(String dockingPoint) {
+        final TypedQuery<AGV> query = entityManager().createQuery(
+                "SELECT a FROM AGV a where a.agvDocks.agvDockId = :dockingPoint",AGV.class);
+        query.setParameter("dockingPoint",dockingPoint);
         List<AGV> a = query.getResultList();
         return a.isEmpty();
     }
@@ -43,4 +43,6 @@ public class JpaAGVRepository extends JpaAutoTxRepository<AGV,Long, Long> implem
         params.put("number", number);
         return matchOne("e.id=:number", params);
     }
+
+
 }

@@ -148,6 +148,10 @@ public class Customer implements Serializable, AggregateRoot<Long> {
         return this.id;
     }
 
+    public Address defaultAddress(){
+        return address.iterator().next();
+    }
+
     @Override
     public String toString() {
         return "Customer{" + "version=" + version +
