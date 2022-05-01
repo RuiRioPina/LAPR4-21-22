@@ -112,16 +112,100 @@ I hope this clarifies your doubt.
 
 
 ## 3.4. Testes 
-*Nesta secção deve sistematizar como os testes foram concebidos para permitir uma correta aferição da satisfação dos requisitos.*
 
 
 # 4. Implementação
 
+## 4.1. JsonParser
+    public Warehouse readJson(String fileName) throws FileNotFoundException {
+      GsonBuilder builder = new GsonBuilder();
+      Gson gson = builder.create();
+      if(!fileName.contains(".json")) {
+        fileName = fileName + ".json";
+      }
+      BufferedReader bufferedReader = new BufferedReader(new FileReader("warehouse/"+ fileName));
+      return gson.fromJson(bufferedReader, Warehouse.class);
+    }
+## 4.2 WarehouseController
+    private final WarehouseRepository repo = PersistenceContext.repositories().warehouse();
+
+    public Warehouse buildWarehousePlant(String fileName) throws FileNotFoundException {
+        JsonParser jsonParser = new JsonParser();
+        return jsonParser.readJson(fileName);
+    }
+
+    public void buildShelves(Warehouse warehouse)   {
+        for (Aisle aile : warehouse.aisles()) {
+            for (Row row : aile.rows()) {
+                row.convertShelveNumberToPosition();
+            }
+        }
+    }
+
+
+    public void saveWarehouse(Warehouse warehouse) {
+        repo.save(warehouse);
+    }
+
+    public boolean alreadyInDatabase() {
+        int contagem = 0;
+        Iterable<Warehouse> warehouse = repo.findAllActive();
+        Iterator<Warehouse> it = warehouse.iterator();
+        while (it.hasNext()) {
+            it.next();
+            contagem++;
+        }
+        return contagem > 0;
+    }
+
+    public Warehouse findWarehouse() {
+        return repo.findAllActive().iterator().next();
+    }
+
+    public void deletePreviousWarehouse() {
+        for (Warehouse warehouse : repo.findAllActive()) {
+            repo.remove(warehouse);
+        }
+    }
+
+    
+## WarehouseUI
+          protected boolean doShow() {
+          String response = "y";
+          boolean alreadyExistsInDatabase = theController.alreadyInDatabase();
+          if (alreadyExistsInDatabase) {
+          response = Console.readLine("Warehouse plant is already database do you want still to import it?");
+          }
+          if (((response.equalsIgnoreCase("y") || response.equalsIgnoreCase("yes")) && theController.alreadyInDatabase()) || !theController.alreadyInDatabase()) {
+          String fileName;
+
+            boolean passed;
+            do {
+                fileName = Console.readLine("File Name");
+
+                try {
+                    Warehouse warehouse = theController.buildWarehousePlant(fileName);
+                    theController.buildShelves(warehouse);
+                    warehouse.setJsonPath(fileName);
+                    saveWarehouse(warehouse, alreadyExistsInDatabase);
+                    System.out.println(warehouse);
+                    passed = true;
+                } catch (FileNotFoundException e) {
+                    System.out.println("There is no file with that name. Please check the name of the JSON and try again!");
+                    passed = false;
+                }
+            } while (!passed);
+        }
+        return true;
+    }
+    
 
 
 # 5. Integração/Demonstração
 
-*Nesta secção a equipa deve descrever os esforços realizados no sentido de integrar a funcionalidade desenvolvida com as restantes funcionalidades do sistema.*
+- Foi adicionada uma opção (Warehouse -> Set up new Warehouse) ao menu do Warehouse Employee.
+
+- Deve ser introduzida o nome do file json, tendo o sistema já adicionado diretório ao path.
 
 # 6. Observações
 

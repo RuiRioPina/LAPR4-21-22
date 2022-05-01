@@ -147,16 +147,109 @@ dando-nos uma visão orientada a objetos à camada de persitência.
                 , gender
                 , address);
     }
+## 4.2 AddCustomerController
 
+     private final CustomerRepository repo = PersistenceContext.repositories().customers();
+
+     public Customer customerBuilder(final String firstName, final String lastName, final String vatId, final String email,
+                                    final String phoneNumber, final String birthday, final Gender gender,
+                                    final List<Address> addresses) {
+        CustomerBuilder customerBuilder = new CustomerBuilder(firstName, lastName, vatId, email, phoneNumber);
+        Customer customer= (customerBuilder.withBirthday(birthday)
+                .withGender(gender)
+                .withAddress(addresses)
+                .build());
+        for (Address adr: addresses) {
+            adr.setCustomer(customer);
+        }
+        if(customer != null) {
+            return repo.save(customer);
+        }
+        return null;
+    }
+
+
+    public void validateEmail(String email) {
+        EmailAddress.valueOf(email);
+    }
+
+    public void validateVat(String vat) {
+        Vat.vatMeetsMinimumRequirements(vat);
+    }
+
+
+    public void validatePhoneNumber(String phoneNumber) {
+        PhoneNumber.phoneMeetsMinimumRequirements(phoneNumber);
+    }
+
+
+## AddCustomerUI
+    protected boolean doShow() {
+       final String firstName = Console.readLine("First Name");
+        final String lastName = Console.readLine("Last Name");
+        final String vatId = inputVat();
+        final String email = inputEmail();
+        final String phoneNumber = inputPhoneNumber();
+
+        String response = Console.readLine("Birthday: This field is optional. Do you want to define it? (y/n)");
+        if (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
+            boolean passedValidation;
+            do {
+                try {
+                    birthday = inputBirthDate();
+                    passedValidation = true;
+                } catch (DateTimeException dateTimeException) {
+                    passedValidation = false;
+                    System.out.println("There was an error while analysing the date introduce. Please try again!");
+                }
+            } while (!passedValidation);
+        }
+        response = Console.readLine("Gender: This field is optional. Do you want to define it? (y/n)");
+        if (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
+            gender = selectGender();
+
+        }
+        response = Console.readLine("Address: This field is optional. Do you want to define it? (y/n)");
+        String moreAddresses;
+        Address address;
+        List<Address> addresses = new ArrayList<>();
+        if (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
+            do {
+                address = askAddress();
+                addresses.add(address);
+                moreAddresses = Console.readLine("Do you want to define more addresses? (y|n)");
+            } while (moreAddresses.equalsIgnoreCase("yes") || moreAddresses.equalsIgnoreCase("y"));
+        }
+        Customer customer = null;
+        try {
+            customer = theController.customerBuilder(firstName, lastName, vatId, email, phoneNumber, birthday, gender, addresses);
+        } catch (Exception e) {
+            System.out.println(e.getMessage());
+        }
+        try {
+
+            System.out.println(customer);
+        } catch (final IntegrityViolationException | ConcurrencyException e) {
+            System.out.println("That username is already in use.");
+        }
+
+        final String credentialsCreation = Console.readLine("Do you want to create the customers' credentials?");
+
+        if (credentialsCreation.equalsIgnoreCase("yes") || credentialsCreation.equalsIgnoreCase("y")) {
+            System.out.println("Use Case 3.1.5: yet to be implemented. (Check the \"system to develop\" pdf)");
+        }
+
+
+        return false;
+    }
 
 
 # 5. Integração/Demonstração
 
-*Nesta secção a equipa deve descrever os esforços realizados no sentido de integrar a funcionalidade desenvolvida com as restantes funcionalidades do sistema.*
+- Foi adicionada uma opção (Customer -> Create new Customer) ao menu do SalesClerk.
 
+- Devem ser inseridas as informações do customer, tendo o sistema verificações de forma a cumprir os requisitos fornecidos pelo sales clerk.
 # 6. Observações
-
-*Nesta secção sugere-se que a equipa apresente uma perspetiva critica sobre o trabalho desenvolvido apontando, por exemplo, outras alternativas e ou trabalhos futuros relacionados.*
 
 
 
