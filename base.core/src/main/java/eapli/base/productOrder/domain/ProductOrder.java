@@ -1,23 +1,22 @@
-package eapli.base.order.domain;
+package eapli.base.productOrder.domain;
 
 import eapli.base.clientusermanagement.domain.Address;
 import eapli.base.product.domain.Price;
 import eapli.base.product.domain.Product;
 import eapli.framework.domain.model.AggregateRoot;
+import eapli.framework.domain.model.DomainEntities;
+import eapli.framework.validations.Preconditions;
 
 import javax.persistence.*;
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
 /**
  * A Product Order
  * <p>
- *      This class represent orders. It follows the DDD approach where Order
- *      is the root identity of the Order Aggregate and some of its
+ *      This class represent orders. It follows the DDD approach where ProductOrder
+ *      is the root identity of the ProductOrder Aggregate and some of its
  *      properties are instances of value objects.
  * </p>
  *      This approach may seem a little more complex than just having String or
@@ -27,7 +26,7 @@ import java.util.Set;
 
 @Entity
 @Table
-public class Order implements Serializable, AggregateRoot<Long> {
+public class ProductOrder implements Serializable, AggregateRoot<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
@@ -36,7 +35,6 @@ public class Order implements Serializable, AggregateRoot<Long> {
     @Column(name = "date")
     private LocalDate date;
 
-    @Id
     @Column(name = "customer_id", nullable = false)
     private Long customerId;
 
@@ -76,27 +74,28 @@ public class Order implements Serializable, AggregateRoot<Long> {
     @Column(name="quantity")
     private Map<Product, Integer> productIntegerMap;
 
-    public Order(LocalDate date, Long customerId) {
+    public ProductOrder(LocalDate date, Long customerId) {
         this.date = date;
         this.customerId = customerId;
         this.totalAmount = new Price((double) 0, (double) 0);
     }
 
-    public Order() {
+    public ProductOrder() {
 
     }
 
-    public Order(LocalDate date, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount) {
-
+    public ProductOrder(LocalDate now, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount) {
+        Preconditions.noneNull(customerId,now,billingAddress,deliveryAddress,totalAmount);
         this.customerId = customerId;
-        this.date = date;
+        this.date = now;
         this.billingAddress = billingAddress;
         this.deliveryAddress = deliveryAddress;
         this.productIntegerMap = productIntegerMap;
         this.totalAmount = totalAmount;
     }
 
-    public Order(LocalDate now, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount, Payment payment, Shipment shipment) {
+    public ProductOrder(LocalDate now, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount, Payment payment, Shipment shipment) {
+        Preconditions.noneNull(customerId,now,billingAddress,deliveryAddress,totalAmount);
         this.customerId = customerId;
         this.date = now;
         this.billingAddress = billingAddress;
@@ -114,7 +113,7 @@ public class Order implements Serializable, AggregateRoot<Long> {
 
     @Override
     public boolean sameAs(Object other) {
-        return false;
+        return DomainEntities.areEqual(this, other);
     }
 
     @Override
@@ -207,7 +206,7 @@ public class Order implements Serializable, AggregateRoot<Long> {
     }
 
     public String shortToString(){
-        return "Order: \n" +
+        return "ProductOrder: \n" +
                 "----------------------------" + "\n" +
                 "Id:                         " + this.id + "\n" +
                 "Customer Id:                " + this.customerId + "\n" +
@@ -224,7 +223,7 @@ public class Order implements Serializable, AggregateRoot<Long> {
 
     @Override
     public String toString(){
-        return "Order: \n" +
+        return "ProductOrder: \n" +
                 "----------------------------" + "\n" +
                 "Id:                         " + this.id + "\n" +
                 "Customer Id:                " + this.customerId + "\n" +
@@ -244,7 +243,7 @@ public class Order implements Serializable, AggregateRoot<Long> {
     private String productListToString() {
         String productList = "";
         for (Product product: this.productIntegerMap.keySet()) {
-            productList += String.format(this.productIntegerMap.get(product).toString() + " x " + product.getName() + "\n");
+            productList += String.format(this.productIntegerMap.get(product).toString() + " x " + product.getName() + "  " + product.getUnitPriceDouble() + "EUR"+ "\n");
         }
 
         return productList;

@@ -1,4 +1,4 @@
-package eapli.base.order.domain;
+package eapli.base.productOrder.domain;
 
 import eapli.framework.domain.model.ValueObject;
 

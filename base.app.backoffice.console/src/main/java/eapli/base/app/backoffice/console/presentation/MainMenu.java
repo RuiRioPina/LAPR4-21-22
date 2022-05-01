@@ -238,7 +238,7 @@ public class MainMenu extends AbstractUI {
         final Menu menu = new Menu("Products >");
 
         menu.addItem(SPECIFY_NEW_PRODUCT, "Specify New Product", new SpecifyNewProductUI()::show);
-        menu.addItem(CREATE_PRODUCT_ORDER, "Place New Product Order", new CreateProductOrderUI()::show);
+        menu.addItem(CREATE_PRODUCT_ORDER, "Place New Product ProductOrder", new CreateProductOrderUI()::show);
 
         final Menu menuCategory = new Menu("Categories >");
         menuCategory.addItem(REGISTER_NEW_CATEGORY, "Register New Category", new RegisterNewCategoryUI()::show);
