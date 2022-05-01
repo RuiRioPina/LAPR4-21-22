@@ -6,9 +6,6 @@ import eapli.base.agv.domain.DockingPoint;
 import eapli.base.agv.repositories.AGVRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 
-import java.util.List;
-
-
 public class CreateAGVController {
 
     private AGVBuilder AB;
