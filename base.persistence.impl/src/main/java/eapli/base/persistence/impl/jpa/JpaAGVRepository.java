@@ -2,11 +2,14 @@ package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
 import eapli.base.agv.domain.AGV;
+import eapli.base.agv.domain.DockingPoint;
 import eapli.base.agv.repositories.AGVRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
+import javax.persistence.TypedQuery;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -23,6 +26,15 @@ public class JpaAGVRepository extends JpaAutoTxRepository<AGV,Long, Long> implem
     @Override
     public Iterable<AGV> findAllActive() {
         return match("e.systemUser.active = true");
+    }
+
+    @Override
+    public boolean validateAgvBaseLocation(DockingPoint dockingPoint) {
+        final TypedQuery<AGV> query = super.createQuery(
+                "SELECT a FROM AGV a where a.agv_dock = :dockingPoint",AGV.class);
+        query.setParameter("agvdockid",dockingPoint);
+        List<AGV> a = query.getResultList();
+        return a.isEmpty();
     }
 
     @Override

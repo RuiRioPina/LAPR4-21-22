@@ -21,12 +21,14 @@ public class AGVBuilder implements DomainFactory<AGV> {
 
     }
 
-    public AGVBuilder createAGV(Integer autonomy, Double capacity, Double weight, Double volume, String shortDescription){
+    public AGVBuilder createAGV(Integer autonomy, Double capacity, Double weight, Double volume, String shortDescription
+                                , DockingPoint dockingPoint){
         this.shortDescription = shortDescription;
         this.capacity = capacity;
         this.autonomy = autonomy;
         this.weight = weight;
         this.volume = volume;
+        this.agvDocks = dockingPoint;
         return this;
     }
 
@@ -48,7 +50,7 @@ public class AGVBuilder implements DomainFactory<AGV> {
 
     @Override
     public AGV build() {
-        return new AGV(this.autonomy,this.capacity,this.weight,this.volume,this.shortDescription,this.agvDocks);
+        return new AGV(this.autonomy,this.capacity,this.weight,this.volume,this.shortDescription, this.agvDocks);
     }
 
     @Override

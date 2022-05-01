@@ -38,8 +38,8 @@ public class AGV implements Serializable, AggregateRoot<Long> {
     private AGVState agvState;
 
 
+    @Column(name = "agv_dock")
     @Embedded
-    @Column(name = "docking_point")
     private DockingPoint agvDocks;
 
 
@@ -85,5 +85,19 @@ public class AGV implements Serializable, AggregateRoot<Long> {
     @Override
     public Long identity() {
         return this.id;
+    }
+
+    @Override
+    public String toString() {
+        return "AGV{" +
+                "id=" + id +
+                ", autonomy=" + autonomy +
+                ", capacity=" + capacity +
+                ", weight=" + weight +
+                ", volume=" + volume +
+                ", shortDescription='" + shortDescription + '\'' +
+                ", agvState=" + agvState +
+                ", agvDocks=" + agvDocks +
+                '}';
     }
 }

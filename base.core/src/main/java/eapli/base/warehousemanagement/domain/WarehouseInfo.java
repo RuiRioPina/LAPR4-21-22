@@ -15,6 +15,7 @@ public class WarehouseInfo {
 
     public WarehouseInfo() throws FileNotFoundException {
         warehouse = warehouseController.findWarehouse();
+        if (warehouse == null) throw new IllegalStateException("There is no warehouse plant.");
         warehouseWithTheLists = warehouseController.buildWarehousePlant(warehouse.getJsonPath());
         warehouseController.buildShelves(warehouseWithTheLists);
     }

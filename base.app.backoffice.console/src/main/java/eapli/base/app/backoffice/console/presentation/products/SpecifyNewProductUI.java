@@ -18,6 +18,7 @@ import eapli.framework.presentation.console.SelectWidget;
 
 import javax.swing.*;
 import java.io.FileNotFoundException;
+import java.util.NoSuchElementException;
 
 public class SpecifyNewProductUI extends AbstractUI {
 
@@ -39,148 +40,156 @@ public class SpecifyNewProductUI extends AbstractUI {
         System.out.println("Product Location");
 
         WarehouseInfo warehouseInfo = null;
+        boolean validation = false;
+
         try {
             warehouseInfo = new WarehouseInfo();
+            validation = true;
         } catch (FileNotFoundException e) {
             e.printStackTrace();
+        } catch (NoSuchElementException e) {
+            System.out.println("To specify a new product you need a warehouse plant for its location. Please upload one first.");
+            validation = false;
         }
+        if (validation) {
+            StorageArea storageArea;
+            Aisle theAisle;
+            int aisleId;
+            Row theRow;
+            int rowId;
+            Shelf theShelf;
+            int shelfPosition;
 
-        StorageArea storageArea;
-        boolean validation = false;
-        Aisle theAisle; int aisleId;
-        Row theRow; int rowId;
-        Shelf theShelf; int shelfPosition;
+            do {
+                assert warehouseInfo != null;
+                do {
+                    theAisle = selectAisle(warehouseInfo);
+                } while (theAisle == null);
+                aisleId = theAisle.getId();
 
-        do {
-        assert warehouseInfo != null;
-        do {
-            theAisle = selectAisle(warehouseInfo);
-        } while (theAisle == null);
-        aisleId = theAisle.getId();
+                do {
+                    theRow = selectRow(warehouseInfo, theAisle);
+                } while (theRow == null);
+                rowId = theRow.getId();
 
-        do {
-            theRow = selectRow(warehouseInfo, theAisle);
-        } while (theRow == null);
-        rowId = theRow.getId();
+                do {
+                    theShelf = selectShelf(warehouseInfo, theRow, aisleId, rowId);
+                } while (theShelf == null);
+                shelfPosition = theShelf.getPosition();
 
-        do {
-            theShelf = selectShelf(warehouseInfo, theRow, aisleId, rowId);
-        } while (theShelf == null);
-        shelfPosition = theShelf.getPosition();
+                storageArea = new StorageArea(aisleId, rowId, shelfPosition);
+                validation = repo.validateProductLocation(storageArea);
+                if (!validation) {
+                    System.out.println("--------------------------------------------------------------------------------------");
+                    System.out.println("There's already a product on this storage area. Please try again and choose other location.");
+                    System.out.println("--------------------------------------------------------------------------------------");
+                }
+            } while (!validation);
 
-        storageArea = new StorageArea(aisleId, rowId, shelfPosition);
-        validation = repo.validateProductLocation(storageArea);
-        if (!validation) {
-            System.out.println("--------------------------------------------------------------------------------------");
-            System.out.println("There's already a product on this storage area. Please try again and choose other location.");
-            System.out.println("--------------------------------------------------------------------------------------");
+            System.out.println(storageArea);
+            String name;
+            do {
+                name = Console.readLine("Name");
+                if (name.isEmpty()) {
+                    System.out.println("This field can't be empty.");
+                }
+            } while (name.isEmpty());
+
+            System.out.println("Photo (check the new window opened)");
+            String currentDirectory = "photos";
+            JFileChooser chooser = new JFileChooser(currentDirectory);
+            chooser.showSaveDialog(null);
+            String photoPath = chooser.getSelectedFile().getName();
+            System.out.println(photoPath);
+
+            String shortDescription;
+            do {
+                shortDescription = Console.readLine("Short Description");
+                if (shortDescription.isEmpty() || shortDescription.length() > 30) {
+                    System.out.println("This field can't be empty and must have a maximum of 30 chars.");
+                }
+            } while (shortDescription.isEmpty() || shortDescription.length() > 30);
+
+            String extendedDescription;
+            do {
+                extendedDescription = Console.readLine("Extended Description");
+                if (extendedDescription.length() < 20 || extendedDescription.length() > 100) {
+                    System.out.println("This field must have a minimum of 20 chars and a maximum of 100 chars.");
+                }
+            } while (extendedDescription.length() < 20 || extendedDescription.length() > 100);
+
+            String techDescription = Console.readLine("Technical Description");
+
+            String brand;
+            do {
+                brand = Console.readLine("Brand");
+                if (brand.isEmpty()) {
+                    System.out.println("This field can't be empty.");
+                }
+                if (brand.length() > 50) {
+                    System.out.println("Brand name must have a maximum of 50 chars.");
+                }
+            } while (brand.isEmpty() || brand.length() > 50);
+
+            Double priceWoTaxes = Console.readDouble("Price without Taxes €");
+            Double priceWiTaxes = Console.readDouble("Price with Taxes €");
+
+            String barcode;
+            do {
+                barcode = Console.readLine("Barcode");
+                if (barcode.isEmpty()) {
+                    System.out.println("This field can´t be empty.");
+                }
+            } while (barcode.isEmpty());
+
+            String internalCode;
+            do {
+                internalCode = Console.readLine("Internal Code");
+                if (internalCode.isEmpty()) {
+                    System.out.println("This field can't be empty.");
+                }
+                if (!internalCode.matches("^[a-zA-Z0-9]*$")) {
+                    System.out.println("Internal Code must be alphanumeric.");
+                }
+                if (internalCode.length() > 23) {
+                    System.out.println("Internal Code must have a maximum of 23 chars.");
+                }
+            } while (internalCode.isEmpty() || !internalCode.matches("^[a-zA-Z0-9]*$") || internalCode.length() > 23);
+
+            ProductBuilder productBuilder = new ProductBuilder(theProductCategory, storageArea, name, photoPath, shortDescription, extendedDescription, techDescription,
+                    brand, priceWiTaxes, priceWoTaxes, internalCode, barcode);
+
+            String productionCode;
+            do {
+                productionCode = Console.readLine("Production Code");
+                if (!productionCode.matches("^[a-zA-Z0-9]*$") && !productionCode.isEmpty()) {
+                    System.out.println("Production Code must be alphanumeric.");
+                }
+                if (productionCode.length() > 23) {
+                    System.out.println("Production Code must have a maximum of 23 chars.");
+                }
+            } while (!productionCode.matches("^[a-zA-Z0-9]*$") && !productionCode.isEmpty() || productionCode.length() > 23);
+
+            productBuilder.withProductionCode(productionCode);
+
+            String reference;
+            do {
+                reference = Console.readLine("Reference");
+                if (!reference.matches("^[a-zA-Z0-9]*$") && !reference.isEmpty()) {
+                    System.out.println("Reference must be alphanumeric.");
+                }
+                if (reference.length() > 23) {
+                    System.out.println("Reference must have a maximum of 23 chars.");
+                }
+            } while (!reference.matches("^[a-zA-Z0-9]*$") && !reference.isEmpty() || reference.length() > 23);
+
+            productBuilder.withReference(reference);
+
+            theController.specifyNewProduct(theProductCategory, storageArea, Designation.valueOf(name), photoPath, new ProductDescription(shortDescription,
+                            extendedDescription, techDescription), new Brand(brand), new Price(priceWoTaxes, priceWiTaxes),
+                    new Reference(reference), new InternalCode(internalCode), new ProductionCode(productionCode),
+                    new Barcode(barcode));
         }
-    } while (!validation);
-
-        System.out.println(storageArea);
-        String name;
-        do {
-            name = Console.readLine("Name");
-            if (name.isEmpty()) {
-                System.out.println("This field can't be empty.");
-            }
-        } while (name.isEmpty());
-
-        System.out.println("Photo (check the new window opened)");
-        String currentDirectory = "photos";
-        JFileChooser chooser = new JFileChooser(currentDirectory);
-        chooser.showSaveDialog(null);
-        String photoPath = chooser.getSelectedFile().getName();
-        System.out.println(photoPath);
-
-        String shortDescription;
-        do {
-            shortDescription = Console.readLine("Short Description");
-            if (shortDescription.isEmpty() || shortDescription.length() > 30) {
-                System.out.println("This field can't be empty and must have a maximum of 30 chars.");
-            }
-        } while (shortDescription.isEmpty() || shortDescription.length() > 30);
-
-        String extendedDescription;
-        do {
-            extendedDescription = Console.readLine("Extended Description");
-            if (extendedDescription.length() < 20 || extendedDescription.length() > 100) {
-                System.out.println("This field must have a minimum of 20 chars and a maximum of 100 chars.");
-            }
-        } while (extendedDescription.length() < 20 || extendedDescription.length() > 100);
-
-        String techDescription = Console.readLine("Technical Description");
-
-        String brand;
-        do {
-            brand = Console.readLine("Brand");
-            if (brand.isEmpty()) {
-                System.out.println("This field can't be empty.");
-            }
-            if (brand.length() > 50) {
-                System.out.println("Brand name must have a maximum of 50 chars.");
-            }
-        } while (brand.isEmpty() || brand.length() > 50);
-
-        Double priceWoTaxes = Console.readDouble("Price without Taxes €");
-        Double priceWiTaxes = Console.readDouble("Price with Taxes €");
-
-        String barcode;
-        do {
-            barcode = Console.readLine("Barcode");
-            if (barcode.isEmpty()) {
-                System.out.println("This field can´t be empty.");
-            }
-        } while (barcode.isEmpty());
-
-        String internalCode;
-        do {
-            internalCode = Console.readLine("Internal Code");
-            if (internalCode.isEmpty()) {
-                System.out.println("This field can't be empty.");
-            }
-            if (!internalCode.matches("^[a-zA-Z0-9]*$")) {
-                System.out.println("Internal Code must be alphanumeric.");
-            }
-            if (internalCode.length() > 23) {
-                System.out.println("Internal Code must have a maximum of 23 chars.");
-            }
-        } while (internalCode.isEmpty() || !internalCode.matches("^[a-zA-Z0-9]*$") || internalCode.length() > 23);
-
-        ProductBuilder productBuilder = new ProductBuilder(theProductCategory, storageArea, name, photoPath, shortDescription, extendedDescription, techDescription,
-                brand, priceWiTaxes, priceWoTaxes, internalCode, barcode);
-
-        String productionCode;
-        do {
-            productionCode = Console.readLine("Production Code");
-            if (!productionCode.matches("^[a-zA-Z0-9]*$") && !productionCode.isEmpty()) {
-                System.out.println("Production Code must be alphanumeric.");
-            }
-            if (productionCode.length() > 23) {
-                System.out.println("Production Code must have a maximum of 23 chars.");
-            }
-        } while (!productionCode.matches("^[a-zA-Z0-9]*$") && !productionCode.isEmpty() || productionCode.length() > 23);
-
-        productBuilder.withProductionCode(productionCode);
-
-        String reference;
-        do {
-            reference = Console.readLine("Reference");
-            if (!reference.matches("^[a-zA-Z0-9]*$") && !reference.isEmpty()) {
-                System.out.println("Reference must be alphanumeric.");
-            }
-            if (reference.length() > 23) {
-                System.out.println("Reference must have a maximum of 23 chars.");
-            }
-        } while (!reference.matches("^[a-zA-Z0-9]*$") && !reference.isEmpty() || reference.length() > 23);
-
-        productBuilder.withReference(reference);
-
-        theController.specifyNewProduct(theProductCategory, storageArea, Designation.valueOf(name), photoPath, new ProductDescription(shortDescription,
-                        extendedDescription, techDescription), new Brand(brand), new Price(priceWoTaxes, priceWiTaxes),
-                new Reference(reference), new InternalCode(internalCode), new ProductionCode(productionCode),
-                new Barcode(barcode));
-
         return true;
     }
 

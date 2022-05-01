@@ -100,8 +100,7 @@ public class Warehouse implements AggregateRoot<Long>, Serializable {
                 "Aisles:" + aisle + "\n" +
                 "-----------------------\n" +
                 "AGV Dock:" + agvDocks + "\n" +
-                "-----------------------\n" +
-                "AGV:" + agvs + "\n";
+                "-----------------------\n";
 
     }
 }

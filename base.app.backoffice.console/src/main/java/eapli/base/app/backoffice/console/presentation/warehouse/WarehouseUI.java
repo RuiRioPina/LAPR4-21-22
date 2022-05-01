@@ -15,13 +15,11 @@ public class WarehouseUI extends AbstractUI {
 
     @Override
     protected boolean doShow() {
-        WarehouseInfo warehouseInfo = null;
         String response = "y";
         boolean alreadyExistsInDatabase = theController.alreadyInDatabase();
         if (alreadyExistsInDatabase) {
             response = Console.readLine("Warehouse plant is already database do you want still to import it?");
         }
-        /*&& theController.alreadyInDatabase()*/
         if (((response.equalsIgnoreCase("y") || response.equalsIgnoreCase("yes")) && theController.alreadyInDatabase()) || !theController.alreadyInDatabase()) {
             String fileName;
 
@@ -41,14 +39,6 @@ public class WarehouseUI extends AbstractUI {
                     passed = false;
                 }
             } while (!passed);
-        }
-        try {
-            warehouseInfo = new WarehouseInfo();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-        for (Aisle aisle : warehouseInfo.getAisles()) {
-            System.out.println(aisle);
         }
         return true;
     }

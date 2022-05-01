@@ -60,7 +60,7 @@ public class AddCustomerUI extends AbstractUI {
         final String email = inputEmail();
         final String phoneNumber = inputPhoneNumber();
 
-        String response = Console.readLine("Birthday: This field is optional. Do you want to define it?");
+        String response = Console.readLine("Birthday: This field is optional. Do you want to define it? (y/n)");
         if (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
             boolean passedValidation;
             do {
@@ -73,12 +73,12 @@ public class AddCustomerUI extends AbstractUI {
                 }
             } while (!passedValidation);
         }
-        response = Console.readLine("Gender: This field is optional. Do you want to define it?");
+        response = Console.readLine("Gender: This field is optional. Do you want to define it? (y/n)");
         if (response.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
             gender = selectGender();
 
         }
-        response = Console.readLine("Address: This field is optional. Do you want to define it?");
+        response = Console.readLine("Address: This field is optional. Do you want to define it? (y/n)");
         String moreAddresses;
         Address address;
         List<Address> addresses = new ArrayList<>();
@@ -86,7 +86,7 @@ public class AddCustomerUI extends AbstractUI {
             do {
                 address = askAddress();
                 addresses.add(address);
-                moreAddresses = Console.readLine("Do you want to define more addresses? (yes|no)");
+                moreAddresses = Console.readLine("Do you want to define more addresses? (y|n)");
             } while (moreAddresses.equalsIgnoreCase("yes") || moreAddresses.equalsIgnoreCase("y"));
         }
         Customer customer = null;
@@ -133,13 +133,14 @@ public class AddCustomerUI extends AbstractUI {
             System.out.println(i + ". " + genderValues);
             i++;
         }
-        genderString = Console.readLine("");
-
-        if (genderString.equals("1")) {
-            genderResult = Gender.MALE;
-        } else if (genderString.equals("2")) {
-            genderResult = Gender.FEMALE;
-        }
+        do {
+            genderString = Console.readLine("");
+            if (genderString.equals("1")) {
+                genderResult = Gender.MALE;
+            } else if (genderString.equals("2")) {
+                genderResult = Gender.FEMALE;
+            }
+        } while (!(genderString.equals("1") || genderString.equals("2")));
         return genderResult;
     }
 
@@ -152,13 +153,15 @@ public class AddCustomerUI extends AbstractUI {
             System.out.println(i + ". " + addressType1);
             i++;
         }
-        addressTypeString = Console.readLine("");
 
-        if (addressTypeString.equals("1")) {
-            addressType = AddressType.BILLING;
-        } else if (addressTypeString.equals("2")) {
-            addressType = AddressType.SHIPMENT;
-        }
+        do {
+            addressTypeString = Console.readLine("");
+            if (addressTypeString.equals("1")) {
+                addressType = AddressType.BILLING;
+            } else if (addressTypeString.equals("2")) {
+                addressType = AddressType.SHIPMENT;
+            }
+        } while (!(addressTypeString.equals("1") || addressTypeString.equals("2")));
         return addressType;
     }
 

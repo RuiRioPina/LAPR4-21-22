@@ -26,6 +26,7 @@
     <class>eapli.base.agv.domain.AGV</class>
     <class>eapli.base.agv.domain.AGVState</class>
     <class>eapli.base.agv.domain.AGVModel</class>
+    <class>eapli.base.agv.domain.DockingPoint</class>
 
     <class>java.time.LocalDate</class>
 

@@ -112,22 +112,22 @@ public class MainMenu extends AbstractUI {
     private static final int REPORTING_DISHES_OPTION = 8;
     // CATEGORY
     private static final int REGISTER_NEW_CATEGORY = 1;
-    private static final int MAIN_MENU_CATEGORY=3;
+    private static final int MAIN_MENU_CATEGORY = 3;
     // PRODUCTS
     private static final int SPECIFY_NEW_PRODUCT = 1;
     private static final int CREATE_PRODUCT_ORDER = 2;
     // WAREHOUSE
     private static final int SET_UP_NEW_WAREHOUSE = 1;
+    private static final int WAREHOUSE = 2;
     private static final int CREATE_AGV = 2;
-    private static final int WAREHOUSE = 3;
     //Product Catalog
-    private static final int CHECK_PRODUCT_CATALOG=1;
+    private static final int CHECK_PRODUCT_CATALOG = 1;
 
-    private static final int CHECK_PRODUCT_CATALOG_CATEGORY=2;
-    private static final int CHECK_PRODUCT_CATALOG_BRAND=3;
-    private static final int CHECK_PRODUCT_CATALOG_DESCRIPTION=4;
+    private static final int CHECK_PRODUCT_CATALOG_CATEGORY = 2;
+    private static final int CHECK_PRODUCT_CATALOG_BRAND = 3;
+    private static final int CHECK_PRODUCT_CATALOG_DESCRIPTION = 4;
 
-    private static final int CHECK_PRODUCT_CATALOG_BRAND_CATEGORY=5;
+    private static final int CHECK_PRODUCT_CATALOG_BRAND_CATEGORY = 5;
 
     private static final String SEPARATOR_LABEL = "--------------";
 
@@ -172,24 +172,24 @@ public class MainMenu extends AbstractUI {
         }
 
         //Sales Clerk Menu
-        if(authz.isAuthenticatedUserAuthorizedTo(BaseRoles.SALES_CLERK)) {
+        if (authz.isAuthenticatedUserAuthorizedTo(BaseRoles.SALES_CLERK)) {
             final Menu salesClerkMenu = buildSalesClerkMenu();
-            mainMenu.addSubMenu(USERS_OPTION,salesClerkMenu);
+            mainMenu.addSubMenu(USERS_OPTION, salesClerkMenu);
 
             final Menu registerCategoryMenu = BuildCategoryMenu();
-            mainMenu.addSubMenu(MAIN_MENU_CATEGORY,registerCategoryMenu);
+            mainMenu.addSubMenu(MAIN_MENU_CATEGORY, registerCategoryMenu);
 
             final Menu customerMenu = buildUsersMenu();
-            mainMenu.addSubMenu(CUSTOMERS_OPTION,customerMenu);
+            mainMenu.addSubMenu(CUSTOMERS_OPTION, customerMenu);
 
-            final Menu productCatalogMenu=buildProductCatalogMenu();
-            mainMenu.addSubMenu(PRODUCT_CATALOG_OPTION,productCatalogMenu);
+            final Menu productCatalogMenu = buildProductCatalogMenu();
+            mainMenu.addSubMenu(PRODUCT_CATALOG_OPTION, productCatalogMenu);
 
         }
 
-        if(authz.isAuthenticatedUserAuthorizedTo(BaseRoles.WAREHOUSE_EMPLOYEE)) {
+        if (authz.isAuthenticatedUserAuthorizedTo(BaseRoles.WAREHOUSE_EMPLOYEE)) {
             final Menu warehouseEmployeeMenu = buildWarehouseEmployeeMenu();
-            mainMenu.addSubMenu(WAREHOUSE,warehouseEmployeeMenu);
+            mainMenu.addSubMenu(WAREHOUSE, warehouseEmployeeMenu);
 
         }
 
@@ -236,8 +236,9 @@ public class MainMenu extends AbstractUI {
 
     private Menu buildSalesClerkMenu() {
         final Menu menu = new Menu("Products >");
+
         menu.addItem(SPECIFY_NEW_PRODUCT, "Specify New Product", new SpecifyNewProductUI()::show);
-        menu.addItem(CREATE_PRODUCT_ORDER,"Place New Product Order", new CreateProductOrderUI()::show);
+        menu.addItem(CREATE_PRODUCT_ORDER, "Place New Product Order", new CreateProductOrderUI()::show);
 
         final Menu menuCategory = new Menu("Categories >");
         menuCategory.addItem(REGISTER_NEW_CATEGORY, "Register New Category", new RegisterNewCategoryUI()::show);
@@ -247,31 +248,31 @@ public class MainMenu extends AbstractUI {
     private Menu buildWarehouseEmployeeMenu() {
         final Menu menu = new Menu("Warehouse Management Menu");
         menu.addItem(SET_UP_NEW_WAREHOUSE, "Set Up New Warehouse", new WarehouseUI()::show);
+
         try {
             menu.addItem(CREATE_AGV, "Configure New AGV", new CreateAGVUI()::show);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
         return menu;
     }
 
-    private Menu BuildCategoryMenu(){
+    private Menu BuildCategoryMenu() {
         final Menu menuCategory = new Menu("Categories >");
         menuCategory.addItem(REGISTER_NEW_CATEGORY, "Register New Category", new RegisterNewCategoryUI()::show);
         return menuCategory;
     }
 
-    private Menu buildProductCatalogMenu(){
-        final Menu menuProductCatalog= new Menu("Product Catalog >");
-        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG,"Check All Items",new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG)::show);
-        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_CATEGORY,"Check Based On Category",new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_CATEGORY)::show);
-        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_BRAND,"Check Based On Brand",new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_BRAND)::show);
-        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_DESCRIPTION,"Check Based On Description",new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_DESCRIPTION)::show);
-        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_BRAND_CATEGORY,"Check Based On Brand and Categpry",new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_BRAND_CATEGORY)::show);
+    private Menu buildProductCatalogMenu() {
+        final Menu menuProductCatalog = new Menu("Product Catalog >");
+        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG, "Check All Items", new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG)::show);
+        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_CATEGORY, "Check Based On Category", new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_CATEGORY)::show);
+        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_BRAND, "Check Based On Brand", new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_BRAND)::show);
+        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_DESCRIPTION, "Check Based On Description", new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_DESCRIPTION)::show);
+        menuProductCatalog.addItem(CHECK_PRODUCT_CATALOG_BRAND_CATEGORY, "Check Based On Brand and Categpry", new CheckProductCatalogUI(CHECK_PRODUCT_CATALOG_BRAND_CATEGORY)::show);
         return menuProductCatalog;
     }
-
-
 
 
 }
