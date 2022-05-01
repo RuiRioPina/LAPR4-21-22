@@ -57,10 +57,10 @@ public class AGVBuilder implements DomainFactory<AGV> {
     public String toString(){
         return "AGV: " + "\n" +
                 "----------------------------" + "\n" +
-                "Autonomy (in minutes):      " + this.autonomy +"\n" +
-                "Capacity (in kg):           " + String.format("%.2f", this.capacity) + "\n" +
-                "Weight (in kg):             " + String.format("%.2f", this.weight) + "\n" +
-                "Volume (in dm^3):           " + String.format("%.2f", this.volume) + "\n" +
+                "Autonomy (minutes):         " + this.autonomy +"\n" +
+                "Capacity (kg):              " + String.format("%.2f", this.capacity) + "\n" +
+                "Weight (kg):                " + String.format("%.2f", this.weight) + "\n" +
+                "Volume (dm^3):              " + String.format("%.2f", this.volume) + "\n" +
                 "Short Description:          " + shortDescription + "\n" +
                 "Base Location (AGV Dock):   " + this.agvDocks + "\n" +
                 "----------------------------" + "\n";

@@ -1,6 +1,7 @@
 package eapli.base.agv.domain;
 
 import eapli.framework.domain.model.AggregateRoot;
+import eapli.framework.domain.model.DomainEntities;
 import eapli.framework.validations.Preconditions;
 
 import javax.persistence.*;
@@ -50,7 +51,7 @@ public class AGV implements Serializable, AggregateRoot<Long> {
         this.weight = weight;
         this.volume = volume;
         this.shortDescription = shortDescription;
-        this.agvState = AGVState.INACTIVE;
+        this.agvState = AGVState.FREE;
     }
 
     public AGV() {
@@ -64,7 +65,7 @@ public class AGV implements Serializable, AggregateRoot<Long> {
         this.weight = weight;
         this.volume = volume;
         this.shortDescription = shortDescription;
-        this.agvState = AGVState.INACTIVE;
+        this.agvState = AGVState.FREE;
         this.agvDocks = agvDock;
     }
 
@@ -79,7 +80,7 @@ public class AGV implements Serializable, AggregateRoot<Long> {
 
     @Override
     public boolean sameAs(Object other) {
-        return false;
+        return DomainEntities.areEqual(this, other);
     }
 
     @Override
@@ -89,15 +90,16 @@ public class AGV implements Serializable, AggregateRoot<Long> {
 
     @Override
     public String toString() {
-        return "AGV{" +
-                "id=" + id +
-                ", autonomy=" + autonomy +
-                ", capacity=" + capacity +
-                ", weight=" + weight +
-                ", volume=" + volume +
-                ", shortDescription='" + shortDescription + '\'' +
-                ", agvState=" + agvState +
-                ", agvDocks=" + agvDocks +
-                '}';
+        return "AGV: \n" +
+                "----------------------------" + "\n" +
+                "Id:                         " + id + "\n" +
+                "Autonomy (minutes):         " + autonomy + "\n" +
+                "Capacity (kg):              " + capacity + "\n" +
+                "Weight (kg):                " + weight + "\n" +
+                "Volume (dm^3):              " + volume + "\n" +
+                "Short Description:         '" + shortDescription + '\'' + "\n" +
+                "AGV State:                  " + agvState + "\n" +
+                "Base Location (AGV Dock:    " + agvDocks + "\n" +
+                "----------------------------";
     }
 }

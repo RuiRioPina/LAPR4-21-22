@@ -18,26 +18,18 @@ public class CreateAGVController {
         AB = new AGVBuilder();
     }
 
-    public AGV createAGV(Integer autonomy, Double capacity, Double weight, Double volume
+    public void createAGV(Integer autonomy, Double capacity, Double weight, Double volume
                         , String shortDescription, DockingPoint dockingPoint) {
         this.AB = AB.createAGV(autonomy, capacity, weight, volume, shortDescription, dockingPoint);
-        return AB.build();
-    }
-
-    public void setAGVDock(DockingPoint agvDock) {
-        this.AB = AB.withAGVDock(agvDock);
-    }
-
-    public boolean checkAGVDockAvailability(List<DockingPoint> lFreeDocks) {
-        return !lFreeDocks.isEmpty();
     }
 
     public String showAGVBuilder() {
         return this.AB.toString();
     }
 
-    public void saveAGV(AGV agv) {
-        this.aRepo.save(agv);
+    public AGV saveAGV() {
+        AGV agv = AB.build();
+        return this.aRepo.save(agv);
     }
 
 }

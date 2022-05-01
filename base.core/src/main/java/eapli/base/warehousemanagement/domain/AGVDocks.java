@@ -26,10 +26,12 @@ public class AGVDocks {
     @Override
     public String toString() {
         return "\nAGVDock: \n" +
+                "----------------------------" + "\n" +
                 "id: " + id + "\n" +
                 begin + "\n" +
                 end + "\n" +
                 depth + "\n" +
-                "accessibility=" + accessibility;
+                "accessibility=" + accessibility + "\n" +
+                "----------------------------" + "\n" ;
     }
 }

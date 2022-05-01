@@ -4,7 +4,9 @@ import eapli.base.agv.application.CreateAGVController;
 import eapli.base.agv.domain.AGV;
 import eapli.base.agv.domain.DockingPoint;
 import eapli.base.agv.repositories.AGVRepository;
+import eapli.base.app.backoffice.console.presentation.Utils.Utils;
 import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.productOrder.domain.ProductOrder;
 import eapli.base.warehousemanagement.domain.AGVDocks;
 import eapli.base.warehousemanagement.domain.WarehouseInfo;
 import eapli.framework.io.util.Console;
@@ -97,48 +99,47 @@ public class CreateAGVUI extends AbstractUI {
 
 
             AGVDocks agvDock;
-            agvDock = selectAgvDock(warehouseInfo);
+            boolean a = false;
+            do {
+                agvDock = selectAgvDock(warehouseInfo);
+
+                a = repo.validateAgvBaseLocation(agvDock.getId());
+
+            }while(!a);
 
             DockingPoint dockingPoint = new DockingPoint(agvDock.getId());
+
+
             System.out.println(dockingPoint);
-            AGV agv = this.ctrl.createAGV(autonomy, capacity, weight, volume, shortDescription, dockingPoint);
-
-            System.out.println(agv);
-
-            this.ctrl.saveAGV(agv);
 
 
-//        List<DockingPoint> lAGVdocks = this.ctrl.getFreeDocks();
-//
-//        if (this.ctrl.checkAGVDockAvailability(lAGVdocks)) {
-//            System.out.println("The warehouse has free AGV docks!\n");
-//            DockingPoint agvDock = (DockingPoint) Utils.selectsObject(lAGVdocks);
-//
-//            this.ctrl.setAGVDock(agvDock);
-//            System.out.print("\n" +
-//                    "Resulting AGV class: \n" +
-//                    this.ctrl.showAGVBuilder());
-//
-//            String confirmation;
-//            do {
-//                confirmation = Utils.readLineFromConsole("Do you wish to confirm the creation of this order?(Y/N)\n");
-//                if (confirmation.equalsIgnoreCase("y")) {
-//                    AGV newAGV = this.ctrl.saveAGV(agv);
-//
-//                    if (newAGV != null) {
-//                        System.out.print("\nOperation successfully completed!");
-//                    } else {
-//                        System.out.println("\nOh no! Something went wrong when creating the AGV!");
-//                    }
-//                } else if (confirmation.equalsIgnoreCase("n")) {
-//                    System.out.print("\nOperation successfully canceled!");
-//                } else {
-//                    System.out.println("Enter Y to confirm, or N to cancel the AGV!");
-//                }
-//            } while (!confirmation.equalsIgnoreCase("y") || !confirmation.equalsIgnoreCase("n"));
-//        } else {
-//            System.out.println("There are no free docks in the warehouse!");
-//        }
+            this.ctrl.createAGV(autonomy, capacity, weight, volume, shortDescription, dockingPoint);
+
+            System.out.println("Resulting AGV class: ");
+            System.out.println(this.ctrl.showAGVBuilder());
+
+            String confirmation = null;
+            do {
+                confirmation= Utils.readLineFromConsole("Do you wish to create this AGV?(Y/N)");
+                if(confirmation.equalsIgnoreCase("y")) {
+                    AGV newAGV = this.ctrl.saveAGV();
+
+                    if(newAGV != null) {
+                        System.out.println(newAGV);
+                        System.out.print("Operation successfully completed!\n");
+                        break;
+                    } else {
+                        System.out.println("Oh no! Something went wrong when creating the AGV!\n");
+                        break;
+                    }
+                } else if (confirmation.equalsIgnoreCase("n")) {
+                    System.out.print("Operation successfully canceled!\n");
+                    break;
+                } else {
+                    System.out.println("Enter Y to confirm, or N to cancel the AGV!");
+                }
+
+            }while(!confirmation.equalsIgnoreCase("y") || !confirmation.equalsIgnoreCase("n"));
         }
         return false;
     }

@@ -18,11 +18,11 @@
     <class>eapli.base.clientusermanagement.domain.PhoneNumber</class>
     <class>eapli.base.clientusermanagement.domain.Vat</class>
     <class>eapli.base.warehousemanagement.domain.Warehouse</class>
-    <class>eapli.base.order.domain.Order</class>
-    <class>eapli.base.order.domain.OrderState</class>
-    <class>eapli.base.order.domain.Shipment</class>
-    <class>eapli.base.order.domain.Payment</class>
-    <class>eapli.base.order.domain.OrderLine</class>
+    <class>eapli.base.productOrder.domain.ProductOrder</class>
+    <class>eapli.base.productOrder.domain.OrderState</class>
+    <class>eapli.base.productOrder.domain.Shipment</class>
+    <class>eapli.base.productOrder.domain.Payment</class>
+    <class>eapli.base.productOrder.domain.OrderLine</class>
     <class>eapli.base.agv.domain.AGV</class>
     <class>eapli.base.agv.domain.AGVState</class>
     <class>eapli.base.agv.domain.AGVModel</class>

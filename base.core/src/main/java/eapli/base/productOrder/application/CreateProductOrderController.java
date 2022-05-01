@@ -1,11 +1,12 @@
-package eapli.base.order.application;
+package eapli.base.productOrder.application;
 
+import eapli.base.clientusermanagement.domain.Address;
 import eapli.base.clientusermanagement.domain.Customer;
 import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
-import eapli.base.order.domain.Order;
-import eapli.base.order.domain.OrderBuilder;
-import eapli.base.order.repositories.OrderRepository;
+import eapli.base.productOrder.domain.OrderBuilder;
+import eapli.base.productOrder.domain.ProductOrder;
+import eapli.base.productOrder.repositories.OrderRepository;
 import eapli.base.product.domain.Product;
 import eapli.base.productcatalog.CheckProductCatalogService;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
@@ -33,13 +34,13 @@ public class CreateProductOrderController {
     }
 
     public List<Customer> getCustomerList(){
-        List<Customer> actualList = new ArrayList<Customer>();
-        this.cRepo.findAllActive().iterator().forEachRemaining(actualList::add);
+        List<Customer> actualList = new ArrayList<>();
+        this.cRepo.findAll().iterator().forEachRemaining(actualList::add);
         return actualList;
     }
 
-    public void createOrder(Long customerId){
-        this.OB = new OrderBuilder(customerId);
+    public void createOrder(Long customerId, Address delivery, Address billing){
+        this.OB = new OrderBuilder(customerId,delivery,billing);
     }
 
     public List<Product> getProductList(){
@@ -48,16 +49,18 @@ public class CreateProductOrderController {
         return actualList;
     }
 
-    public boolean addProductToOrder(Product product, int quantity){
-        return this.OB.addProduct(product,quantity).equals(OrderBuilder.class);
+    public void addProductToOrder(Product product, int quantity){
+        this.OB = this.OB.addProduct(product,quantity);
     }
 
     public String showOrderBuilder(){
         return this.OB.toString();
     }
 
-    public Order saveOrder(){
-        return this.oRepo.save(this.OB.build());
+    public ProductOrder saveOrder(){
+        ProductOrder newProductOrder = this.OB.build();
+
+        return this.oRepo.save(newProductOrder);
     }
 
 }
