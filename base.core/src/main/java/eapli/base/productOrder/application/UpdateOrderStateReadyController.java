@@ -4,7 +4,6 @@ import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.productOrder.domain.OrderState;
 import eapli.base.productOrder.domain.ProductOrder;
 import eapli.base.productOrder.repositories.OrderRepository;
-import org.aspectj.weaver.ast.Or;
 
 public class UpdateOrderStateReadyController {
 

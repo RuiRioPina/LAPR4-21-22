@@ -19,11 +19,10 @@ public class UpdateOrderStateReadyUI extends AbstractUI {
         Iterable<ProductOrder> lProdOrder = ctrl.getListProductOrders();
         int i = 1;
 
-
         System.out.print("Order List: \n" +
                 "--------------------------------------------------------------\n");
         for (ProductOrder prod : lProdOrder ) {
-            if(prod.getOrderState().toString().equals(OrderState.DISPATCHED.toString())){
+            if(prod.getOrderState().toString().equals(OrderState.READY_FOR_CARRIER.toString())){
                 System.out.println(i + " - \n" + prod.shortToString());
                 i++;
             }
