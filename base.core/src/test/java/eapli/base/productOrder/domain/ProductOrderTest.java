@@ -17,6 +17,7 @@ public class ProductOrderTest {
     private final Price TOTALAMOUNT = new Price(0.0,0.0);
     private final Payment PAYMENT = Payment.PAYPAL;
     private final Shipment SHIPMENT = Shipment.STANDARD;
+    private final OrderState ORDERSTATE = OrderState.REGISTERED;
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureNullIsNotAllowed() {
@@ -25,38 +26,38 @@ public class ProductOrderTest {
 
     @Test
     public void productOrder(){
-        new ProductOrder(DATE,CUSTOMERID,DELIVERYADDRESS,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT);
+        new ProductOrder(DATE,CUSTOMERID,DELIVERYADDRESS,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT,ORDERSTATE);
         assertTrue(true);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureMustHaveCustomerID(){
-        new ProductOrder(DATE , null,DELIVERYADDRESS,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT);
+        new ProductOrder(DATE , null,DELIVERYADDRESS,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT,ORDERSTATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureMustHaveDate(){
-        new ProductOrder(null , CUSTOMERID,DELIVERYADDRESS,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT);
+        new ProductOrder(null , CUSTOMERID,DELIVERYADDRESS,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT,ORDERSTATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureMustHaveBillingAddress(){
-        new ProductOrder(DATE , CUSTOMERID,DELIVERYADDRESS,null,null,TOTALAMOUNT,PAYMENT,SHIPMENT);
+        new ProductOrder(DATE , CUSTOMERID,DELIVERYADDRESS,null,null,TOTALAMOUNT,PAYMENT,SHIPMENT,ORDERSTATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureMustHaveDeliveryAddress(){
-        new ProductOrder(DATE , CUSTOMERID,null,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT);
+        new ProductOrder(DATE , CUSTOMERID,null,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT,ORDERSTATE);
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureMustHaveTotalAmount(){
-        new ProductOrder(DATE , CUSTOMERID,DELIVERYADDRESS,BILLINGADDRESS,null,null,PAYMENT,SHIPMENT);
+        new ProductOrder(DATE , CUSTOMERID,DELIVERYADDRESS,BILLINGADDRESS,null,null,PAYMENT,SHIPMENT,ORDERSTATE);
     }
 
     @Test
     public void ensureProductOrderIsSameAsItsInstance(){
-        ProductOrder p = new ProductOrder(DATE,CUSTOMERID,DELIVERYADDRESS,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT);
+        ProductOrder p = new ProductOrder(DATE,CUSTOMERID,DELIVERYADDRESS,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT,ORDERSTATE);
         boolean expected = p.sameAs(p);
         assertTrue(expected);
     }

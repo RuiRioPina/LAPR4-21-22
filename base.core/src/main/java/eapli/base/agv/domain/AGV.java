@@ -1,11 +1,14 @@
 package eapli.base.agv.domain;
 
+import eapli.base.productOrder.domain.ProductOrder;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.domain.model.DomainEntities;
 import eapli.framework.validations.Preconditions;
 
 import javax.persistence.*;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 public class AGV implements Serializable, AggregateRoot<Long> {
@@ -42,6 +45,10 @@ public class AGV implements Serializable, AggregateRoot<Long> {
     @Column(name = "agv_dock")
     @Embedded
     private DockingPoint agvDocks;
+
+    @CollectionTable(name = "product_order_queue")
+    @OneToMany
+    private List<ProductOrder> productOrderQueue = new ArrayList<>();
 
 
     public AGV(Integer autonomy, Double capacity, Double weight, Double volume, String shortDescription) {
@@ -101,5 +108,20 @@ public class AGV implements Serializable, AggregateRoot<Long> {
                 "AGV State:                  " + agvState + "\n" +
                 "Base Location (AGV Dock:    " + agvDocks + "\n" +
                 "----------------------------";
+    }
+
+    public String printTaskOrder() {
+        int i = 1;
+        String result = "";
+        for (ProductOrder prod: this.productOrderQueue) {
+            result += i + " - ProductOrder#" + prod.identity() + ", " + prod.getOrderState().toString() + "\n";
+            i++;
+        }
+        return result;
+    }
+
+    public boolean addProductOrderWithPriority(ProductOrder prod){
+        this.productOrderQueue.add(0,prod);
+        return this.productOrderQueue.contains(prod);
     }
 }

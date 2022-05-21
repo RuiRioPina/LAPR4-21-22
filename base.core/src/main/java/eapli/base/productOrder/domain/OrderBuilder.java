@@ -19,6 +19,7 @@ public class OrderBuilder implements DomainFactory<ProductOrder> {
     //both payment and shipment defaulted to PAYPAL and STANDARD respectively since they aren't of much use for the current SPRINT
     private Payment payment = Payment.PAYPAL;
     private Shipment shipment = Shipment.STANDARD;
+    private OrderState orderState = OrderState.REGISTERED;
 
     public OrderBuilder(){
 
@@ -55,7 +56,7 @@ public class OrderBuilder implements DomainFactory<ProductOrder> {
         return new ProductOrder(LocalDate.now(),
                 this.customerId, this.deliveryAddress,
                 this.billingAddress, this.productIntegerMap,
-                this.totalAmount, this.payment, this.shipment);
+                this.totalAmount, this.payment, this.shipment, this.orderState);
     }
 
     @Override
@@ -80,5 +81,10 @@ public class OrderBuilder implements DomainFactory<ProductOrder> {
         }
 
         return productList;
+    }
+
+    public OrderBuilder setOrderState(OrderState orderState) {
+        this.orderState = orderState;
+        return this;
     }
 }

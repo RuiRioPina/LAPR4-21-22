@@ -30,6 +30,7 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @Column(name="product_order_id", nullable = false)
     private Long id;
 
     @Column(name = "date")
@@ -94,7 +95,7 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
         this.totalAmount = totalAmount;
     }
 
-    public ProductOrder(LocalDate now, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount, Payment payment, Shipment shipment) {
+    public ProductOrder(LocalDate now, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount, Payment payment, Shipment shipment, OrderState orderState) {
         Preconditions.noneNull(customerId,now,billingAddress,deliveryAddress,totalAmount);
         this.customerId = customerId;
         this.date = now;
@@ -104,7 +105,7 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
         this.totalAmount = totalAmount;
         this.shipment = shipment;
         this.payment = Payment.PAYPAL;
-        this.orderState = OrderState.REGISTERED;
+        this.orderState = orderState;
     }
 
     public void addProduct(Product product, int quantity){

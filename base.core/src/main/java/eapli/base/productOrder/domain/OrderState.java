@@ -1,6 +1,7 @@
 package eapli.base.productOrder.domain;
 
 import eapli.framework.domain.model.ValueObject;
+import org.hibernate.criterion.Order;
 
 import java.io.Serializable;
 
@@ -14,5 +15,4 @@ public enum OrderState implements ValueObject, Serializable {
     DISPATCHED,
     DELIVERED,
     RECEIVED;
-
 }

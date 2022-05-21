@@ -24,7 +24,9 @@
 package eapli.base.app.backoffice.console.presentation;
 
 import eapli.base.app.backoffice.console.presentation.agv.CreateAGVUI;
+import eapli.base.app.backoffice.console.presentation.agv.UpdateOrderStateToBePreparedUI;
 import eapli.base.app.backoffice.console.presentation.order.CreateProductOrderUI;
+import eapli.base.app.backoffice.console.presentation.order.UpdateOrderStateReadyUI;
 import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNewCategoryUI;
 import eapli.base.app.backoffice.console.presentation.clientuser.AddCustomerUI;
 import eapli.base.app.backoffice.console.presentation.productcatalog.CheckProductCatalogUI;
@@ -120,6 +122,8 @@ public class MainMenu extends AbstractUI {
     private static final int SET_UP_NEW_WAREHOUSE = 1;
     private static final int WAREHOUSE = 2;
     private static final int CREATE_AGV = 2;
+    private static final int UPDATE_ORDERSTATE_TO_BE_PREPARED = 3;
+    private static final int UPDATE_ORDERSTATE_READY = 4;
     //Product Catalog
     private static final int CHECK_PRODUCT_CATALOG = 1;
 
@@ -254,6 +258,9 @@ public class MainMenu extends AbstractUI {
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
+
+        menu.addItem(UPDATE_ORDERSTATE_TO_BE_PREPARED, "Update TO BE PREPARED product order", new UpdateOrderStateToBePreparedUI() :: show);
+        menu.addItem(UPDATE_ORDERSTATE_READY, "Update READY product order", new UpdateOrderStateReadyUI() :: show);
 
         return menu;
     }

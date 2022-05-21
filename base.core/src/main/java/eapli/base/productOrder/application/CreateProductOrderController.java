@@ -5,6 +5,7 @@ import eapli.base.clientusermanagement.domain.Customer;
 import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.productOrder.domain.OrderBuilder;
+import eapli.base.productOrder.domain.OrderState;
 import eapli.base.productOrder.domain.ProductOrder;
 import eapli.base.productOrder.repositories.OrderRepository;
 import eapli.base.product.domain.Product;
@@ -59,8 +60,11 @@ public class CreateProductOrderController {
 
     public ProductOrder saveOrder(){
         ProductOrder newProductOrder = this.OB.build();
-
         return this.oRepo.save(newProductOrder);
+    }
+
+    public void setOrderState(OrderState orderState){
+        this.OB= this.OB.setOrderState(orderState);
     }
 
 }
