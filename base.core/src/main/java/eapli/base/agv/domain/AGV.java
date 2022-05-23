@@ -32,11 +32,6 @@ public class AGV implements Serializable, AggregateRoot<Long> {
     @Column(name= "short_description")
     private String shortDescription;
 
-    /*@Enumerated
-    @Column(name = "agv_model", nullable = false)
-    private AGVModel agvModel;
-     */
-
     @Enumerated(EnumType.STRING)
     @Column(name = "agv_state")
     private AGVState agvState;
@@ -106,7 +101,7 @@ public class AGV implements Serializable, AggregateRoot<Long> {
                 "Volume (dm^3):              " + volume + "\n" +
                 "Short Description:         '" + shortDescription + '\'' + "\n" +
                 "AGV State:                  " + agvState + "\n" +
-                "Base Location (AGV Dock:    " + agvDocks + "\n" +
+                "Base Location (AGV Dock):   " + agvDocks + "\n" +
                 "----------------------------";
     }
 
@@ -121,7 +116,13 @@ public class AGV implements Serializable, AggregateRoot<Long> {
     }
 
     public boolean addProductOrderWithPriority(ProductOrder prod){
-        this.productOrderQueue.add(0,prod);
+        if(this.agvState.equals(AGVState.FREE)) {
+            this.productOrderQueue.add(0, prod);
+            this.agvState = AGVState.OCCUPIED_SERVING_A_GIVEN_ORDER;
+        } else {
+            this.productOrderQueue.add(1,prod);
+            this.agvState = AGVState.OCCUPIED_SERVING_A_GIVEN_ORDER;
+        }
         return this.productOrderQueue.contains(prod);
     }
 }

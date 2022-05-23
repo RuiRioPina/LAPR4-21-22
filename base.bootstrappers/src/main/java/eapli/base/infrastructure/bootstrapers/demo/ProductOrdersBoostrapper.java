@@ -4,14 +4,19 @@ import eapli.base.clientusermanagement.domain.Address;
 import eapli.base.clientusermanagement.domain.AddressType;
 import eapli.base.clientusermanagement.domain.Customer;
 import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.product.domain.Product;
+import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productOrder.application.CreateProductOrderController;
 import eapli.base.productOrder.domain.OrderState;
 import eapli.framework.actions.Action;
 
+import java.util.Iterator;
 import java.util.Optional;
 
 public class ProductOrdersBoostrapper implements Action {
     CreateProductOrderController ctrl = new CreateProductOrderController();
+    private final ProductRepository pRepo = PersistenceContext.repositories().products();
+    Iterator<Product> lProd = pRepo.findAll().iterator();
 
 
     @Override
@@ -43,34 +48,42 @@ public class ProductOrdersBoostrapper implements Action {
 
         ctrl.createOrder(11L,ad1,ad2);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
+        ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
 
         ctrl.createOrder(12L,ad3,ad4);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
+        ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
 
         ctrl.createOrder(13L,ad5,ad6);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
+        ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
 
         ctrl.createOrder(11L,ad7,ad8);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
+        ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
 
         ctrl.createOrder(11L,ad2,ad1);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
+        ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
 
         ctrl.createOrder(12L,ad4,ad3);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
+        ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
 
         ctrl.createOrder(13L,ad6,ad5);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
+        ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
 
         ctrl.createOrder(11L,ad8,ad7);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
+        ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
 
         return false;

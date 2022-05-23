@@ -29,9 +29,10 @@ public class UpdateOrderStateToBePreparedController {
         return rAGV.addProductOrderWithPriority(rProductOrder);
     }
 
-    public AGV save(AGV agv, AGV oldAGV){
-        this.aRepo.remove(oldAGV);
+    public AGV save(AGV agv){
+        this.aRepo.remove(agv);
         return this.aRepo.save(agv);
     }
+
 
 }
