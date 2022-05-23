@@ -31,6 +31,7 @@ import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNe
 import eapli.base.app.backoffice.console.presentation.clientuser.AddCustomerUI;
 import eapli.base.app.backoffice.console.presentation.productcatalog.CheckProductCatalogUI;
 import eapli.base.app.backoffice.console.presentation.products.SpecifyNewProductUI;
+import eapli.base.app.backoffice.console.presentation.questionnaire.DefineQuestionnaireUI;
 import eapli.base.app.backoffice.console.presentation.warehouse.WarehouseUI;
 import eapli.base.app.common.console.presentation.authz.MyUserMenu;
 import eapli.base.Application;
@@ -73,37 +74,6 @@ public class MainMenu extends AbstractUI {
     // SETTINGS
     private static final int SET_KITCHEN_ALERT_LIMIT_OPTION = 1;
 
-    // DISH TYPES
-    private static final int DISH_TYPE_REGISTER_OPTION = 1;
-    private static final int DISH_TYPE_LIST_OPTION = 2;
-    private static final int DISH_TYPE_CHANGE_OPTION = 3;
-    private static final int DISH_TYPE_ACTIVATE_DEACTIVATE_OPTION = 4;
-
-    // DISHES
-    private static final int DISH_REGISTER_OPTION = 5;
-    private static final int DISH_LIST_OPTION = 6;
-    private static final int DISH_REGISTER_DTO_OPTION = 7;
-    private static final int DISH_LIST_DTO_OPTION = 8;
-    private static final int DISH_ACTIVATE_DEACTIVATE_OPTION = 9;
-    private static final int DISH_CHANGE_OPTION = 10;
-
-    // DISH PROPERTIES
-    private static final int CHANGE_DISH_NUTRICIONAL_INFO_OPTION = 1;
-    private static final int CHANGE_DISH_PRICE_OPTION = 2;
-
-    // MATERIALS
-    private static final int MATERIAL_REGISTER_OPTION = 1;
-    private static final int MATERIAL_LIST_OPTION = 2;
-
-    // REPORTING
-    private static final int REPORTING_DISHES_PER_DISHTYPE_OPTION = 1;
-    private static final int REPORTING_HIGH_CALORIES_DISHES_OPTION = 2;
-    private static final int REPORTING_DISHES_PER_CALORIC_CATEGORY_OPTION = 3;
-
-    // MEALS
-    private static final int LIST_MEALS_OPTION = 1;
-    private static final int MEAL_REGISTER_OPTION = 2;
-
     // MAIN MENU
     private static final int MY_USER_OPTION = 1;
     private static final int USERS_OPTION = 2;
@@ -124,6 +94,12 @@ public class MainMenu extends AbstractUI {
     private static final int CREATE_AGV = 2;
     private static final int UPDATE_ORDERSTATE_TO_BE_PREPARED = 3;
     private static final int UPDATE_ORDERSTATE_READY = 4;
+
+
+    // SALES_MANAGER
+    private static final int DEFINE_NEW_QUESTIONNAIRE = 1;
+    private static final int SALES_MANAGER = 2;
+
     //Product Catalog
     private static final int CHECK_PRODUCT_CATALOG = 1;
 
@@ -197,6 +173,12 @@ public class MainMenu extends AbstractUI {
 
         }
 
+        if (authz.isAuthenticatedUserAuthorizedTo(BaseRoles.SALES_MANAGER)) {
+            final Menu salesManagerMenu = buildSalesManagerMenu();
+            mainMenu.addSubMenu(SALES_MANAGER, salesManagerMenu);
+
+        }
+
         /* example
         if (authz.isAuthenticatedUserAuthorizedTo(BaseRoles.POWER_USER, BaseRoles.ADMIN)) {
             final Menu usersMenu = buildUsersMenu();
@@ -264,6 +246,14 @@ public class MainMenu extends AbstractUI {
 
         return menu;
     }
+
+    private Menu buildSalesManagerMenu() {
+        final Menu menu = new Menu("Sales Manager Menu");
+        menu.addItem(DEFINE_NEW_QUESTIONNAIRE, "Define new Questionnaire", new DefineQuestionnaireUI()::show);
+        return menu;
+    }
+
+
 
     private Menu BuildCategoryMenu() {
         final Menu menuCategory = new Menu("Categories >");
