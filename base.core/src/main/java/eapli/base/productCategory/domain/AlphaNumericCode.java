@@ -9,7 +9,7 @@ import javax.persistence.Column;
 import javax.persistence.Embeddable;
 
 @Embeddable
-public class AlphaNumericCode implements ValueObject {
+public class AlphaNumericCode implements ValueObject, Comparable<AlphaNumericCode> {
     @Column(name="alphanumericcode")
     private String code;
 
@@ -32,5 +32,10 @@ public class AlphaNumericCode implements ValueObject {
     @Override
     public int hashCode() {
         return new HashCoder().with(code).code();
+    }
+
+    @Override
+    public int compareTo(AlphaNumericCode o) {
+        return this.code.compareTo(o.code);
     }
 }

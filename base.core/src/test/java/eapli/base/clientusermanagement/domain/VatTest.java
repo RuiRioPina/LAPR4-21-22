@@ -8,19 +8,19 @@ public class VatTest {
     @Test
     public void ensureVatMeetsMinimums() {
         Vat vat = new Vat("SK1234567890");
-        vat.vatMeetsMinimumRequirements(vat.vatId());
+        Vat.vatMeetsMinimumRequirements(vat.vatId());
     }
 
     @Test(expected = IllegalStateException.class)
     public void ensureVatDoesNotMeetMinimums() {
         Vat vat = new Vat("SK12345678");
-        vat.vatMeetsMinimumRequirements(vat.vatId());
+        Vat.vatMeetsMinimumRequirements(vat.vatId());
     }
 
     @Test(expected = IllegalArgumentException.class)
     public void ensureCannotBeNull() {
         Vat vat = new Vat(null);
-        vat.vatMeetsMinimumRequirements(vat.vatId());
+        Vat.vatMeetsMinimumRequirements(vat.vatId());
     }
 
     @Test
