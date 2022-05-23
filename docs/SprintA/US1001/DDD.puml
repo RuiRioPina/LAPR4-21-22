@@ -102,8 +102,17 @@ package Survey <<rectangle>>{
 class Survey << (E,#FFFFFF) >> <<Root>> {
 -grammar
 }
-
+class Questionnaire << (V,#FFFFFF) >>
 }
+
+
+
+
+
+
+
+
+Survey "1" --> "1" Questionnaire
 
 
 
