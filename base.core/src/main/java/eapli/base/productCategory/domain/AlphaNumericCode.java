@@ -21,6 +21,10 @@ public class AlphaNumericCode implements ValueObject, Comparable<AlphaNumericCod
         this.code=code;
     }
 
+    public String code() {
+        return code;
+    }
+
     public static AlphaNumericCode valueOf(final String code) {
         return new AlphaNumericCode(code);
     }

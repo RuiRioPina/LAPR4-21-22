@@ -1,5 +1,10 @@
 package eapli.base.questionnaire.domain;
 
+import eapli.base.questionnaire.dto.QuestionDTO;
+import eapli.base.questionnaire.dto.QuestionnaireDTO;
+import eapli.framework.domain.model.DomainEntity;
+import eapli.framework.representations.dto.DTOable;
+
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
 import javax.persistence.Transient;
@@ -7,7 +12,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Embeddable
-public class Questionnaire {
+public class Questionnaire implements DTOable<QuestionnaireDTO>, DomainEntity<String> {
     @Transient
     private String id;
     @Transient
@@ -83,4 +88,18 @@ public class Questionnaire {
         this.finalMessage = finalMessage;
     }
 
+    @Override
+    public QuestionnaireDTO toDTO() {
+        return new QuestionnaireDTO(id, title, welcomeMessage, finalMessage);
+    }
+
+    @Override
+    public boolean sameAs(Object other) {
+        return false;
+    }
+
+    @Override
+    public String identity() {
+        return id;
+    }
 }

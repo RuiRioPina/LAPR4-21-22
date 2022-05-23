@@ -27,6 +27,7 @@ import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.repositories.CategoryRepository;
 import eapli.base.clientusermanagement.repositories.SignupRequestRepository;
 import eapli.base.infrastructure.persistence.RepositoryFactory;
+import eapli.base.questionnaire.repositories.SurveyRepository;
 import eapli.base.warehousemanagement.repositories.WarehouseRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.authz.domain.repositories.UserRepository;
@@ -58,6 +59,16 @@ public class JpaRepositoryFactory implements RepositoryFactory {
     @Override
     public JpaCustomerRepository customers() {
         return new JpaCustomerRepository(Application.settings().getPersistenceUnitName());
+    }
+
+    @Override
+    public SurveyRepository surveys(TransactionalContext autoTx) {
+        return new JpaSurveyRepository(autoTx);
+    }
+
+    @Override
+    public SurveyRepository surveys() {
+        return new JpaSurveyRepository(Application.settings().getPersistenceUnitName());
     }
 
     @Override

@@ -1,10 +1,13 @@
 package eapli.base.questionnaire.domain;
 
+import eapli.base.questionnaire.dto.SectionDTO;
+import eapli.framework.domain.model.DomainEntity;
 import eapli.framework.general.domain.model.Description;
+import eapli.framework.representations.dto.DTOable;
 
 import java.util.List;
 
-public class Section {
+public class Section implements DTOable<SectionDTO>, DomainEntity<String> {
     private String id;
     private String title;
     private Description description;
@@ -79,5 +82,20 @@ public class Section {
                 ", repeatability='" + repeatability + '\'' +
                 ", content=" + content +
                 '}';
+    }
+
+    @Override
+    public SectionDTO toDTO() {
+        return new Section(id, title, description, obligatoriness, repeatability, content).toDTO();
+    }
+
+    @Override
+    public boolean sameAs(Object other) {
+        return false;
+    }
+
+    @Override
+    public String identity() {
+        return null;
     }
 }

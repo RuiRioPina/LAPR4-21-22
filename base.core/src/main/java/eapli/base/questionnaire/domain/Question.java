@@ -1,16 +1,21 @@
 package eapli.base.questionnaire.domain;
 
-public class Question {
-    private String id;
-    private String questionMessage;
-    private String instruction;
-    private QuestionType type;
-    private Obligatoriness obligatoriness;
-    private String extraInfo;
+import eapli.base.questionnaire.dto.QuestionDTO;
+import eapli.framework.domain.model.DomainEntity;
+import eapli.framework.representations.dto.DTOable;
+
+public class Question implements DTOable<QuestionDTO>, DomainEntity<String> {
+    private final String id;
+    private final String questionMessage;
+    private final String instruction;
+    private final QuestionType type;
+    private final Obligatoriness obligatoriness;
+    private final String extraInfo;
 
     public Question(String id, String questionMessage, String instruction,QuestionType type, Obligatoriness obligatoriness, String extraInfo) {
         this.id = id;
         this.questionMessage = questionMessage;
+        this.instruction = instruction;
         this.type = type;
         this.obligatoriness = obligatoriness;
         this.extraInfo = extraInfo;
@@ -20,41 +25,26 @@ public class Question {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
 
     public String getQuestionMessage() {
         return questionMessage;
     }
 
-    public void setQuestionMessage(String questionMessage) {
-        this.questionMessage = questionMessage;
-    }
 
     public QuestionType getType() {
         return type;
     }
 
-    public void setType(QuestionType type) {
-        this.type = type;
-    }
 
     public Obligatoriness getObligatoriness() {
         return obligatoriness;
     }
 
-    public void setObligatoriness(Obligatoriness obligatoriness) {
-        this.obligatoriness = obligatoriness;
-    }
 
     public String getExtraInfo() {
         return extraInfo;
     }
 
-    public void setExtraInfo(String extraInfo) {
-        this.extraInfo = extraInfo;
-    }
 
     @Override
     public String toString() {
@@ -65,5 +55,20 @@ public class Question {
                 ", obligatoriness=" + obligatoriness +
                 ", extraInfo='" + extraInfo + '\'' +
                 '}';
+    }
+
+    @Override
+    public QuestionDTO toDTO() {
+        return new QuestionDTO(id, questionMessage, instruction, type.toString(), obligatoriness.toString(), extraInfo);
+    }
+
+    @Override
+    public boolean sameAs(Object other) {
+        return false;
+    }
+
+    @Override
+    public String identity() {
+        return null;
     }
 }

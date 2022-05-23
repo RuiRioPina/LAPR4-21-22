@@ -2,13 +2,17 @@ package eapli.base.questionnaire.domain;
 
 import eapli.framework.domain.model.ValueObject;
 
+import javax.persistence.Column;
 import javax.persistence.Embeddable;
+import javax.persistence.Transient;
 import java.util.List;
 
 @Embeddable
 public class Content implements ValueObject {
+    @Column(name = "questionnaire", length = 100000)
     private String fullQuestionnaire;
 
+    @Transient
     private final StringBuilder stringBuilder = new StringBuilder();
 
 

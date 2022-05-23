@@ -26,6 +26,7 @@ import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.repositories.CategoryRepository;
 import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.clientusermanagement.repositories.SignupRequestRepository;
+import eapli.base.questionnaire.repositories.SurveyRepository;
 import eapli.base.warehousemanagement.repositories.WarehouseRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.authz.domain.repositories.UserRepository;
@@ -73,6 +74,21 @@ public interface RepositoryFactory {
      * @return
      */
     CustomerRepository customers();
+
+    /**
+     *
+     * @param autoTx
+     *            the transactional context to enroll
+     * @return
+     */
+    SurveyRepository surveys(TransactionalContext autoTx);
+
+    /**
+     * repository will be created in auto transaction mode
+     *
+     * @return
+     */
+    SurveyRepository surveys();
 
     /**
      *

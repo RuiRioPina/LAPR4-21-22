@@ -22,8 +22,9 @@ package eapli.base.app.backoffice.console.presentation.questionnaire;/*
  * SOFTWARE.
  */
 
-import eapli.base.productCategory.domain.AlphaNumericCode;
+import eapli.base.questionnaire.application.SurveyController;
 import eapli.base.questionnaire.domain.*;
+import eapli.base.questionnaire.dto.*;
 import eapli.base.usermanagement.application.AddCustomerController;
 import eapli.framework.general.domain.model.Description;
 import eapli.framework.io.util.Console;
@@ -41,9 +42,9 @@ import java.util.List;
  * <p>
  * Created by nuno on 22/03/16.
  */
-public class DefineQuestionnaireUI extends AbstractUI {
+public class DefineSurveyUI extends AbstractUI {
 
-    private final AddCustomerController theController = new AddCustomerController();
+    private final SurveyController theController = new SurveyController();
     private String alphanumericCodeString;
     private String descriptionString;
     private String period;
@@ -62,14 +63,16 @@ public class DefineQuestionnaireUI extends AbstractUI {
     private String questionnaireTitle;
     private String questionnaireId;
     private String response = "";
-    private List<Section> sectionList = new ArrayList<>();
-    private List<Question> questionList = new ArrayList<>();
-    private Questionnaire questionnaire;
+    private List<SectionDTO> sectionList = new ArrayList<>();
+    private List<QuestionDTO> questionList = new ArrayList<QuestionDTO>();
+    private QuestionnaireDTO questionnaire;
     private String instruction;
+    private int flag;
 
     @Override
     protected boolean doShow() {
         String option;
+        flag = 0;
         System.out.println("Select how you want to define the Questionnaire:");
         System.out.println("1. Input the data");
         System.out.println("2. Import text file");
@@ -79,16 +82,16 @@ public class DefineQuestionnaireUI extends AbstractUI {
 
         if (option.equals("1")) {
             questionnaire = inputData();
-            Survey survey = new Survey(AlphaNumericCode.valueOf(alphanumericCodeString), Description.valueOf(descriptionString), Period.valueOf(period), questionnaire);
-
-            System.out.println(survey);
+            SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period);
+            SurveyDTO surveys = theController.buildSurvey(surveyDTO, flag);
+            System.out.println(new SurveyDTOParser().valueOf(surveys));
         } else {
             importTextFile();
         }
         return false;
     }
 
-    private Questionnaire inputData() {
+    private QuestionnaireDTO inputData() {
         insertSurveyData();
         insertQuestionnaireData();
         while (!(response.equalsIgnoreCase("NO") || response.equalsIgnoreCase("N"))) {
@@ -99,30 +102,27 @@ public class DefineQuestionnaireUI extends AbstractUI {
             }
             response = Console.readLine("Do you want to define another section? (Y/N)");
 
-            sectionList.add(new Section(sectionId
-                    , sectionTitle
-                    , Description.valueOf(descriptionString)
-                    , obligatoriness
-                    , repeatability
-                    , questionList));
-            questionList = new ArrayList<>();
+            theController.buildSections(new SectionDTO(sectionId, sectionTitle, descriptionString, obligatoriness.toString(), repeatability));
+            theController.cleanQuestionList();
 
         }
-        return new Questionnaire(questionnaireId, questionnaireTitle, welcomeMessage, sectionList, finalMessage);
+        return theController.buildQuestionnaire(new QuestionnaireDTO(questionnaireId, questionnaireTitle, welcomeMessage/*, sectionList*/, finalMessage));
     }
 
     private void importTextFile() {
         insertSurveyData();
+        flag = 1;
         String questionnaire = "";
         try {
             questionnaire = Files.readString(Path.of("questionnaire/Question.txt"));
         } catch (IOException e) {
             e.printStackTrace();
         }
-        Survey survey = new Survey(AlphaNumericCode.valueOf(alphanumericCodeString),
-                Description.valueOf(descriptionString),
-                Period.valueOf(period), new Content(questionnaire));
-        System.out.println(survey);
+        SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period);
+        surveyDTO.content = questionnaire;
+        SurveyDTO surveys = theController.buildSurvey(surveyDTO, flag);
+
+        System.out.println(surveys);
     }
 
     private void insertSurveyData() {
@@ -148,6 +148,7 @@ public class DefineQuestionnaireUI extends AbstractUI {
         sectionTitle = Console.readLine("Section title");
         descriptionString = Console.readLine("Description");
         selectObligatoriness();
+        repeatability = Console.readLine("Repeatability");
     }
 
 
@@ -159,7 +160,7 @@ public class DefineQuestionnaireUI extends AbstractUI {
         selectQuestionType();
         selectObligatoriness();
         extraInfo = Console.readLine("Extra info");
-        questionList.add(new Question(questionId, questionMessage, instruction, questionType, obligatoriness, extraInfo));
+        questionList.add(theController.buildQuestions(new QuestionDTO(questionId, questionMessage, instruction, questionType.toString(), obligatoriness.toString(), extraInfo)));
     }
 
 
