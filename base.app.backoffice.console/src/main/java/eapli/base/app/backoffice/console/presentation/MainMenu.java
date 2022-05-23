@@ -31,7 +31,7 @@ import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNe
 import eapli.base.app.backoffice.console.presentation.clientuser.AddCustomerUI;
 import eapli.base.app.backoffice.console.presentation.productcatalog.CheckProductCatalogUI;
 import eapli.base.app.backoffice.console.presentation.products.SpecifyNewProductUI;
-import eapli.base.app.backoffice.console.presentation.questionnaire.DefineQuestionnaireUI;
+import eapli.base.app.backoffice.console.presentation.questionnaire.DefineSurveyUI;
 import eapli.base.app.backoffice.console.presentation.warehouse.WarehouseUI;
 import eapli.base.app.common.console.presentation.authz.MyUserMenu;
 import eapli.base.Application;
@@ -249,7 +249,7 @@ public class MainMenu extends AbstractUI {
 
     private Menu buildSalesManagerMenu() {
         final Menu menu = new Menu("Sales Manager Menu");
-        menu.addItem(DEFINE_NEW_QUESTIONNAIRE, "Define new Questionnaire", new DefineQuestionnaireUI()::show);
+        menu.addItem(DEFINE_NEW_QUESTIONNAIRE, "Define new Questionnaire", new DefineSurveyUI()::show);
         return menu;
     }
 
