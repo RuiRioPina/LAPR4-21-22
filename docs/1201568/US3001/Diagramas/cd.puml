@@ -1,0 +1,137 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+Class "DefineSurveyUI"{
+}
+
+Class "SurveyController"{
++buildQuestion(questionId, questionMessage, questionType, obligatoriness, extraInfo)
++buildSection(sectionId, title, description, obligatoriness, repeatability, Collection<Question> questions)
++buildQuestionnaire(questionnaireId, questionnaireTitle, welcomeMessage, sectionList, finalMessage)
+}
+
+Class "AlphanumericCode"{
+-String code
+
++AlphanumericCode(String code)
++valueOf()
++firstName()
++lastName()
++equals(Object o)
++hashCode()
++toString()
+}
+
+Class "Description"{
+-String value
+
++Description(String name)
++valueOf()
++length()
++equals(Object o)
++hashCode()
++toString()
+}
+Class "Period"{
+     -String days
+     +Period(String days)
+     +valueOf(String prefix, String phoneNumber)
+}
+Class "Questionnaire"{
+     -String id;
+     -String title;
+     -String welcomeMessage;
+     -List<Section> sections;
+     -String finalMessage;
+
++Questionnaire(id, title, welcomeMessage, sections, finalMessage)
+}
+
+Class "Section"{
+     -String id;
+     -String title;
+     -Description description
+     -Obligatoriness obligatoriness
+     -String repeatability
+     -List<Question> content;
+
+     +Section(id, title, description, obligatoriness, repeatability, content)
+}
+
+Class "Question"{
+     -String id;
+     -String questionMessage;
+     -String instruction;
+     -QuestionType type;
+     -Obligatoriness obligatoriness
+     -String extraInfo
+
+     +Question(id, questionMessage, instruction, type, obligatoriness, extraInfo)
+     +toString()
+}
+
+
+class Content {
+-String fullQuestionnaire;
+-StringBuilder stringbuilder
+
++Content(questionnaire)
++Content(fullQuestionnaire)
++buildQuestionnaireSyntax(questionnaire)
++buildSectionSyntax(sections)
++buildQuestionSyntax(question)
++toString()
+
+}
+
+class Survey{
+-AlphanumericCode alphanumericCode
+-Description description
+-Period period
+-Questionnaire questionnaire
+-Content content
+}
+
+
+
+class PersistenceContext {
+-Logger LOGGER
+-RepositoryFactory theFactory
++repositories()
+}
+
+class RepositoryFactory{
++customers()
+}
+
+class SurveyRepository{
++findById(Long number)
+}
+
+
+DefineSurveyUI..> SurveyController
+SurveyController..> Survey
+
+"AlphanumericCode" "1" <-- "1" Survey : contains
+"Description" "1" <-- "1" Survey : contains
+"Period" "1" <-- "1" Survey : contains
+"Questionnaire" "1" <-- "1" Survey : contains
+"Content" "1" <-- "1" Survey : contains
+
+"Questionnaire" "1" --> "1..*" "Section" :contains
+
+"Section" "1" --> "1..*" "Question" :contains
+
+
+
+"SurveyController" "1" --> "1" "PersistenceContext" :creates
+
+
+"PersistenceContext" "1" --> "1" "RepositoryFactory" :creates
+
+
+"RepositoryFactory" "1" --> "1" "SurveyRepository"  :creates
+
+
+"Survey" "1" --> "1" "SurveyRepository" :in
+@enduml
