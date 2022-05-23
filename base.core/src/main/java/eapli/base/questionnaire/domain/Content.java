@@ -1,10 +1,12 @@
 package eapli.base.questionnaire.domain;
 
+import eapli.framework.domain.model.ValueObject;
+
 import javax.persistence.Embeddable;
 import java.util.List;
 
 @Embeddable
-public class Content {
+public class Content implements ValueObject {
     private String fullQuestionnaire;
 
     private final StringBuilder stringBuilder = new StringBuilder();
