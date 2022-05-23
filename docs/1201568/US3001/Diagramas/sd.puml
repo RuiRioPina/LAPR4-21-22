@@ -1,0 +1,133 @@
+@startuml
+autonumber
+actor "Sales Manager" as MEDLT
+participant ":System" as SYS
+participant "Survey Controller" as CTRL
+participant "Content" as CONTENT
+participant "Survey" as SUR
+participant ":PersistenceContext<persistence>" as PC
+participant ":RepositoryFactory<factory>" as RF
+participant ":SurveyRepository" as CR
+
+
+activate MEDLT
+MEDLT-> SYS : Define new Survey
+
+activate SYS
+SYS --> MEDLT : Asks to select between inputting or importing txt
+
+deactivate SYS
+
+alt
+MEDLT-> SYS : selects inputting all the information
+activate SYS
+
+SYS -> MEDLT : asks survey related information
+
+MEDLT-> SYS : inserts survey related information
+
+
+SYS -> MEDLT : asks questionnaire related information
+
+MEDLT-> SYS : inserts questionnaire related information
+
+loop while doesn't want to define more sections
+
+SYS -> MEDLT : asks section related information
+
+MEDLT-> SYS : inserts section related information
+
+loop while doesn't want to define more questions
+SYS -> MEDLT : asks question related information
+
+MEDLT-> SYS : inserts question related information
+
+end loop
+end loop
+
+SYS -> CTRL : build()
+activate CTRL
+
+CTRL -> QUESTION**: questions = buildQuestion(questionId, questionMessage, questionType, obligatoriness, extraInfo)
+CTRL -> SEC**: sectionList = buildSection(sectionId, title, description, obligatoriness, repeatability, Collection<Question> questions)
+CTRL -> QUESTIONNAIRE**: buildQuestionnaire(questionnaireId, questionnaireTitle, welcomeMessage, sectionList, finalMessage)
+
+
+CTRL -> CONTENT**: create(questionnaire )
+
+CTRL -> SUR**: create(alphanumericCode, description, period, content)
+
+CTRL-> PC**: repositories()
+activate PC
+PC-> RF**: create
+PC-> CTRL: factory
+deactivate PC
+
+CTRL-> RF: surveys()
+activate RF
+RF->CR**: create
+
+RF->CTRL: surveyRepository
+deactivate RF
+
+CTRL->CR: save(survey)
+activate CR
+
+CTRL->SYS:
+deactivate CR
+deactivate CTRL
+
+deactivate PC
+
+
+
+SYS -> MEDLT : presents the survey created
+deactivate SYS
+
+end alt
+
+alt
+MEDLT-> SYS : selects to import a file
+
+SYS -> MEDLT : asks survey related information
+
+MEDLT-> SYS : inserts Alphanumeric code, Description, Period, Rules
+
+SYS -> MEDLT : asks the path of the file
+
+MEDLT-> SYS : inserts the path of the file
+
+SYS -> CTRL : build()
+activate CTRL
+
+CTRL -> SUR**: create(alphanumericCode, description, period, content)
+
+CTRL-> PC**: repositories()
+activate PC
+PC-> RF**: create
+PC-> CTRL: factory
+deactivate PC
+
+CTRL-> RF: surveys()
+activate RF
+RF->CR**: create
+
+RF->CTRL: surveyRepository
+deactivate RF
+
+CTRL->CR: save(survey)
+activate CR
+
+CTRL->SYS:
+deactivate CR
+deactivate CTRL
+
+deactivate PC
+
+end alt
+
+
+
+SYS -> MEDLT : presents the survey created
+deactivate SYS
+@enduml
