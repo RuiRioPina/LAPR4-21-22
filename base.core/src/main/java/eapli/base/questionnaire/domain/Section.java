@@ -56,7 +56,7 @@ public class Section implements DTOable<SectionDTO>, DomainEntity<String> {
         this.obligatoriness = obligatoriness;
     }
 
-    public String isRepeatability() {
+    public String getRepeatability() {
         return repeatability;
     }
 

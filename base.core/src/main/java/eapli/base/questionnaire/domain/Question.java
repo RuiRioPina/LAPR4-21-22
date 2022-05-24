@@ -45,6 +45,9 @@ public class Question implements DTOable<QuestionDTO>, DomainEntity<String> {
         return extraInfo;
     }
 
+    public String getInstruction() {
+        return instruction;
+    }
 
     @Override
     public String toString() {

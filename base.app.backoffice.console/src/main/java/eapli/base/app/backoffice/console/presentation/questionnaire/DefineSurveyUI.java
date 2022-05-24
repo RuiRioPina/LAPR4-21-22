@@ -195,24 +195,24 @@ public class DefineSurveyUI extends AbstractUI {
             questionTypeString = Console.readLine("");
             if (questionTypeString.equals("0")) {
                 questionType = QuestionType.FREE_TEXT;
-            } else if (obligatorinessString.equals("1")) {
+            } else if (questionTypeString.equals("1")) {
                 questionType = QuestionType.NUMERIC;
-            } else if (obligatorinessString.equals("2")) {
+            } else if (questionTypeString.equals("2")) {
                 questionType = QuestionType.SINGLE_CHOICE;
-            } else if (obligatorinessString.equals("3")) {
+            } else if (questionTypeString.equals("3")) {
                 questionType = QuestionType.SINGLE_CHOICE_INPUT_VALUE;
-            } else if (obligatorinessString.equals("4")) {
+            } else if (questionTypeString.equals("4")) {
                 questionType = QuestionType.MULTIPLE_CHOICE;
-            } else if (obligatorinessString.equals("5")) {
+            } else if (questionTypeString.equals("5")) {
                 questionType = QuestionType.MULTIPLE_CHOICE_INPUT_VALUE;
-            } else if (obligatorinessString.equals("6")) {
+            } else if (questionTypeString.equals("6")) {
                 questionType = QuestionType.SORTING_OPTIONS;
-            } else if (obligatorinessString.equals("7")) {
+            } else if (questionTypeString.equals("7")) {
                 questionType = QuestionType.SCALING_OPTIONS;
             }
-        } while (!(obligatorinessString.equals("0") || obligatorinessString.equals("1") || obligatorinessString.equals("2")
-                || obligatorinessString.equals("3") || obligatorinessString.equals("4") || obligatorinessString.equals("5")
-                || obligatorinessString.equals("6") || obligatorinessString.equals("7")));
+        } while (!(questionTypeString.equals("0") || questionTypeString.equals("1") || questionTypeString.equals("2")
+                || questionTypeString.equals("3") || questionTypeString.equals("4") || questionTypeString.equals("5")
+                || questionTypeString.equals("6") || questionTypeString.equals("7")));
     }
 
 
