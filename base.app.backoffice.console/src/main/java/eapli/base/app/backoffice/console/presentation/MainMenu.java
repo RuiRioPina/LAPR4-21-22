@@ -25,6 +25,7 @@ package eapli.base.app.backoffice.console.presentation;
 
 import eapli.base.app.backoffice.console.presentation.agv.CreateAGVUI;
 import eapli.base.app.backoffice.console.presentation.agv.UpdateOrderStateToBePreparedUI;
+import eapli.base.app.backoffice.console.presentation.dashboard.AGVsDashboardUI;
 import eapli.base.app.backoffice.console.presentation.order.CreateProductOrderUI;
 import eapli.base.app.backoffice.console.presentation.order.UpdateOrderStateReadyUI;
 import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNewCategoryUI;
@@ -170,6 +171,8 @@ public class MainMenu extends AbstractUI {
         if (authz.isAuthenticatedUserAuthorizedTo(BaseRoles.WAREHOUSE_EMPLOYEE)) {
             final Menu warehouseEmployeeMenu = buildWarehouseEmployeeMenu();
             mainMenu.addSubMenu(WAREHOUSE, warehouseEmployeeMenu);
+            final  Menu dashboard = buildDashboardMenu();
+            mainMenu.addSubMenu(3,dashboard);
 
         }
 
@@ -195,7 +198,11 @@ public class MainMenu extends AbstractUI {
 
         return mainMenu;
     }
-
+    private Menu buildDashboardMenu() {
+        final Menu menu = new Menu("AGVs");
+        menu.addItem(1,"AGVs Dashboard",new AGVsDashboardUI()::show);
+        return menu;
+    }
     private Menu buildAdminSettingsMenu() {
         final Menu menu = new Menu("Settings >");
 

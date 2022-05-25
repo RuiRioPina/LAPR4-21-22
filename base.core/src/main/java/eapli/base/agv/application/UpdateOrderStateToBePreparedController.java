@@ -30,6 +30,7 @@ public class UpdateOrderStateToBePreparedController {
     }
 
     public AGV save(AGV agv,AGV oldAGV){
+        aRepo.remove(oldAGV);
         return this.aRepo.save(agv);
     }
 
