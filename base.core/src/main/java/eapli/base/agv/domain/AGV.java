@@ -129,4 +129,20 @@ public class AGV implements Serializable, AggregateRoot<Long> {
         }
         return this.productOrderQueue.contains(prod);
     }
+
+    public String shortDescription() {
+        return shortDescription;
+    }
+
+    public AGVState agvState() {
+        return agvState;
+    }
+
+    public DockingPoint agvDocks() {
+        return agvDocks;
+    }
+
+    public List<ProductOrder> productOrderQueue() {
+        return productOrderQueue;
+    }
 }
