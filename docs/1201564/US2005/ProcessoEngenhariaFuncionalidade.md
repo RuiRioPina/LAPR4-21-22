@@ -20,11 +20,20 @@ Para receber a informação disponibilizada pelo BackOfficeApp server esta funci
 
 Assim, é feito um request ao referido servidor sempre que é necessária uma atualização.
 
-Para concretizar a atualização o servidor HTML ,implementado em java, depois de receber os dados, manipula as Strings que recebe de modo a representar a informação de forma correta na dashboard.
+Para concretizar a atualização o servidor HTML ,implementado em java, depois de receber os dados, manipula-os de modo a representar a informação de forma correta na dashboard.
 
 Uma função em JavaScript assegura que a informação é atualizada.
 
-# 3. Integração/Demonstração
+# 3. Design
+## 3.1. Realização da Funcionalidade
+
+![2005_SD](2005_SD.svg)
+
+## 3.2. Diagrama de Classes
+
+![2005_CD](2005_CD.svg)
+
+# 4. Integração/Demonstração
 
 Para o servidor HTTP utilizamos a porta x em localhost.
 
@@ -114,7 +123,7 @@ public static synchronized String getPersonalInfo () {
     }
 ```
 
-# 4. Observações
+# 5. Observações
 
 
 
