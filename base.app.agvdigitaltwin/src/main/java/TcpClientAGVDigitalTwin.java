@@ -2,6 +2,7 @@ import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.UnknownHostException;
+import java.nio.charset.StandardCharsets;
 
 
 public class TcpClientAGVDigitalTwin {
@@ -10,7 +11,7 @@ public class TcpClientAGVDigitalTwin {
     static Socket sock;
 
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws Exception, OptionalDataException {
 
         if (args.length != 1) {
             System.out.println("Server IPv4/IPv6 address or DNS name is required as argument");
@@ -25,7 +26,7 @@ public class TcpClientAGVDigitalTwin {
         }
 
         try {
-            sock = new Socket(serverIP, 8080);
+            sock = new Socket(serverIP, 2020);
         } catch (IOException ex) {
             System.out.println("Failed to establish TCP connection");
             System.exit(1);
@@ -34,8 +35,8 @@ public class TcpClientAGVDigitalTwin {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         DataOutputStream sOut = new DataOutputStream(sock.getOutputStream());
         DataInputStream sIn = new DataInputStream(sock.getInputStream());
-        ObjectOutputStream outputStream= new ObjectOutputStream(sock.getOutputStream());
-        ObjectInputStream inputStream= new ObjectInputStream(sock.getInputStream());
+        ObjectOutputStream outputStream = new ObjectOutputStream(sock.getOutputStream());
+        ObjectInputStream inputStream = new ObjectInputStream(sock.getInputStream());
 
         String conteudo = "";
 
@@ -45,12 +46,15 @@ public class TcpClientAGVDigitalTwin {
 
         do {
             conteudo = in.readLine();
-            Packet packet = new Packet(version, code, conteudo.getBytes());
+            Packet packet = new Packet(version, code, conteudo.getBytes(StandardCharsets.UTF_8));
             outputStream.writeObject(packet);
-            System.out.println("sent packet with data " + packet.data() );
-            Packet packetReceived= (Packet) inputStream.readObject();
-            System.out.println("received packet with data " + packetReceived.data());
+            System.out.println("sent packet with data " + packet.data());
+            Packet packetReceived = (Packet) inputStream.readObject();
+            if (packetReceived.getCode() == 2 && packet.getCode() == 1) {
+                break;
+            }
 
+            System.out.println("received packet with data " + packetReceived.data());
         }
         while (!conteudo.equals("-1"));
         sock.close();

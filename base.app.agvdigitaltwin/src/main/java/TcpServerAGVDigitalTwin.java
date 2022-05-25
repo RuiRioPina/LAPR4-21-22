@@ -1,5 +1,6 @@
 import java.io.*;
 import java.net.*;
+import java.nio.charset.StandardCharsets;
 
 class TcpServerAGVDigitalTwin {
     static ServerSocket sock;
@@ -24,8 +25,8 @@ class TcpServerAGVDigitalTwin {
 
 class TcpServerAGVDigitalTwinThread implements Runnable {
     private final Socket s;
-    private DataOutputStream sOut;
-    private DataInputStream sIn;
+    private ObjectOutputStream sOut;
+    private ObjectInputStream sIn;
 
     public TcpServerAGVDigitalTwinThread(Socket cli_s) {
         s = cli_s;
@@ -38,50 +39,51 @@ class TcpServerAGVDigitalTwinThread implements Runnable {
         System.out.println("New client connection from " + clientIP.getHostAddress() +
                 ", port number " + s.getPort());
         try {
-            sOut = new DataOutputStream(s.getOutputStream());
-            sIn = new DataInputStream(s.getInputStream());
+            sOut = new ObjectOutputStream(s.getOutputStream());
+            sIn = new ObjectInputStream(s.getInputStream());
+            while(true) {
+                Packet packet = null;
+                try {
+                    packet = (Packet) sIn.readObject();
+                } catch (ClassNotFoundException e) {
+                    e.printStackTrace();
+                }
 
-            byte version = (byte) sIn.read();
-            byte code = (byte) sIn.read();
-            byte d_length_1 = (byte) sIn.read();
-            byte d_length_2 = (byte) sIn.read();
-            byte data = (byte) sIn.read();
+                Packet packetWrite = new Packet((byte) 0, (byte) 2, "Acknowledged".getBytes(StandardCharsets.UTF_8));
 
-            switch (code) {
-                case 0:
-                    System.out.println("==> Request to test the connection sent by Client received with success");
-
-                    //Dizer ao cliente que entendeu
-                    System.out.println("==> Send message to the client saying it understood the request");
-                    byte[] serverMessage = {(byte) 0, (byte) 2, (byte) 0, (byte) 0};
-                    sOut.write(serverMessage);
-                    sOut.flush();
-                    break;
-                case 1:
-                    try {
-                        System.out.println("==> Request to end connection sent by Client received with success");
+                switch (packet.getCode()) {
+                    case 0:
+                        System.out.println("==> Request to test the connection sent by Client received with success");
                         //Dizer ao cliente que entendeu
                         System.out.println("==> Send message to the client saying it understood the request");
-                        byte[] serverMessageEnd = {(byte) 0, (byte) 2, (byte) 0, (byte) 0};
-                        sOut.write(serverMessageEnd);
+                        sOut.writeObject(packetWrite);
                         sOut.flush();
-                        System.out.println("==> Client " + clientIP.getHostAddress() + ", port number: " + this.s.getPort() + " disconnected");
-                    } catch (IOException e) {
-                        System.out.println("==> ERROR: " + e.getMessage());
-                    } finally {
+                        break;
+                    case 1:
                         try {
-                            this.s.close();
+                            System.out.println("==> Request to end connection sent by Client received with success");
+                            //Dizer ao cliente que entendeu
+                            System.out.println("==> Send message to the client saying it understood the request");
+                            sOut.writeObject(packetWrite);
+                            sOut.flush();
+                            System.out.println("==> Client " + clientIP.getHostAddress() + ", port number: " + this.s.getPort() + " disconnected");
                         } catch (IOException e) {
-                            System.out.println("ERROR: Error while closing the socket");
+                            System.out.println("==> ERROR: " + e.getMessage());
+                        } finally {
+                            try {
+                                this.s.close();
+                            } catch (IOException e) {
+                                System.out.println("ERROR: Error while closing the socket");
+                            }
+                            System.out.println("==> INFO: Socket closed with Success\n\n");
                         }
-                        System.out.println("==> INFO: Socket closed with Success\n\n");
-                    }
-                    break;
+                        break;
 
-                default:
-                    System.out.println("==> ERROR: Error while sending the packet to the client");
-                    break;
+                    default:
+                        System.out.println("==> ERROR: Error while sending the packet to the client");
+                        break;
 
+                }
             }
         } catch (IOException ex) {
             System.out.println("IOException");
