@@ -63,10 +63,17 @@ public class UpdateOrderStateToBePreparedUI extends AbstractUI {
         do {
             confirmation= Utils.readLineFromConsole("Do you wish to assign AGV#" + rAGV.identity() + " to prepare ProductOrder#" + rProductOrder.identity() + "?(Y/N)\"");
             if(confirmation.equalsIgnoreCase("y")) {
-                //ProductOrder nProductOrder = rProductOrder;
+                AGV nAGV = rAGV;
+                ProductOrder nProductOrder = rProductOrder;
 
-                if(this.ctrl.assignProductOrder(rProductOrder, rAGV)){
-                    this.ctrl.save(rAGV);
+                System.out.println(rAGV.printTaskOrder());
+
+
+                if(this.ctrl.checkAssignProductOrder(rProductOrder, rAGV)){
+                    rProductOrder = this.ctrl.updateOrderState(rProductOrder);
+                    this.ctrl.save(rProductOrder,nProductOrder);
+                    this.ctrl.assignProductOrder(rProductOrder,rAGV);
+                    this.ctrl.save(rAGV, nAGV);
                     System.out.print("--------------------------------------------------------------\n" +
                             "Operation successful!" + "\n" +
                             "--------------------------------------------------------------\n" +

@@ -80,6 +80,10 @@ public class AGV implements Serializable, AggregateRoot<Long> {
         return this.agvDocks;
     }
 
+    public List<ProductOrder> getProductOrderQueue() {
+        return productOrderQueue;
+    }
+
     @Override
     public boolean sameAs(Object other) {
         return DomainEntities.areEqual(this, other);

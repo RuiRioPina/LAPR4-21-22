@@ -29,10 +29,21 @@ public class UpdateOrderStateToBePreparedController {
         return rAGV.addProductOrderWithPriority(rProductOrder);
     }
 
-    public AGV save(AGV agv){
-        this.aRepo.remove(agv);
+    public AGV save(AGV agv,AGV oldAGV){
         return this.aRepo.save(agv);
     }
 
+    public ProductOrder save(ProductOrder nProd, ProductOrder oProd){
+        return this.oRepo.save(nProd);
+    }
 
+    public ProductOrder updateOrderState(ProductOrder productOrder){
+        productOrder.setOrderState(OrderState.BEING_PREPARED);
+        return productOrder;
+    }
+
+
+    public boolean checkAssignProductOrder(ProductOrder rProductOrder, AGV rAGV) {
+        return !rAGV.getProductOrderQueue().contains(rProductOrder);
+    }
 }
