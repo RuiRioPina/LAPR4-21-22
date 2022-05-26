@@ -25,8 +25,6 @@ package eapli.base.app.backoffice.console.presentation.questionnaire;/*
 import eapli.base.questionnaire.application.SurveyController;
 import eapli.base.questionnaire.domain.*;
 import eapli.base.questionnaire.dto.*;
-import eapli.base.usermanagement.application.AddCustomerController;
-import eapli.framework.general.domain.model.Description;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
 
@@ -35,6 +33,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 
 /**
@@ -157,10 +156,27 @@ public class DefineSurveyUI extends AbstractUI {
         questionId = Console.readLine("Question ID");
         questionMessage = Console.readLine("Question message");
         instruction = Console.readLine("Intruction");
-        selectQuestionType();
         selectObligatoriness();
-        extraInfo = Console.readLine("Extra info");
+        selectQuestionType();
+        defineExtraInfo();
         questionList.add(theController.buildQuestions(new QuestionDTO(questionId, questionMessage, instruction, questionType.toString(), obligatoriness.toString(), extraInfo)));
+    }
+
+    private void defineExtraInfo() {
+        if (questionType.equals(QuestionType.FREE_TEXT)) {
+        } else if (questionType.equals(QuestionType.NUMERIC)) {
+        } else if (questionType.equals(QuestionType.SINGLE_CHOICE)) {
+            extraInfo = defineChoiceQuestions().toString();
+        } else if (questionType.equals(QuestionType.SINGLE_CHOICE_INPUT_VALUE)) {
+            extraInfo = defineChoiceQuestionWithInput();
+        } else if (questionType.equals(QuestionType.MULTIPLE_CHOICE)) {
+            extraInfo = defineChoiceQuestions().toString();
+        } else if (questionType.equals(QuestionType.MULTIPLE_CHOICE_INPUT_VALUE)) {
+            extraInfo = defineChoiceQuestionWithInput();
+        } else if (questionType.equals(QuestionType.SORTING_OPTIONS)) {
+            extraInfo = defineChoiceQuestions().toString();
+        } else if (questionType.equals(QuestionType.SCALING_OPTIONS)) {
+        }
     }
 
 
@@ -215,6 +231,64 @@ public class DefineSurveyUI extends AbstractUI {
                 || questionTypeString.equals("6") || questionTypeString.equals("7")));
     }
 
+    StringBuilder stringBuilder = new StringBuilder();
+
+    int i = 0;
+    private StringBuilder defineChoiceQuestions() {
+        i = 0;
+        String option = "";
+        List<String> instructions = new ArrayList<>();
+        String instruction = "";
+        System.out.println("Defining a single choice structure");
+        System.out.println("Insert the options after the value. TYPE \"N\" when no more options");
+        Scanner scanner = new Scanner(System.in);
+        while (!option.equalsIgnoreCase("N")) {
+            instruction = String.format("%d. ", i);
+            System.out.print(i + ".");
+            option = scanner.nextLine();
+            if (!option.equalsIgnoreCase("N")) {
+                instruction = instruction.concat(option);
+                instructions.add(instruction);
+                i++;
+            }
+        }
+        for (String instructionString : instructions) {
+            stringBuilder.append(String.format("%s%n", instructionString));
+        }
+        return stringBuilder;
+    }
+
+    private String defineChoiceQuestionWithInput() {
+        StringBuilder stringBuilder = defineChoiceQuestions();
+        stringBuilder.append(i+". Other (please specify)\n");
+        return stringBuilder.toString();
+    }
+
+    private StringBuilder defineScalingOptions() {
+        //TODO aula de LPROG
+        /*i = 0;
+        String option = "";
+        List<String> instructions = new ArrayList<>();
+        String instruction = "";
+        System.out.println("Defining a single choice structure");
+        System.out.println("Insert the options after the value. TYPE \"N\" when no more options");
+        Scanner scanner = new Scanner(System.in);
+        while (!option.equalsIgnoreCase("N")) {
+            instruction = String.format("%d. ", i);
+            System.out.print(i + ".");
+            option = scanner.nextLine();
+            if (!option.equalsIgnoreCase("N")) {
+                instruction = instruction.concat(option);
+                instructions.add(instruction);
+                i++;
+            }
+        }
+        for (String instructionString : instructions) {
+            stringBuilder.append(String.format("%s%n", instructionString));
+        }
+        return stringBuilder;*/
+        return null;
+    }
 
     @Override
     public String headline() {

@@ -9,9 +9,11 @@ public class TcpClientAGVDigitalTwin {
 
     static InetAddress serverIP;
     static Socket sock;
+    private static final  int PORT_NUMBER = 2020;
 
 
-    public static void main(String[] args) throws Exception, OptionalDataException {
+    public static void main(String[] args) throws Exception {
+        System.out.println("Client side: Waiting for you to send a request");
 
         if (args.length != 1) {
             System.out.println("Server IPv4/IPv6 address or DNS name is required as argument");
@@ -26,21 +28,18 @@ public class TcpClientAGVDigitalTwin {
         }
 
         try {
-            sock = new Socket(serverIP, 2020);
+            sock = new Socket(serverIP, PORT_NUMBER);
         } catch (IOException ex) {
             System.out.println("Failed to establish TCP connection");
             System.exit(1);
         }
 
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        DataOutputStream sOut = new DataOutputStream(sock.getOutputStream());
-        DataInputStream sIn = new DataInputStream(sock.getInputStream());
         ObjectOutputStream outputStream = new ObjectOutputStream(sock.getOutputStream());
         ObjectInputStream inputStream = new ObjectInputStream(sock.getInputStream());
 
         String conteudo = "";
 
-        byte data[];
         byte version = 0, code = 0;
 
 

@@ -4,12 +4,14 @@ import java.nio.charset.StandardCharsets;
 
 class TcpServerAGVDigitalTwin {
     static ServerSocket sock;
+    private static final  int PORT_NUMBER = 2020;
 
     public static void main(String[] args) throws Exception {
         Socket cliSock;
+        System.out.println("Server side: Waiting for requests");
 
         try {
-            sock = new ServerSocket(2020);
+            sock = new ServerSocket(PORT_NUMBER);
         } catch (IOException ex) {
             System.out.println("Failed to open server socket");
             System.exit(1);
