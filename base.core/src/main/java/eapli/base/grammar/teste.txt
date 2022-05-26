@@ -1,0 +1,25 @@
+ID: ELAC2201
+TITLE: Electronics Questionnaire.
+WELCOME MESSAGE: Hello. This questionnaire aims to It takes approximately 10 minutes. Thank you very much for your time and support!
+
+LIST OF SECTIONS:
+
+SECTION ID: 1
+SECTION TITLE: About You
+SECTION DESCRIPTION: Section about you.
+OBLIGATORINESS: MANDATORY
+
+CONTENT:
+
+QUESTION ID: 1
+Q: What's your age?
+OBLIGATORINESS: MANDATORY
+TYPE: FREE-TEXT
+EXTRA INFO: Write whatever you want!
+
+QUESTION ID: 2
+Q: What's your Address?
+OBLIGATORINESS: MANDATORY
+TYPE: FREE-TEXT
+EXTRA INFO: Write whatever you want!
+
