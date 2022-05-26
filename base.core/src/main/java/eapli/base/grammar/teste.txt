@@ -23,3 +23,21 @@ OBLIGATORINESS: MANDATORY
 TYPE: FREE-TEXT
 EXTRA INFO: Write whatever you want!
 
+QUESTION ID: 3
+Q: What is your gender?
+OBLIGATORINESS: MANDATORY
+TYPE: MULTIPLE-CHOICE
+EXTRA INFO: 1.= Male 2.= Female 3.= Other
+
+QUESTION ID: 4
+Q: What is your gender?
+OBLIGATORINESS: MANDATORY
+TYPE: SINGLE-CHOICE
+EXTRA INFO: 1.= Male 2.= Female 3.= Other
+
+QUESTION ID: 5
+Q: Should we change this?
+OBLIGATORINESS: MANDATORY
+TYPE: SCALING_OPTIONS
+EXTRA INFO: 0.= Strongly Agree 1.= Agree 2.= Neutral 3.= Disagree 4.= Strongly Disagree
+

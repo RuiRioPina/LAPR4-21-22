@@ -11,24 +11,32 @@ question: QUESTION_ID Q OBLIGATORINESS questionType+ ;
 questionType :     free_text
                  | multipleChoice
                  | singleChoice
-                 | numeric;
+                 | numeric
+                 | sortingOptions
+                 | scalingOptions;
 
 free_text: FREE_TEXT EXTRA_INFO SENTENCE+;
 multipleChoice: MULTIPLE_CHOICE EXTRA_INFO CHOOSE+;
 singleChoice: SINGLE_CHOICE EXTRA_INFO CHOOSE+;
-numeric: NUMERIC EXTRA_INFO CHOOSE+;
+sortingOptions: SORTING_OPTIONS EXTRA_INFO CHOOSE+;
+scalingOptions: SCALING_OPTIONS EXTRA_INFO CHOOSE+;
+numeric: NUMERIC NUMBER;
 
 ALPHANUMERIC: [a-zA-Z0-9]+;
 SENTENCE: [.,!?' a-zA-Z0-9]+ | [.,!?a-zA-Z0-9]+;
 NUMBER: [0-9]+;
 STRING: [0-9A-Za-z]+;
 OBLIGATORINESS_ENUM: 'MANDATORY' | 'OPTIONAL' | 'CONDITION DEPENDENT';
-CHOOSE: [0-9]+('. ')STRING(' ')+;
+CHOOSE: [0-9]+('.= ')STRING(' ')+;
 
 FREE_TEXT: 'TYPE: FREE-TEXT';
 MULTIPLE_CHOICE: 'TYPE: MULTIPLE-CHOICE';
+MULTIPLE_CHOICE_INPUT_VALUE: 'TYPE: MULTIPLE_CHOICE_INPUT_VALUE';
 SINGLE_CHOICE: 'TYPE: SINGLE-CHOICE';
+SINGLE_CHOICE_INPUT_VALUE: 'TYPE: SINGLE_CHOICE_INPUT_VALUE';
 NUMERIC: 'TYPE: NUMERIC';
+SORTING_OPTIONS: 'TYPE: SORTING_OPTIONS';
+SCALING_OPTIONS: 'TYPE: SCALING_OPTIONS';
 
 ID: 'ID: ' ALPHANUMERIC;
 TITLE: 'TITLE: ' SENTENCE;
