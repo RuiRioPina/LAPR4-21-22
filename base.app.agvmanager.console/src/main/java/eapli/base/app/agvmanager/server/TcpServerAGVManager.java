@@ -25,7 +25,7 @@ class TcpServerAGVManager {
          Socket cliSock;
 
          try {
-             sock = new ServerSocket(8080);
+             sock = new ServerSocket(8081);
          } catch (IOException ex) {
              System.out.println("Failed to open server socket");
              System.exit(1);
@@ -119,7 +119,13 @@ class TcpServerAGVManager {
                             System.out.println("==> Send message to the client saying it has to work");
                             break;
 
-
+                        case 5:
+                            System.out.println("Received request of the state of the agv");
+                            Optional<AGV> agvCase5 = agvRepository.findById(Long.parseLong(packet.data()));
+                            Packet packetStatus= new Packet((byte) 0,(byte)6,agvCase5.get().agvState().toString().getBytes());
+                            sOut.writeObject(packetStatus);
+                            sOut.flush();
+                            break;
                         default:
                             System.out.println("==> ERROR: Error while sending the packet to the client");
                             break;
@@ -146,7 +152,7 @@ class TcpServerAGVManager {
         return  num;
         }
         public AGVState statePacketParser(Packet packet) {
-            if (packet.getCode()!=3){
+            if (packet.getCode()!=3 || packet.getCode() != 5){
                 return null;
             }
             String str= packet.data();

@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.List;
+import java.util.Properties;
 
 /**
  *
@@ -22,16 +23,12 @@ public class HttpServerAjaxVoting extends Thread {
     static private final String BASE_FOLDER = "base.core/src/main/java/eapli/base/dashboard/domain/www";
     static private ServerSocket sock;
     static private List<AGVsDashboardInfoDTO> agvsDashboard;
-    static String PORT = "8080";
+    static String PORT = "8081";
     private static AGVsDashboardController controller;
 
-    public HttpServerAjaxVoting(List<AGVsDashboardInfoDTO> agvsDashboardInfoDTOList) {
-        agvsDashboard = agvsDashboardInfoDTOList;
+    public HttpServerAjaxVoting() {
     }
 
-    public void changeController(AGVsDashboardController controller){
-        HttpServerAjaxVoting.controller = controller;
-    }
     @Override
     public void run () {
 	Socket cliSock = null;
@@ -94,7 +91,10 @@ public class HttpServerAjaxVoting extends Thread {
             }
         } catch (NullPointerException ne) {
             return " ";
+        } catch (Exception e) {
+            e.printStackTrace();
         }
+        return null;
     }
 
 }
