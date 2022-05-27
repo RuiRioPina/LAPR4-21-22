@@ -1,5 +1,3 @@
-package clientserver;
-
 import eapli.base.agv.domain.AGVState;
 import eapli.base.packet.Packet;
 

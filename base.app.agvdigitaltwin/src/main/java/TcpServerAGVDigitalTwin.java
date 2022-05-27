@@ -1,4 +1,3 @@
-package clientserver;
 
 import eapli.base.packet.Packet;
 

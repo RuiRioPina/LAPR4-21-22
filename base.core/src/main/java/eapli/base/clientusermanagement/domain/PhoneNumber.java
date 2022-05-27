@@ -15,8 +15,8 @@ public class PhoneNumber implements ValueObject, Serializable {
         this.number = number;
     }
 
-    public PhoneNumber() {
-
+    protected PhoneNumber() {
+        //ORM only
     }
 
     public static PhoneNumber valueOf(String phoneNumber) {
