@@ -4,8 +4,11 @@ import eapli.base.clientusermanagement.domain.Address;
 import eapli.base.product.domain.Price;
 import eapli.base.product.domain.Product;
 import eapli.framework.domain.model.DomainFactory;
+import org.eclipse.persistence.jpa.jpql.parser.DateTime;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -53,7 +56,7 @@ public class OrderBuilder implements DomainFactory<ProductOrder> {
 
     @Override
     public ProductOrder build() {
-        return new ProductOrder(LocalDate.now(),
+        return new ProductOrder(LocalDateTime.now().,
                 this.customerId, this.deliveryAddress,
                 this.billingAddress, this.productIntegerMap,
                 this.totalAmount, this.payment, this.shipment, this.orderState);

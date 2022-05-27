@@ -9,7 +9,7 @@ import eapli.framework.validations.Preconditions;
 
 import javax.persistence.*;
 import java.io.Serializable;
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.Map;
 
 /**
@@ -34,7 +34,7 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
     private Long id;
 
     @Column(name = "date")
-    private LocalDate date;
+    private LocalDateTime date;
 
     @Column(name = "customer_id", nullable = false)
     private Long customerId;
@@ -75,17 +75,14 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
     @Column(name="quantity")
     private Map<Product, Integer> productIntegerMap;
 
-    public ProductOrder(LocalDate date, Long customerId) {
+    public ProductOrder(LocalDateTime date, Long customerId) {
         this.date = date;
         this.customerId = customerId;
         this.totalAmount = new Price((double) 0, (double) 0);
     }
 
-    public ProductOrder() {
 
-    }
-
-    public ProductOrder(LocalDate now, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount) {
+    public ProductOrder(LocalDateTime now, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount) {
         Preconditions.noneNull(customerId,now,billingAddress,deliveryAddress,totalAmount);
         this.customerId = customerId;
         this.date = now;
@@ -95,7 +92,7 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
         this.totalAmount = totalAmount;
     }
 
-    public ProductOrder(LocalDate now, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount, Payment payment, Shipment shipment, OrderState orderState) {
+    public ProductOrder(LocalDateTime now, Long customerId, Address deliveryAddress, Address billingAddress, Map<Product, Integer> productIntegerMap, Price totalAmount, Payment payment, Shipment shipment, OrderState orderState) {
         Preconditions.noneNull(customerId,now,billingAddress,deliveryAddress,totalAmount);
         this.customerId = customerId;
         this.date = now;
@@ -107,6 +104,11 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
         this.payment = Payment.PAYPAL;
         this.orderState = orderState;
     }
+
+    public ProductOrder() {
+
+    }
+
 
     public void addProduct(Product product, int quantity){
         this.productIntegerMap.put(product,quantity);
@@ -134,7 +136,7 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
         return deliveryAddress;
     }
 
-    public LocalDate getDate() {
+    public LocalDateTime getDate() {
         return date;
     }
 
@@ -180,7 +182,7 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
         this.customerId = customerId;
     }
 
-    public void setDate(LocalDate date) {
+    public void setDate(LocalDateTime date) {
         this.date = date;
     }
 

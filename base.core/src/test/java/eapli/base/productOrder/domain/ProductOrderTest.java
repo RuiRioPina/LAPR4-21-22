@@ -5,12 +5,12 @@ import eapli.base.clientusermanagement.domain.AddressType;
 import eapli.base.product.domain.Price;
 import org.junit.Test;
 
-import java.time.LocalDate;
+import java.time.LocalDateTime;
 
 import static org.junit.Assert.assertTrue;
 
 public class ProductOrderTest {
-    private final LocalDate DATE = LocalDate.now();
+    private final LocalDateTime DATE = LocalDateTime.now();
     private final Long CUSTOMERID = 1L;
     private final Address BILLINGADDRESS = new Address("Rua Areosa","52","4444-444","Porto","Portugal", AddressType.SHIPMENT);
     private final Address DELIVERYADDRESS = new Address("Rua Areosa","52","4444-444","Porto","Portugal", AddressType.SHIPMENT);
