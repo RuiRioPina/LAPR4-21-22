@@ -89,7 +89,9 @@ public class DefineSurveyUI extends AbstractUI {
         }
         return false;
     }
+
     StringBuilder stringBuilder = new StringBuilder();
+
     private QuestionnaireDTO inputData() {
         insertSurveyData();
         insertQuestionnaireData();
@@ -234,8 +236,8 @@ public class DefineSurveyUI extends AbstractUI {
     }
 
 
-
     int i = 0;
+
     private StringBuilder defineChoiceQuestions() {
         i = 0;
         String option = "";
@@ -245,8 +247,8 @@ public class DefineSurveyUI extends AbstractUI {
         System.out.println("Insert the options after the value. TYPE \"N\" when no more options");
         Scanner scanner = new Scanner(System.in);
         while (!option.equalsIgnoreCase("N")) {
-            instruction = String.format("%d. ", i);
-            System.out.print(i + ".");
+            instruction = String.format("%d- ", i);
+            System.out.print(i + "-");
             option = scanner.nextLine();
             if (!option.equalsIgnoreCase("N")) {
                 instruction = instruction.concat(option);
@@ -255,14 +257,15 @@ public class DefineSurveyUI extends AbstractUI {
             }
         }
         for (String instructionString : instructions) {
-            stringBuilder.append(String.format("%s ", instructionString));
+            stringBuilder.append(String.format("%s|", instructionString));
         }
+        stringBuilder.setLength(stringBuilder.length() - 1);
         return stringBuilder;
     }
 
     private String defineChoiceQuestionWithInput() {
         StringBuilder stringBuilder = defineChoiceQuestions();
-        stringBuilder.append(i+". Other (please specify)\n");
+        stringBuilder.append("|"+ i + "- Other (please specify)\n");
         return stringBuilder.toString();
     }
 
