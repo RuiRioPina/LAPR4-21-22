@@ -21,7 +21,6 @@ public class Content implements ValueObject {
         stringBuilder.append("\n");
         stringBuilder.append("LIST OF SECTIONS:\n");
         stringBuilder.append("\n");
-        stringBuilder.append("SECTION [\n");
         buildSectionSyntax(questionnaire.getSections());
 
         fullQuestionnaire = stringBuilder.toString();
@@ -50,7 +49,7 @@ public class Content implements ValueObject {
             stringBuilder.append(String.format("OBLIGATORINESS: %s%n", section.getObligatoriness()));
             stringBuilder.append(String.format("REPEATABILITY: %s%n", section.getRepeatability()));
 
-            stringBuilder.append("CONTENT:\n");
+            stringBuilder.append("\nCONTENT:\n");
             for (Question question : section.getContent()) {
                 buildQuestionSyntax(question);
             }
@@ -60,8 +59,7 @@ public class Content implements ValueObject {
     }
 
     private void buildQuestionSyntax(Question question) {
-        stringBuilder.append(String.format("%nQUESTION {%n"));
-        stringBuilder.append(String.format("QUESTION ID: %s%n", question.getId()));
+        stringBuilder.append(String.format("%nQUESTION ID: %s%n", question.getId()));
         stringBuilder.append(String.format("Q: %s%n", question.getQuestionMessage()));
         stringBuilder.append(String.format("INSTRUCTION: %s%n", question.getInstruction()));
         stringBuilder.append(String.format("OBLIGATORINESS: %s%n", question.getObligatoriness()));

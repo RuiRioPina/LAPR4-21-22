@@ -89,7 +89,7 @@ public class DefineSurveyUI extends AbstractUI {
         }
         return false;
     }
-
+    StringBuilder stringBuilder = new StringBuilder();
     private QuestionnaireDTO inputData() {
         insertSurveyData();
         insertQuestionnaireData();
@@ -98,6 +98,7 @@ public class DefineSurveyUI extends AbstractUI {
             while (!(response.equalsIgnoreCase("NO") || response.equalsIgnoreCase("N"))) {
                 insertQuestionsData();
                 response = Console.readLine("Do you want to define another question? (Y/N)");
+                stringBuilder = new StringBuilder();
             }
             response = Console.readLine("Do you want to define another section? (Y/N)");
 
@@ -176,6 +177,7 @@ public class DefineSurveyUI extends AbstractUI {
         } else if (questionType.equals(QuestionType.SORTING_OPTIONS)) {
             extraInfo = defineChoiceQuestions().toString();
         } else if (questionType.equals(QuestionType.SCALING_OPTIONS)) {
+            extraInfo = defineChoiceQuestions().toString();
         }
     }
 
@@ -231,7 +233,7 @@ public class DefineSurveyUI extends AbstractUI {
                 || questionTypeString.equals("6") || questionTypeString.equals("7")));
     }
 
-    StringBuilder stringBuilder = new StringBuilder();
+
 
     int i = 0;
     private StringBuilder defineChoiceQuestions() {
@@ -253,7 +255,7 @@ public class DefineSurveyUI extends AbstractUI {
             }
         }
         for (String instructionString : instructions) {
-            stringBuilder.append(String.format("%s%n", instructionString));
+            stringBuilder.append(String.format("%s ", instructionString));
         }
         return stringBuilder;
     }
@@ -264,31 +266,6 @@ public class DefineSurveyUI extends AbstractUI {
         return stringBuilder.toString();
     }
 
-    private StringBuilder defineScalingOptions() {
-        //TODO aula de LPROG
-        /*i = 0;
-        String option = "";
-        List<String> instructions = new ArrayList<>();
-        String instruction = "";
-        System.out.println("Defining a single choice structure");
-        System.out.println("Insert the options after the value. TYPE \"N\" when no more options");
-        Scanner scanner = new Scanner(System.in);
-        while (!option.equalsIgnoreCase("N")) {
-            instruction = String.format("%d. ", i);
-            System.out.print(i + ".");
-            option = scanner.nextLine();
-            if (!option.equalsIgnoreCase("N")) {
-                instruction = instruction.concat(option);
-                instructions.add(instruction);
-                i++;
-            }
-        }
-        for (String instructionString : instructions) {
-            stringBuilder.append(String.format("%s%n", instructionString));
-        }
-        return stringBuilder;*/
-        return null;
-    }
 
     @Override
     public String headline() {
