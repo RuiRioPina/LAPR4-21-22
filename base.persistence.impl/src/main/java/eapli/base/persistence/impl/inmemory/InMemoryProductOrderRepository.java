@@ -23,4 +23,7 @@ public class InMemoryProductOrderRepository extends InMemoryDomainAutoNumberRepo
     public Iterable<ProductOrder> findByState(OrderState state) {
         throw new UnsupportedOperationException();
     }
+
+    @Override
+    public Iterable<ProductOrder> findByDateAscAndState(OrderState orderState){throw new UnsupportedOperationException();}
 }

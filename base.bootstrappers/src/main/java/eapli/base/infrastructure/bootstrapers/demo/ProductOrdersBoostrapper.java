@@ -50,42 +50,75 @@ public class ProductOrdersBoostrapper implements Action {
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
         ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
+
+        }
 
         ctrl.createOrder(12L,ad3,ad4);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
         ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(13L,ad5,ad6);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
         ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(11L,ad7,ad8);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
         ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(11L,ad2,ad1);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
         ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(12L,ad4,ad3);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
         ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(13L,ad6,ad5);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
         ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(11L,ad8,ad7);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
         ctrl.addProductToOrder(lProd.next(),2);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         return false;
     }
 }

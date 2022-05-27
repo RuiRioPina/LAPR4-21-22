@@ -145,4 +145,9 @@ public class AGV implements Serializable, AggregateRoot<Long> {
     public List<ProductOrder> productOrderQueue() {
         return productOrderQueue;
     }
+
+    public void setAgvState(AGVState agvState) {
+        this.agvState = agvState;
+
+    }
 }

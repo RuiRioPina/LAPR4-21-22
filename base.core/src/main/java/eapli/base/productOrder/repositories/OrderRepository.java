@@ -16,4 +16,6 @@ public interface OrderRepository extends DomainRepository<Long, ProductOrder> {
     public Iterable<ProductOrder> findAllActive();
 
     public Iterable<ProductOrder> findByState(OrderState state);
+
+    public Iterable<ProductOrder> findByDateAscAndState(OrderState state);
 }
