@@ -58,7 +58,7 @@ public class OrderBuilder implements DomainFactory<ProductOrder> {
 
     @Override
     public ProductOrder build() {
-        return new ProductOrder(LocalDateTime.now().withSecond(0).withNano(0).,
+        return new ProductOrder(LocalDateTime.now().withSecond(0).withNano(0),
                 this.customerId, this.deliveryAddress,
                 this.billingAddress, this.productIntegerMap,
                 this.totalAmount, this.payment, this.shipment, this.orderState);
