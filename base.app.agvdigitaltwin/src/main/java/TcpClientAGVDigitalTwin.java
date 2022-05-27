@@ -12,7 +12,7 @@ public class TcpClientAGVDigitalTwin {
 
     static InetAddress serverIP;
     static Socket sock;
-    private static final  int PORT_NUMBER = 8080;
+    private static final int PORT_NUMBER = 2020;
 
     //args[0]= server ip
     //args[1]= AGV ID
@@ -50,7 +50,7 @@ public class TcpClientAGVDigitalTwin {
         do {
             conteudo = in.readLine();
             //Packet packet = new Packet(version, code, conteudo.getBytes(StandardCharsets.UTF_8));
-            Packet packetOccupied = buildStateChangeRequestData(AGVState.OCCUPIED_SERVING_A_GIVEN_ORDER,Long.valueOf(35));
+            Packet packetOccupied = buildStateChangeRequestData(AGVState.OCCUPIED_SERVING_A_GIVEN_ORDER, Long.valueOf(35));
             outputStream.writeObject(packetOccupied);
             System.out.println("sent packet with data " + packetOccupied.data());
             Packet packetReceived = (Packet) inputStream.readObject();
@@ -59,7 +59,7 @@ public class TcpClientAGVDigitalTwin {
             }
 
             System.out.println("received packet with data " + packetReceived.data());
-            Packet packetFree = buildStateChangeRequestData(AGVState.FREE,Long.valueOf(35));
+            Packet packetFree = buildStateChangeRequestData(AGVState.FREE, Long.valueOf(35));
 
             if (packetReceived.getCode() == 4) {
                 Thread.sleep(10000); //simulates work
@@ -68,16 +68,14 @@ public class TcpClientAGVDigitalTwin {
             }
 
 
-
-
         }
         while (!conteudo.equals("-1"));
         sock.close();
     }
 
 
-    private  static Packet buildStateChangeRequestData(AGVState state,Long id){
-        Packet packet= new Packet((byte) 0,(byte) 3,("STATE:"+state.toString()+"ID:"+id).getBytes(StandardCharsets.UTF_8));
+    private static Packet buildStateChangeRequestData(AGVState state, Long id) {
+        Packet packet = new Packet((byte) 0, (byte) 3, ("STATE:" + state.toString() + "ID:" + id).getBytes(StandardCharsets.UTF_8));
         return packet;
     }
 }
