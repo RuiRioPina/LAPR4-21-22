@@ -10,17 +10,22 @@ import eapli.base.productOrder.application.CreateProductOrderController;
 import eapli.base.productOrder.domain.OrderState;
 import eapli.framework.actions.Action;
 
+import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Optional;
 
 public class ProductOrdersBoostrapper implements Action {
     CreateProductOrderController ctrl = new CreateProductOrderController();
     private final ProductRepository pRepo = PersistenceContext.repositories().products();
-    Iterator<Product> lProd = pRepo.findAll().iterator();
+    List<Product> lProd = new ArrayList<Product>();
+    Iterator<Product> iProd = pRepo.findAll().iterator();
 
 
     @Override
     public boolean execute() {
+
+        iProd.forEachRemaining(lProd :: add);
 
         Optional<Customer> customer1 = PersistenceContext.repositories().customers().findById(11L);
         Optional<Customer> customer2 = PersistenceContext.repositories().customers().findById(12L);
@@ -48,7 +53,7 @@ public class ProductOrdersBoostrapper implements Action {
 
         ctrl.createOrder(11L,ad1,ad2);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
-        ctrl.addProductToOrder(lProd.next(),2);
+        ctrl.addProductToOrder(lProd.get(0),1);
         ctrl.saveOrder();
         try {
             Thread.sleep(1000);
@@ -58,7 +63,8 @@ public class ProductOrdersBoostrapper implements Action {
 
         ctrl.createOrder(12L,ad3,ad4);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
-        ctrl.addProductToOrder(lProd.next(),2);
+        ctrl.addProductToOrder(lProd.get(1),2);
+        ctrl.addProductToOrder(lProd.get(0),1);
         ctrl.saveOrder();
         try {
             Thread.sleep(1000);
@@ -67,7 +73,8 @@ public class ProductOrdersBoostrapper implements Action {
         }
         ctrl.createOrder(13L,ad5,ad6);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
-        ctrl.addProductToOrder(lProd.next(),2);
+        ctrl.addProductToOrder(lProd.get(3),2);
+        ctrl.addProductToOrder(lProd.get(1),5);
         ctrl.saveOrder();
         try {
             Thread.sleep(1000);
@@ -76,7 +83,7 @@ public class ProductOrdersBoostrapper implements Action {
         }
         ctrl.createOrder(11L,ad7,ad8);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
-        ctrl.addProductToOrder(lProd.next(),2);
+        ctrl.addProductToOrder(lProd.get(3),1);
         ctrl.saveOrder();
         try {
             Thread.sleep(1000);
@@ -85,7 +92,7 @@ public class ProductOrdersBoostrapper implements Action {
         }
         ctrl.createOrder(11L,ad2,ad1);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
-        ctrl.addProductToOrder(lProd.next(),2);
+        ctrl.addProductToOrder(lProd.get(1),10);
         ctrl.saveOrder();
         try {
             Thread.sleep(1000);
@@ -94,7 +101,8 @@ public class ProductOrdersBoostrapper implements Action {
         }
         ctrl.createOrder(12L,ad4,ad3);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
-        ctrl.addProductToOrder(lProd.next(),2);
+        ctrl.addProductToOrder(lProd.get(5),4);
+        ctrl.addProductToOrder(lProd.get(6),25);
         ctrl.saveOrder();
         try {
             Thread.sleep(1000);
@@ -103,7 +111,7 @@ public class ProductOrdersBoostrapper implements Action {
         }
         ctrl.createOrder(13L,ad6,ad5);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
-        ctrl.addProductToOrder(lProd.next(),2);
+        ctrl.addProductToOrder(lProd.get(2),7);
         ctrl.saveOrder();
         try {
             Thread.sleep(1000);
@@ -112,7 +120,7 @@ public class ProductOrdersBoostrapper implements Action {
         }
         ctrl.createOrder(11L,ad8,ad7);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
-        ctrl.addProductToOrder(lProd.next(),2);
+        ctrl.addProductToOrder(lProd.get(3),5);
         ctrl.saveOrder();
         try {
             Thread.sleep(1000);
