@@ -1,11 +1,13 @@
 package eapli.base.productOrder.domain;
 
+import com.google.gson.annotations.SerializedName;
 import eapli.base.clientusermanagement.domain.Address;
 import eapli.base.product.domain.Price;
 import eapli.base.product.domain.Product;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.domain.model.DomainEntities;
 import eapli.framework.validations.Preconditions;
+import org.eclipse.persistence.annotations.SerializedObject;
 
 import javax.persistence.*;
 import java.io.Serializable;
