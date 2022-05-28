@@ -23,7 +23,7 @@ public class HttpServerAjaxVoting extends Thread {
     static private final String BASE_FOLDER = "base.core/src/main/java/eapli/base/dashboard/domain/www";
     static private ServerSocket sock;
     static private List<AGVsDashboardInfoDTO> agvsDashboard;
-    static String PORT = "8081";
+    static String PORT = "11555";
     private static AGVsDashboardController controller;
 
     public HttpServerAjaxVoting() {

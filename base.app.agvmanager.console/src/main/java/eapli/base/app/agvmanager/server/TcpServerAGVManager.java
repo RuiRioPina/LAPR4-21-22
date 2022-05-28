@@ -25,7 +25,7 @@ class TcpServerAGVManager {
          Socket cliSock;
 
          try {
-             sock = new ServerSocket(8081);
+             sock = new ServerSocket(8080);
          } catch (IOException ex) {
              System.out.println("Failed to open server socket");
              System.exit(1);

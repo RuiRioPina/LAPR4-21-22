@@ -9,23 +9,23 @@ function refreshAGVsDashboardInfo() {
     request.onload = function() {
         vBoard.innerHTML = this.responseText;
         vBoard.style.color="white";
-        setTimeout(refreshAGVsDashboardInfo, 5000);
+        setTimeout(refreshAGVsDashboardInfo, 12000);
     };
 
     request.ontimeout = function() {
         vBoard.innerHTML = "Server timeout, still trying ...";
         vBoard.style.color="red";
-        setTimeout(refreshAGVsDashboardInfo, 5000);
+        setTimeout(refreshAGVsDashboardInfo, 12000);
     };
 
     request.onerror = function() {
         vBoard.innerHTML = "No server reply, still trying ...";
         vBoard.style.color="red";
-        setTimeout(refreshAGVsDashboardInfo, 5000);
+        setTimeout(refreshAGVsDashboardInfo, 12000);
     };
 
     request.open("GET", "/agvsDashboard", true);
-    request.timeout = 5000;
+    request.timeout = 12000;
     request.send();
 }
 
@@ -36,23 +36,23 @@ function refreshPersonalInfo() {
     request.onload = function() {
         vBoard.innerHTML = this.responseText;
         vBoard.style.color="white";
-        setTimeout(refreshPersonalInfo, 5000);
+        setTimeout(refreshPersonalInfo, 12000);
     };
 
     request.ontimeout = function() {
         vBoard.innerHTML = "Server timeout, still trying ...";
         vBoard.style.color="red";
-        setTimeout(refreshPersonalInfo, 5000);
+        setTimeout(refreshPersonalInfo, 12000);
     };
 
     request.onerror = function() {
         vBoard.innerHTML = "No server reply, still trying ...";
         vBoard.style.color="red";
-        setTimeout(refreshPersonalInfo, 5000);
+        setTimeout(refreshPersonalInfo, 12000);
     };
 
     request.open("GET", "/personalInfo", true);
-    request.timeout = 5000;
+    request.timeout = 12000;
     request.send();
 }
 
