@@ -19,7 +19,7 @@ public class TcpClientAGVDigitalTwin {
     public static void main(String[] args) throws Exception {
         System.out.println("Client side: Waiting for you to send a request");
 
-        if (args.length != 1) {
+        if (args.length == 0) {
             System.out.println("Server IPv4/IPv6 address or DNS name is required as argument");
             System.exit(1);
         }
