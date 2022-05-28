@@ -67,6 +67,7 @@ public class DefineSurveyUI extends AbstractUI {
     private QuestionnaireDTO questionnaire;
     private String instruction;
     private int flag;
+    String responseOptional;
 
     @Override
     protected boolean doShow() {
@@ -82,8 +83,8 @@ public class DefineSurveyUI extends AbstractUI {
         if (option.equals("1")) {
             questionnaire = inputData();
             SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period);
-            SurveyDTO surveys = theController.buildSurvey(surveyDTO, flag);
-            System.out.println(new SurveyDTOParser().valueOf(surveys));
+            theController.buildSurvey(surveyDTO, flag);
+            System.out.println(theController.receiveSurveyString());
         } else {
             importTextFile();
         }
@@ -108,6 +109,7 @@ public class DefineSurveyUI extends AbstractUI {
             theController.cleanQuestionList();
 
         }
+        finalMessage = Console.readLine("Final Message");
         return theController.buildQuestionnaire(new QuestionnaireDTO(questionnaireId, questionnaireTitle, welcomeMessage/*, sectionList*/, finalMessage));
     }
 
@@ -122,9 +124,9 @@ public class DefineSurveyUI extends AbstractUI {
         }
         SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period);
         surveyDTO.content = questionnaire;
-        SurveyDTO surveys = theController.buildSurvey(surveyDTO, flag);
+        theController.buildSurvey(surveyDTO, flag);
 
-        System.out.println(surveys);
+        System.out.println(theController.receiveSurveyString());
     }
 
     private void insertSurveyData() {
@@ -138,8 +140,10 @@ public class DefineSurveyUI extends AbstractUI {
         System.out.println("QUESTIONNAIRE");
         questionnaireId = Console.readLine("Questionnaire id:");
         questionnaireTitle = Console.readLine("Questionnaire title");
-        welcomeMessage = Console.readLine("Welcome Message");
-        finalMessage = Console.readLine("Final Message");
+        responseOptional = Console.readLine("Welcome Message: This field is optional. Do you want to define it? (y/n)");
+        if (responseOptional.equalsIgnoreCase("yes") || responseOptional.equalsIgnoreCase("y")) {
+            welcomeMessage = Console.readLine("Welcome Message");
+        }
         period = Console.readLine("Period");
     }
 
@@ -148,9 +152,17 @@ public class DefineSurveyUI extends AbstractUI {
         System.out.println("SECTION");
         sectionId = Console.readLine("Section id:");
         sectionTitle = Console.readLine("Section title");
-        descriptionString = Console.readLine("Description");
+        responseOptional = Console.readLine("Section Description: This field is optional. Do you want to define it? (y/n)");
+        if (responseOptional.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
+            descriptionString = Console.readLine("Description");
+        }
         selectObligatoriness();
-        repeatability = Console.readLine("Repeatability");
+        responseOptional = Console.readLine("Repeatability: This field is optional. Do you want to define it? (y/n)");
+        if (responseOptional.equalsIgnoreCase("yes") || responseOptional.equalsIgnoreCase("y")) {
+            repeatability = Console.readLine("Repeatability");
+        }else {
+            repeatability = null;
+        }
     }
 
 
@@ -158,7 +170,12 @@ public class DefineSurveyUI extends AbstractUI {
         System.out.println("QUESTION");
         questionId = Console.readLine("Question ID");
         questionMessage = Console.readLine("Question message");
-        instruction = Console.readLine("Intruction");
+        responseOptional = Console.readLine("Instruction: This field is optional. Do you want to define it? (y/n)");
+        if (responseOptional.equalsIgnoreCase("yes") || responseOptional.equalsIgnoreCase("y")) {
+            instruction = Console.readLine("Instruction");
+        }else {
+            instruction = null;
+        }
         selectObligatoriness();
         selectQuestionType();
         defineExtraInfo();
@@ -167,7 +184,9 @@ public class DefineSurveyUI extends AbstractUI {
 
     private void defineExtraInfo() {
         if (questionType.equals(QuestionType.FREE_TEXT)) {
+            extraInfo = null;
         } else if (questionType.equals(QuestionType.NUMERIC)) {
+            extraInfo = null;
         } else if (questionType.equals(QuestionType.SINGLE_CHOICE)) {
             extraInfo = defineChoiceQuestions().toString();
         } else if (questionType.equals(QuestionType.SINGLE_CHOICE_INPUT_VALUE)) {
@@ -193,12 +212,18 @@ public class DefineSurveyUI extends AbstractUI {
         }
         do {
             obligatorinessString = Console.readLine("");
-            if (obligatorinessString.equals("0")) {
-                obligatoriness = Obligatoriness.MANDATORY;
-            } else if (obligatorinessString.equals("1")) {
-                obligatoriness = Obligatoriness.OPTIONAL;
-            } else if (obligatorinessString.equals("2")) {
-                obligatoriness = Obligatoriness.CONDITION_DEPENDANT;
+            switch (obligatorinessString) {
+                case "0":
+                    obligatoriness = Obligatoriness.MANDATORY;
+                    break;
+                case "1":
+                    obligatoriness = Obligatoriness.OPTIONAL;
+                    break;
+                case "2":
+                    obligatoriness = Obligatoriness.CONDITION_DEPENDANT;
+                    break;
+                default:
+                    System.out.println("There was an error defining the obligatoriness. Please try again!");
             }
         } while (!(obligatorinessString.equals("0") || obligatorinessString.equals("1") || obligatorinessString.equals("2")));
     }

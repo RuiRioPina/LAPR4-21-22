@@ -74,14 +74,22 @@ public class Section implements DTOable<SectionDTO>, DomainEntity<String> {
 
     @Override
     public String toString() {
-        return "Section{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", description=" + description +
-                ", obligatoriness=" + obligatoriness +
-                ", repeatability='" + repeatability + '\'' +
-                ", content=" + content +
-                '}';
+        if(repeatability!=null) {
+            return "Section{" +
+                    "id='" + id + '\'' +
+                    ", title='" + title + '\'' +
+                    ", description=" + description +
+                    ", obligatoriness=" + obligatoriness +
+                    ", repeatability='" + repeatability + '\'' +
+                    ", content=" + content;
+        }else {
+            return "Section" +
+                    "id='" + id + '\'' +
+                    ", title='" + title + '\'' +
+                    ", description=" + description +
+                    ", obligatoriness=" + obligatoriness +
+                    ", content=" + content;
+        }
     }
 
     @Override

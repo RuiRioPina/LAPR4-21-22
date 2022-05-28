@@ -34,10 +34,10 @@ public class Content implements ValueObject {
     private void buildQuestionnaireSyntax(Questionnaire questionnaire) {
         stringBuilder.append(String.format("ID: %s%n", questionnaire.getId()));
         stringBuilder.append(String.format("TITLE: %s%n", questionnaire.getTitle()));
-        stringBuilder.append(String.format("WELCOME MESSAGE: %s%n", questionnaire.getWelcomeMessage()));
-        if (questionnaire.getFinalMessage() != null) {
-            stringBuilder.append(String.format("FINAL MESSAGE: %s%n", questionnaire.getFinalMessage()));
+        if (questionnaire.getWelcomeMessage() != null) {
+            stringBuilder.append(String.format("WELCOME MESSAGE: %s%n", questionnaire.getWelcomeMessage()));
         }
+        stringBuilder.append(String.format("FINAL MESSAGE: %s%n", questionnaire.getFinalMessage()));
 
     }
 
@@ -47,8 +47,9 @@ public class Content implements ValueObject {
             stringBuilder.append(String.format("SECTION TITLE: %s%n", section.getTitle()));
             stringBuilder.append(String.format("SECTION DESCRIPTION: %s%n", section.getDescription()));
             stringBuilder.append(String.format("OBLIGATORINESS: %s%n", section.getObligatoriness()));
-            stringBuilder.append(String.format("REPEATABILITY: %s%n", section.getRepeatability()));
-
+            if (section.getRepeatability() != null) {
+                stringBuilder.append(String.format("REPEATABILITY: %s%n", section.getRepeatability()));
+            }
             stringBuilder.append("\nCONTENT:\n");
             for (Question question : section.getContent()) {
                 buildQuestionSyntax(question);
@@ -61,10 +62,14 @@ public class Content implements ValueObject {
     private void buildQuestionSyntax(Question question) {
         stringBuilder.append(String.format("%nQUESTION ID: %s%n", question.getId()));
         stringBuilder.append(String.format("Q: %s%n", question.getQuestionMessage()));
-        stringBuilder.append(String.format("INSTRUCTION: %s%n", question.getInstruction()));
+        if (question.getInstruction() != null) {
+            stringBuilder.append(String.format("INSTRUCTION: %s%n", question.getInstruction()));
+        }
         stringBuilder.append(String.format("OBLIGATORINESS: %s%n", question.getObligatoriness()));
         stringBuilder.append(String.format("TYPE: %s%n", question.getType()));
-        stringBuilder.append(String.format("EXTRA INFO: %s%n", question.getExtraInfo()));
+        if (question.getExtraInfo() != null) {
+            stringBuilder.append(String.format("EXTRA INFO: %s%n", question.getExtraInfo()));
+        }
     }
 
     @Override
