@@ -29,9 +29,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * Created by nuno on 21/03/16.
- */
 @UseCaseController
 public class SurveyController {
     private Questionnaire questionnaire = null;
@@ -44,13 +41,13 @@ public class SurveyController {
     public SurveyDTO buildSurvey(final SurveyDTO dto, int flagFile) {
         if (flagFile == 1) {
             newSurvey = new SurveyDTOParser().valueOf(dto);
-            newSurvey.setContent(new Content(dto.content));
+            newSurvey.addContentToSurvey(new Content(dto.content));
             repo.save(newSurvey);
             return newSurvey.toDTO();
         } else {
             newSurvey = new SurveyDTOParser().valueOf(dto);
             content = new Content(questionnaire);
-            newSurvey.setContent(content);
+            newSurvey.addContentToSurvey(content);
             repo.save(newSurvey);
             return newSurvey.toDTO();
         }

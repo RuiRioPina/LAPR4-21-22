@@ -66,9 +66,6 @@ public class DefineSurveyUI extends AbstractUI {
     private String questionnaireTitle;
     private String questionnaireId;
     private String response = "";
-    private List<SectionDTO> sectionList = new ArrayList<>();
-    private List<QuestionDTO> questionList = new ArrayList<QuestionDTO>();
-    private QuestionnaireDTO questionnaire;
     private String instruction;
     private int flag;
     String responseOptional;
@@ -85,7 +82,7 @@ public class DefineSurveyUI extends AbstractUI {
         } while (!(option.equals("1") || option.equals("2")));
 
         if (option.equals("1")) {
-            questionnaire = inputData();
+            inputData();
             SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period);
             theController.buildSurvey(surveyDTO, flag);
             System.out.println(theController.receiveSurveyString());
@@ -119,7 +116,7 @@ public class DefineSurveyUI extends AbstractUI {
 
         }
         finalMessage = Console.readLine("Final Message");
-        return theController.buildQuestionnaire(new QuestionnaireDTO(questionnaireId, questionnaireTitle, welcomeMessage/*, sectionList*/, finalMessage));
+        return theController.buildQuestionnaire(new QuestionnaireDTO(questionnaireId, questionnaireTitle, welcomeMessage, finalMessage));
     }
 
     private void importTextFile() {
@@ -187,7 +184,7 @@ public class DefineSurveyUI extends AbstractUI {
         selectObligatoriness();
         selectQuestionType();
         defineExtraInfo();
-        questionList.add(theController.buildQuestions(new QuestionDTO(questionId, questionMessage, instruction, questionType.toString(), obligatoriness.toString(), extraInfo)));
+        theController.buildQuestions(new QuestionDTO(questionId, questionMessage, instruction, questionType.toString(), obligatoriness.toString(), extraInfo));
     }
 
     private void defineExtraInfo() {
