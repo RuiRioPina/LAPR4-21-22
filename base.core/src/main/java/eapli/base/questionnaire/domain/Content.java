@@ -74,9 +74,7 @@ public class Content implements ValueObject {
 
     @Override
     public String toString() {
-        return "Content{" +
-                "fullQuestionnaire='" + fullQuestionnaire + '\'' +
-                '}';
+        return fullQuestionnaire;
     }
 
     protected Content() {

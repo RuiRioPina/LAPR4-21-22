@@ -22,11 +22,15 @@ package eapli.base.app.backoffice.console.presentation.questionnaire;/*
  * SOFTWARE.
  */
 
+import eapli.base.grammar.LabeledExprLexer;
+import eapli.base.grammar.LabeledExprParser;
 import eapli.base.questionnaire.application.SurveyController;
 import eapli.base.questionnaire.domain.*;
 import eapli.base.questionnaire.dto.*;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -88,6 +92,11 @@ public class DefineSurveyUI extends AbstractUI {
         } else {
             importTextFile();
         }
+        LabeledExprLexer lexer = new LabeledExprLexer(new ANTLRInputStream(theController.receiveFullQuestionnaireString()));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        LabeledExprParser parser = new LabeledExprParser(tokens);
+        System.out.println(theController.receiveFullQuestionnaireString());
+        parser.prog();
         return false;
     }
 
@@ -125,7 +134,6 @@ public class DefineSurveyUI extends AbstractUI {
         SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period);
         surveyDTO.content = questionnaire;
         theController.buildSurvey(surveyDTO, flag);
-
         System.out.println(theController.receiveSurveyString());
     }
 
@@ -153,14 +161,14 @@ public class DefineSurveyUI extends AbstractUI {
         sectionId = Console.readLine("Section id:");
         sectionTitle = Console.readLine("Section title");
         responseOptional = Console.readLine("Section Description: This field is optional. Do you want to define it? (y/n)");
-        if (responseOptional.equalsIgnoreCase("yes") || response.equalsIgnoreCase("y")) {
+        if (responseOptional.equalsIgnoreCase("yes") || responseOptional.equalsIgnoreCase("y")) {
             descriptionString = Console.readLine("Description");
         }
         selectObligatoriness();
         responseOptional = Console.readLine("Repeatability: This field is optional. Do you want to define it? (y/n)");
         if (responseOptional.equalsIgnoreCase("yes") || responseOptional.equalsIgnoreCase("y")) {
             repeatability = Console.readLine("Repeatability");
-        }else {
+        } else {
             repeatability = null;
         }
     }
@@ -173,7 +181,7 @@ public class DefineSurveyUI extends AbstractUI {
         responseOptional = Console.readLine("Instruction: This field is optional. Do you want to define it? (y/n)");
         if (responseOptional.equalsIgnoreCase("yes") || responseOptional.equalsIgnoreCase("y")) {
             instruction = Console.readLine("Instruction");
-        }else {
+        } else {
             instruction = null;
         }
         selectObligatoriness();
@@ -220,7 +228,7 @@ public class DefineSurveyUI extends AbstractUI {
                     obligatoriness = Obligatoriness.OPTIONAL;
                     break;
                 case "2":
-                    obligatoriness = Obligatoriness.CONDITION_DEPENDANT;
+                    obligatoriness = Obligatoriness.CONDITION_DEPENDENT;
                     break;
                 default:
                     System.out.println("There was an error defining the obligatoriness. Please try again!");
@@ -271,7 +279,7 @@ public class DefineSurveyUI extends AbstractUI {
         System.out.println("Defining a single choice structure");
         System.out.println("Insert the options after the value. TYPE \"N\" when no more options");
         Scanner scanner = new Scanner(System.in);
-        while (!option.equalsIgnoreCase("N")) {
+        do {
             instruction = String.format("%d- ", i);
             System.out.print(i + "-");
             option = scanner.nextLine();
@@ -280,7 +288,7 @@ public class DefineSurveyUI extends AbstractUI {
                 instructions.add(instruction);
                 i++;
             }
-        }
+        } while ((!option.equalsIgnoreCase("N") || instructions.size()==0));
         for (String instructionString : instructions) {
             stringBuilder.append(String.format("%s|", instructionString));
         }
@@ -290,7 +298,7 @@ public class DefineSurveyUI extends AbstractUI {
 
     private String defineChoiceQuestionWithInput() {
         StringBuilder stringBuilder = defineChoiceQuestions();
-        stringBuilder.append("|"+ i + "- Other (please specify)\n");
+        stringBuilder.append("|" + i + "- Other (please specify)\n");
         return stringBuilder.toString();
     }
 
