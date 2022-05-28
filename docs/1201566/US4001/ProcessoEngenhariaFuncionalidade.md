@@ -1,4 +1,4 @@
-# US1005
+# US4001
 =======================================
 
 
@@ -26,7 +26,7 @@ Não existem para esta US. Embora as US 5002,4001 e 4002 tenham que ter um proto
 
 **Esclarecimento(s) do Cliente**
 
-**1.** Category constitution
+
 
 
 "For all of those US, the communication between the two involved components must be implemented in accordance with the SPOMS2022. The requests processing can be somehow mocked. For instance, if processing a request implies saving some data to the database, the component can instead write such data to a log (mocking). Latter, on next sprint, the teams implement the interaction to the database.
