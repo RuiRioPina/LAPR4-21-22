@@ -1,22 +1,32 @@
 @startuml
 skinparam classAttributeIconSize 0
 
-
 Class "TcpServerAGVDigitalTwin"{
-- ServerSocket sock;
-
-+public static void main(String[] args)
-
++parsing methods...
++building data transferece methods...
 }
 
 Class "TcpServerAGVDigitalTwinThread"{
-    - Socket s
-    - DataOutputStream sOut
-    - DataInputStream sIn
-
-    + TcpServerAGVDigitalTwin(Socket cli_s)
+       
 }
 
-"TcpServerAGVDigitalTwin" ----* "TcpServerAGVDigitalTwinThread"
+Class "TcpServerAGVManager"{
++parsing methods...
++building data transferece methods...
+}
 
+Class "TcpServerAGVManagerThread"{
+
+}
+
+
+
+
+
+
+"TcpServerAGVDigitalTwinThread"  -->  "TcpServerAGVDigitalTwin"
+
+"TcpServerAGVManager"  -->  "TcpServerAGVManagerThread"
+
+"TcpServerAGVDigitalTwinThread" --> "TcpServerAGVManagerThread"
 @enduml
