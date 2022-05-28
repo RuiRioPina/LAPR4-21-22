@@ -52,7 +52,7 @@ public class Address implements ValueObject, Serializable {
         this.addressType = addressType;
     }
 
-    public Address() {
+    protected Address() {
         //Only for ORM
     }
 

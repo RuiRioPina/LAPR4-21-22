@@ -2,8 +2,10 @@ package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
 import eapli.base.agv.domain.AGV;
+import eapli.base.agv.domain.AGVState;
 import eapli.base.agv.domain.DockingPoint;
 import eapli.base.agv.repositories.AGVRepository;
+import eapli.base.product.domain.Product;
 import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
@@ -43,6 +45,15 @@ public class JpaAGVRepository extends JpaAutoTxRepository<AGV,Long, Long> implem
         params.put("number", number);
         return matchOne("e.id=:number", params);
     }
+    @Override
+    public Iterable<AGV> findFreeAGVS(){
+        final TypedQuery<AGV> query = super.createQuery(
+                "SELECT a FROM Agv a WHERE a.agv_state = :state",AGV.class);
+        query.setParameter("state", AGVState.FREE);
+        List<AGV> a  = query.getResultList();
+        return a;
+    }
+
 
 
 }

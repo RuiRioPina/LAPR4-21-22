@@ -71,13 +71,20 @@ public class Questionnaire implements DTOable<QuestionnaireDTO>, DomainEntity<St
 
     @Override
     public String toString() {
-        return "Questionnaire{" +
-                "id='" + id + '\'' +
-                ", title='" + title + '\'' +
-                ", welcomeMessage='" + welcomeMessage + '\'' +
-                ", sections=" + sections +
-                ", finalMessage='" + finalMessage + '\'' +
-                '}';
+        if (welcomeMessage != null) {
+            return "Questionnaire " +
+                    "id='" + id + '\'' +
+                    ", title='" + title + '\'' +
+                    ", welcomeMessage='" + welcomeMessage + '\'' +
+                    ", sections=" + sections +
+                    ", finalMessage='" + finalMessage;
+        } else {
+            return "Questionnaire " +
+                    "id='" + id + '\'' +
+                    ", title='" + title + '\'' +
+                    ", sections=" + sections +
+                    ", finalMessage='" + finalMessage;
+        }
     }
 
     public Questionnaire(String id, String title, String welcomeMessage, List<Section> sections, String finalMessage) {

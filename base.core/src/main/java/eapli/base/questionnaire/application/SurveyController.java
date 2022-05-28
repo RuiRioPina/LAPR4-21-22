@@ -19,12 +19,8 @@ package eapli.base.questionnaire.application;/*
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
-import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
-import eapli.base.questionnaire.domain.Content;
-import eapli.base.questionnaire.domain.Question;
-import eapli.base.questionnaire.domain.Questionnaire;
-import eapli.base.questionnaire.domain.Section;
+import eapli.base.questionnaire.domain.*;
 import eapli.base.questionnaire.dto.*;
 import eapli.base.questionnaire.repositories.SurveyRepository;
 import eapli.framework.application.UseCaseController;
@@ -33,26 +29,25 @@ import java.util.ArrayList;
 import java.util.List;
 
 
-/**
- * Created by nuno on 21/03/16.
- */
 @UseCaseController
 public class SurveyController {
     private Questionnaire questionnaire = null;
     private final List<Section> sections = new ArrayList<>();
     private List<Question> questions = new ArrayList<>();
     private final SurveyRepository repo = PersistenceContext.repositories().surveys();
-
+    private Content content;
+    private Survey newSurvey;
 
     public SurveyDTO buildSurvey(final SurveyDTO dto, int flagFile) {
-        if(flagFile == 1){
-            final var newSurvey = new SurveyDTOParser().valueOf(dto);
-            newSurvey.setContent(new Content(dto.content));
+        if (flagFile == 1) {
+            newSurvey = new SurveyDTOParser().valueOf(dto);
+            newSurvey.addContentToSurvey(new Content(dto.content));
             repo.save(newSurvey);
             return newSurvey.toDTO();
-        }else {
-            final var newSurvey = new SurveyDTOParser().valueOf(dto);
-            newSurvey.setContent(new Content(questionnaire));
+        } else {
+            newSurvey = new SurveyDTOParser().valueOf(dto);
+            content = new Content(questionnaire);
+            newSurvey.addContentToSurvey(content);
             repo.save(newSurvey);
             return newSurvey.toDTO();
         }
@@ -65,9 +60,9 @@ public class SurveyController {
     }
 
     public void buildSections(final SectionDTO dto) {
-        final var newSurvey = new SectionDTOParser().valueOf(dto);
-        sections.add(newSurvey);
-        newSurvey.setContent(questions);
+        final var newSection = new SectionDTOParser().valueOf(dto);
+        sections.add(newSection);
+        newSection.setContent(questions);
     }
 
     public QuestionDTO buildQuestions(final QuestionDTO dto) {
@@ -79,5 +74,13 @@ public class SurveyController {
 
     public void cleanQuestionList() {
         questions = new ArrayList<>();
+    }
+
+    public String receiveSurveyString() {
+        return newSurvey.toString();
+    }
+
+    public String receiveFullQuestionnaireString() {
+        return content.toString();
     }
 }

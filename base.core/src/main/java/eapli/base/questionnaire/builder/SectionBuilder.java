@@ -46,9 +46,9 @@ public class SectionBuilder implements DomainFactory<Section> {
     private String sectionDescription;
     private String obligatoriness;
     private String repeatability;
-    private List<Question> questions = new ArrayList<>();
+    private final List<Question> questions = new ArrayList<>();
 
-    public SectionBuilder() {
+    protected SectionBuilder() {
 
     }
 

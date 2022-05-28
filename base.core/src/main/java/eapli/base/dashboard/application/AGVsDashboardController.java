@@ -14,21 +14,26 @@ public class AGVsDashboardController {
    static private AGVRepository agvRepository = PersistenceContext.repositories().agvs();
 
     public void showDashboard() {
-        List <AGVsDashboardInfoDTO> agvsDashboardInfoDTOList = infoAGVs();
-        HttpServerAjaxVoting server = new HttpServerAjaxVoting(agvsDashboardInfoDTOList);
-        server.changeController(this);
+        HttpServerAjaxVoting server = new HttpServerAjaxVoting();
         server.start();
     }
 
-    public List<AGVsDashboardInfoDTO> infoAGVs(){
+    public List<AGVsDashboardInfoDTO> infoAGVs() throws Exception {
         PersistenceContext.repositories().newTransactionalContext();
         List <AGVsDashboardInfoDTO> agvsDashboardInfoDTOList = new ArrayList<>();
         for (AGV agv : agvRepository.findAll()) {
-            //System.out.println(location(agv));
-                agvsDashboardInfoDTOList.add(new AGVsDashboardInfoDTO(agv.shortDescription(), agv.agvState().toString(),
+            AGVState state = getAgvState(agv.identity());
+                agvsDashboardInfoDTOList.add(new AGVsDashboardInfoDTO(agv.shortDescription(), state.toString(),
                         location(agv)));
             }
         return agvsDashboardInfoDTOList;
+    }
+
+    private AGVState getAgvState(Long identity) throws Exception {
+        String [] tcp = new String [2];
+        tcp[0] = "127.0.0.1";
+        tcp[1] = identity.toString();
+        return TcpClient.main(tcp);
     }
 
     public String location(AGV agv) {
@@ -37,7 +42,6 @@ public class AGVsDashboardController {
         } else {
             return agv.productOrderQueue().get(0).getProductIntegerMap().keySet().iterator().next().getStorageArea().toString();
         }
-
     }
 
 }

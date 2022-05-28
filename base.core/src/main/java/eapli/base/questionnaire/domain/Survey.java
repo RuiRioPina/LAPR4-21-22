@@ -10,7 +10,6 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.Id;
-import java.util.List;
 
 @Entity
 public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDTO> {
@@ -47,43 +46,7 @@ public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDT
         return alphaNumericCode;
     }
 
-    public AlphaNumericCode getAlphaNumericCode() {
-        return alphaNumericCode;
-    }
-
-    public void setAlphaNumericCode(AlphaNumericCode alphaNumericCode) {
-        this.alphaNumericCode = alphaNumericCode;
-    }
-
-    public Description getDescription() {
-        return description;
-    }
-
-    public void setDescription(Description description) {
-        this.description = description;
-    }
-
-    public Period getPeriod() {
-        return period;
-    }
-
-    public void setPeriod(Period period) {
-        this.period = period;
-    }
-
-    public Questionnaire getQuestionnaire() {
-        return questionnaire;
-    }
-
-    public void setQuestionnaire(Questionnaire questionnaire) {
-        this.questionnaire = questionnaire;
-    }
-
-    public Content getContent() {
-        return content;
-    }
-
-    public void setContent(Content content) {
+    public void addContentToSurvey(Content content) {
         this.content = content;
     }
 

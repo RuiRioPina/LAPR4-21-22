@@ -1,348 +1,207 @@
-ID: ELEC22-01
+ID: ELEC2201
 TITLE: Electronics Questionnaire
 WELCOME MESSAGE: Hello, This Questionnaire aims to… It takes approximately 10 minutes. Thank you very much for your time and support.
 
-List of Sections {
+LIST OF SECTIONS:
 
-SECTION [
 SECTION ID: 1
 SECTION TITLE: About You
 SECTION DESCRIPTION: Section About Your Personal Information
 OBLIGATORINESS: Mandatory
-CONTENT [
 
-QUESTION {
-QUESTION ID: 1 
+CONTENT:
+
+QUESTION ID: 1
 Q: What is your gender?
 TYPE: Multiple Choice
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Male
-	        2- Female
-	        3- Other/Not specified
-}
+EXTRA INFO: 1- Male 2- Female 3- Other/Not specified
 
-QUESTION {
-QUESTION ID: 2 
+QUESTION ID: 2
 Q: What's your age?
 TYPE: Multiple Choice
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- 18-24
-	        2- 25-34
-	        3- 35-44
-	        4- 44-54
-	        5- 55-64
-            6- 65-74
-	        7- 75+
-}
-			
-QUESTION {
+EXTRA INFO: 1- 18-24 2- 25-34 3- 35-44 4- 44-54 5- 55-64 6- 65-74 7- 75+
+
 QUESTION ID: 3 
 Q: What's your age
 TYPE: Multiple Choice
 OBLIGATORINESS: Optional
-EXTRA INFO: 1- North
-	        2- Centre
-	        3- South
-	        4- Madeira
-	        5- Azores
-}
-]
-]
+EXTRA INFO: 1- North 2- Centre 3- South 4- Madeira 5- Azores
 
-SECTION [
 SECTION ID : 2
 SECTION TITLE: Categories of eletronics
 SECTION DESCRIPTION: Section About Your Favourite Eletronics
 OBLIGATORINESS: Mandatory
-Content [
 
-QUESTION {
-QUESTION ID: 4 
-QUESTION: What categories do you usually buy on our platform?
+CONTENT:
+
+QUESTION ID: 4
+Q: What categories do you usually buy on our platform?
 TYPE: Multiple Choice
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Mobile phone
-	        2- Laptop
-	        3- Television
-}
-]
-]
+EXTRA INFO: 1- Mobile phone 2- Laptop 3- Television
 
-SECTION [
 SECTION ID : 3
 SECTION TITLE: Mobile Phone
 SECTION DESCRIPTION: Section About Your Mobile Phone preferences
 OBLIGATORINESS: Condition (If Mobile Phone is selected on QUESTION 4)
 
-Content [
-
-QUESTION {
-QUESTION ID: 5 
+QUESTION ID: 5
 QUESTION: What is your favourite brand?
 TYPE: Free text
 OBLIGATORINESS: Mandatory
-}
 
-QUESTION{
-QUESTION ID: 6 
+QUESTION ID: 6
 QUESTION: How often do you use your phone during the week?
 TYPE: Multiple Choice
 OBLIGATORINESS: Mandatory
 EXTRA INFO: (Type it in hours)
-}
 
-QUESTION{
-QUESTION ID: 7 
+QUESTION ID: 7
 QUESTION: Which factors do you consider when buying a mobile phone
 TYPE: Multiple Choice
 OBLIGATORINESS: Condition (if not Never/0h is said QUESTION 7 becomes mandatory)
-EXTRA INFO: 1- Price
-	        2- Battery Life
-	        3- Brand Reputation
-	        4- Quality
-	        5- Colour
-}
-]
-]
+EXTRA INFO: 1- Price 2- Battery Life 3- Brand Reputation 4- Quality 5- Colour
 
-SECTION [
 SECTION ID : 4
 SECTION TITLE: Laptop
 SECTION DESCRIPTION: Section About Your Laptop preferences
 OBLIGATORINESS: Condition (If Laptop is selected on QUESTION 4)
 
-Content [
+CONTENT:
 
-QUESTION {
-QUESTION ID: 8 
+QUESTION ID: 8
 Q: What is your favourite brand?
 TYPE: Free text
 OBLIGATORINESS: Mandatory
-}
 
-QUESTION {
-QUESTION ID: 9 
+QUESTION ID: 9
 QUESTION: How often do you use your laptop during the week?
 TYPE: Multiple Choice
 OBLIGATORINESS: mandatory
 EXTRA INFO: (Type it in hours)
-}
 
-QUESTION {
-QUESTION ID: 10 
+QUESTION ID: 10
 QUESTION: Which factors do you consider when buying a laptop
 TYPE: Multiple Choice
 OBLIGATORINESS: Condition (if not Never/0h is said QUESTION 7 becomes mandatory)
-EXTRA INFO: 1- Price
-	        2- Battery Life
-	        3- Brand Reputation
-	        4- Quality
-	        5- Colour
-}
-]
-]
+EXTRA INFO: 1- Price 2- Battery Life 3- Brand Reputation 4- Quality 5- Colour
 
-SECTION [
 SECTION ID : 5
 SECTION TITLE: Television
 SECTION DESCRIPTION: Section About Your Television preferences
 OBLIGATORINESS: Condition (If Television is selected on QUESTION 4)
 
-CONTENT [
+CONTENT:
 
-QUESTION {
-QUESTION ID: 11 
+QUESTION ID: 11
 QUESTION: What is your favourite brand?
 TYPE: Free text
 OBLIGATORINESS: mandatory
-}
 
-QUESTION {
-QUESTION ID: 9 
+QUESTION ID: 12
 QUESTION: How often do you use your television during the week?
 TYPE: Multiple Choice
 OBLIGATORINESS: mandatory
 EXTRA INFO: (Type it in hours)
-}	
 
-QUESTION {
-QUESTION ID: 10 
+QUESTION ID: 13
 QUESTION: Which factors do you consider when buying a television
 TYPE: Multiple Choice
 OBLIGATORINESS: Condition (if not Never/0h is said QUESTION 7 becomes mandatory)
-EXTRA INFO: 1- Price
-	        2- Energy Consumption
-	        3- Brand Reputation
-	        4- Image Quality
-	        5- Colour
-}
-]
-]
+EXTRA INFO: 1- Price 2- Energy Consumption 3- Brand Reputation 4- Image Quality 5- Colour
 
-SECTION [	
 SECTION ID : 6
 SECTION TITLE: Usage of new products
 SECTION DESCRIPTION: Section About Your availability to test/use new products
 OBLIGATORINESS: Condition (For all the answers to QUESTION 4)
 
-Content [
+CONTENT:
 
-QUESTION {
-QUESTION ID: 11 
+QUESTION ID: 14
 QUESTION: Are you willing to try new products of this category?
 TYPE: Multiple choice
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Yes
-			2- No
-}
+EXTRA INFO: 1- Yes 2- No
 
-QUESTION {
-QUESTION ID: 12 
+QUESTION ID: 15
 QUESTION: “How much are you willing to spend on this category?”
 TYPE: Multiple Choice
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- 0-199EUR
-	        2- 200-399EUR
-	        3- 400-599EUR
-	        4- 600-799EUR
-			5- 800-999EUR
-			6- 1000-1199EUR
-			7- 1200-1399EUR
-			8- 1400-2000EUR	        
-}
-]	
-]
+EXTRA INFO: 1- 0-199EUR 2- 200-399EUR 3- 400-599EUR 4- 600-799EUR 5- 800-999EUR 6- 1000-1199EUR 7- 1200-1399EUR 8- 1400-2000EUR
 
-SECTION [
 SECTION ID : 7
 SECTION TITLE: Do you agree with the following statements?
 SECTION DESCRIPTION: Section About your level of disagreement on these statements
 OBLIGATORINESS: Mandatory
 
-Content [
+CONTENT:
 
-QUESTION {
-QUESTION ID: 13 
+QUESTION ID: 16
 QUESTION: “Cheapest products are as good as expensive”
 TYPE: Scaling option
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Strongly agree
-			2- Agree
-			3- Neutral
-			4- Disagree
-			5- Strongly disagree
-}
+EXTRA INFO: 1- Strongly agree 2- Agree 3- Neutral 4- Disagree 5- Strongly disagree
 
-QUESTION {
-QUESTION ID: 14 
+QUESTION ID: 17
 QUESTION: “I spend too much money on eletronics”
 TYPE: Scaling option
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Strongly agree
-			2- Agree
-			3- Neutral
-			4- Disagree
-			5- Strongly disagree
-}
+EXTRA INFO: 1- Strongly agree 2- Agree 3- Neutral 4- Disagree 5- Strongly disagree
 
-QUESTION {
-QUESTION ID: 15 
+QUESTION ID: 18
 QUESTION: “I find the range of products and brands available confusing”
 TYPE: Scaling option
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Strongly agree
-			2- Agree
-			3- Neutral
-			4- Disagree
-			5- Strongly disagree
-}
+EXTRA INFO: 1- Strongly agree 2- Agree 3- Neutral 4- Disagree 5- Strongly disagree
 
-QUESTION {
-QUESTION ID: 16
+QUESTION ID: 19
 QUESTION: “The only guaranty of quality is a recognisable brand”
 TYPE: Scaling option
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Strongly agree
-			2- Agree
-			3- Neutral
-			4- Disagree
-			5- Strongly disagree
-}
+EXTRA INFO: 1- Strongly agree 2- Agree 3- Neutral 4- Disagree 5- Strongly disagree
 
-QUESTION {
-QUESTION ID: 17
+QUESTION ID: 20
 QUESTION: “I always buy the same brands”
 TYPE: Scaling option
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Strongly agree
-			2- Agree
-			3- Neutral
-			4- Disagree
-			5- Strongly disagree	
-}
+EXTRA INFO: 1- Strongly agree 2- Agree 3- Neutral 4- Disagree 5- Strongly disagree
 
-QUESTION {
-QUESTION ID: 18
+QUESTION ID: 21
 QUESTION: “I love trying new products”
 TYPE: Scaling option
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Strongly agree
-			2- Agree
-			3- Neutral
-			4- Disagree
-			5- Strongly disagree				
-}
-]
-]	        
+EXTRA INFO: 1- Strongly agree 2- Agree 3- Neutral 4- Disagree 5- Strongly disagree
 
-SECTION [			
 SECTION ID : 8
 SECTION TITLE: More about you
 SECTION DESCRIPTION: More personal sectional about you
 OBLIGATORINESS: Optional
 
-Content [
+CONTENT:
 
-QUESTION {
-QUESTION ID: 19
+QUESTION ID: 22
 QUESTION: “What's your working status?”
 TYPE: Multiple choice
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Full-Time
-			2- Part-Time
-			3- Unemployed
-			4- Student
-			5- Retired
-}
+EXTRA INFO: 1- Full-Time 2- Part-Time 3- Unemployed 4- Student 5- Retired
 
-QUESTION {
-QUESTION ID: 20
+QUESTION ID: 23
 QUESTION: “What's your maritial status?”
 TYPE: Multiple choice
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Single
-			2- Maried
-			3- Divorced
-			4- Widow / Widower
-}
+EXTRA INFO: 1- Single 2- Maried 3- Divorced 4- Widow / Widower
 
-QUESTION {
-QUESTION ID: 21
+QUESTION ID: 24
 QUESTION: “Do you have children?”
 TYPE: Multiple choice
 OBLIGATORINESS: Mandatory
-EXTRA INFO: 1- Yes
-			2- No
-}
+EXTRA INFO: 1- Yes 2- No
 
-QUESTION {			
-QUESTION ID: 22
+QUESTION ID: 25
 QUESTION: “How many children have you got?”
 TYPE: Free text
 OBLIGATORINESS: Condition (If yes was selected on QUESTION 22)
 EXTRA INFO: 
-}
-]
-]
-}
 

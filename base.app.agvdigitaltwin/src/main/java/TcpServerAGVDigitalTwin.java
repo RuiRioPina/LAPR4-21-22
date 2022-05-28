@@ -1,3 +1,6 @@
+
+import eapli.base.packet.Packet;
+
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;

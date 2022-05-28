@@ -22,11 +22,15 @@ package eapli.base.app.backoffice.console.presentation.questionnaire;/*
  * SOFTWARE.
  */
 
+import eapli.base.grammar.LabeledExprLexer;
+import eapli.base.grammar.LabeledExprParser;
 import eapli.base.questionnaire.application.SurveyController;
 import eapli.base.questionnaire.domain.*;
 import eapli.base.questionnaire.dto.*;
 import eapli.framework.io.util.Console;
 import eapli.framework.presentation.console.AbstractUI;
+import org.antlr.v4.runtime.ANTLRInputStream;
+import org.antlr.v4.runtime.CommonTokenStream;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -62,11 +66,9 @@ public class DefineSurveyUI extends AbstractUI {
     private String questionnaireTitle;
     private String questionnaireId;
     private String response = "";
-    private List<SectionDTO> sectionList = new ArrayList<>();
-    private List<QuestionDTO> questionList = new ArrayList<QuestionDTO>();
-    private QuestionnaireDTO questionnaire;
     private String instruction;
     private int flag;
+    String responseOptional;
 
     @Override
     protected boolean doShow() {
@@ -80,15 +82,22 @@ public class DefineSurveyUI extends AbstractUI {
         } while (!(option.equals("1") || option.equals("2")));
 
         if (option.equals("1")) {
-            questionnaire = inputData();
+            inputData();
             SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period);
-            SurveyDTO surveys = theController.buildSurvey(surveyDTO, flag);
-            System.out.println(new SurveyDTOParser().valueOf(surveys));
+            theController.buildSurvey(surveyDTO, flag);
+            System.out.println(theController.receiveSurveyString());
         } else {
             importTextFile();
         }
+        LabeledExprLexer lexer = new LabeledExprLexer(new ANTLRInputStream(theController.receiveFullQuestionnaireString()));
+        CommonTokenStream tokens = new CommonTokenStream(lexer);
+        LabeledExprParser parser = new LabeledExprParser(tokens);
+        System.out.println(theController.receiveFullQuestionnaireString());
+        parser.prog();
         return false;
     }
+
+    StringBuilder stringBuilder = new StringBuilder();
 
     private QuestionnaireDTO inputData() {
         insertSurveyData();
@@ -98,6 +107,7 @@ public class DefineSurveyUI extends AbstractUI {
             while (!(response.equalsIgnoreCase("NO") || response.equalsIgnoreCase("N"))) {
                 insertQuestionsData();
                 response = Console.readLine("Do you want to define another question? (Y/N)");
+                stringBuilder = new StringBuilder();
             }
             response = Console.readLine("Do you want to define another section? (Y/N)");
 
@@ -105,7 +115,8 @@ public class DefineSurveyUI extends AbstractUI {
             theController.cleanQuestionList();
 
         }
-        return theController.buildQuestionnaire(new QuestionnaireDTO(questionnaireId, questionnaireTitle, welcomeMessage/*, sectionList*/, finalMessage));
+        finalMessage = Console.readLine("Final Message");
+        return theController.buildQuestionnaire(new QuestionnaireDTO(questionnaireId, questionnaireTitle, welcomeMessage, finalMessage));
     }
 
     private void importTextFile() {
@@ -119,9 +130,8 @@ public class DefineSurveyUI extends AbstractUI {
         }
         SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period);
         surveyDTO.content = questionnaire;
-        SurveyDTO surveys = theController.buildSurvey(surveyDTO, flag);
-
-        System.out.println(surveys);
+        theController.buildSurvey(surveyDTO, flag);
+        System.out.println(theController.receiveSurveyString());
     }
 
     private void insertSurveyData() {
@@ -135,8 +145,10 @@ public class DefineSurveyUI extends AbstractUI {
         System.out.println("QUESTIONNAIRE");
         questionnaireId = Console.readLine("Questionnaire id:");
         questionnaireTitle = Console.readLine("Questionnaire title");
-        welcomeMessage = Console.readLine("Welcome Message");
-        finalMessage = Console.readLine("Final Message");
+        responseOptional = Console.readLine("Welcome Message: This field is optional. Do you want to define it? (y/n)");
+        if (responseOptional.equalsIgnoreCase("yes") || responseOptional.equalsIgnoreCase("y")) {
+            welcomeMessage = Console.readLine("Welcome Message");
+        }
         period = Console.readLine("Period");
     }
 
@@ -145,9 +157,17 @@ public class DefineSurveyUI extends AbstractUI {
         System.out.println("SECTION");
         sectionId = Console.readLine("Section id:");
         sectionTitle = Console.readLine("Section title");
-        descriptionString = Console.readLine("Description");
+        responseOptional = Console.readLine("Section Description: This field is optional. Do you want to define it? (y/n)");
+        if (responseOptional.equalsIgnoreCase("yes") || responseOptional.equalsIgnoreCase("y")) {
+            descriptionString = Console.readLine("Description");
+        }
         selectObligatoriness();
-        repeatability = Console.readLine("Repeatability");
+        responseOptional = Console.readLine("Repeatability: This field is optional. Do you want to define it? (y/n)");
+        if (responseOptional.equalsIgnoreCase("yes") || responseOptional.equalsIgnoreCase("y")) {
+            repeatability = Console.readLine("Repeatability");
+        } else {
+            repeatability = null;
+        }
     }
 
 
@@ -155,16 +175,23 @@ public class DefineSurveyUI extends AbstractUI {
         System.out.println("QUESTION");
         questionId = Console.readLine("Question ID");
         questionMessage = Console.readLine("Question message");
-        instruction = Console.readLine("Intruction");
+        responseOptional = Console.readLine("Instruction: This field is optional. Do you want to define it? (y/n)");
+        if (responseOptional.equalsIgnoreCase("yes") || responseOptional.equalsIgnoreCase("y")) {
+            instruction = Console.readLine("Instruction");
+        } else {
+            instruction = null;
+        }
         selectObligatoriness();
         selectQuestionType();
         defineExtraInfo();
-        questionList.add(theController.buildQuestions(new QuestionDTO(questionId, questionMessage, instruction, questionType.toString(), obligatoriness.toString(), extraInfo)));
+        theController.buildQuestions(new QuestionDTO(questionId, questionMessage, instruction, questionType.toString(), obligatoriness.toString(), extraInfo));
     }
 
     private void defineExtraInfo() {
         if (questionType.equals(QuestionType.FREE_TEXT)) {
+            extraInfo = null;
         } else if (questionType.equals(QuestionType.NUMERIC)) {
+            extraInfo = null;
         } else if (questionType.equals(QuestionType.SINGLE_CHOICE)) {
             extraInfo = defineChoiceQuestions().toString();
         } else if (questionType.equals(QuestionType.SINGLE_CHOICE_INPUT_VALUE)) {
@@ -176,6 +203,7 @@ public class DefineSurveyUI extends AbstractUI {
         } else if (questionType.equals(QuestionType.SORTING_OPTIONS)) {
             extraInfo = defineChoiceQuestions().toString();
         } else if (questionType.equals(QuestionType.SCALING_OPTIONS)) {
+            extraInfo = defineChoiceQuestions().toString();
         }
     }
 
@@ -189,12 +217,18 @@ public class DefineSurveyUI extends AbstractUI {
         }
         do {
             obligatorinessString = Console.readLine("");
-            if (obligatorinessString.equals("0")) {
-                obligatoriness = Obligatoriness.MANDATORY;
-            } else if (obligatorinessString.equals("1")) {
-                obligatoriness = Obligatoriness.OPTIONAL;
-            } else if (obligatorinessString.equals("2")) {
-                obligatoriness = Obligatoriness.CONDITION_DEPENDANT;
+            switch (obligatorinessString) {
+                case "0":
+                    obligatoriness = Obligatoriness.MANDATORY;
+                    break;
+                case "1":
+                    obligatoriness = Obligatoriness.OPTIONAL;
+                    break;
+                case "2":
+                    obligatoriness = Obligatoriness.CONDITION_DEPENDENT;
+                    break;
+                default:
+                    System.out.println("There was an error defining the obligatoriness. Please try again!");
             }
         } while (!(obligatorinessString.equals("0") || obligatorinessString.equals("1") || obligatorinessString.equals("2")));
     }
@@ -231,9 +265,9 @@ public class DefineSurveyUI extends AbstractUI {
                 || questionTypeString.equals("6") || questionTypeString.equals("7")));
     }
 
-    StringBuilder stringBuilder = new StringBuilder();
 
     int i = 0;
+
     private StringBuilder defineChoiceQuestions() {
         i = 0;
         String option = "";
@@ -242,53 +276,29 @@ public class DefineSurveyUI extends AbstractUI {
         System.out.println("Defining a single choice structure");
         System.out.println("Insert the options after the value. TYPE \"N\" when no more options");
         Scanner scanner = new Scanner(System.in);
-        while (!option.equalsIgnoreCase("N")) {
-            instruction = String.format("%d. ", i);
-            System.out.print(i + ".");
+        do {
+            instruction = String.format("%d- ", i);
+            System.out.print(i + "-");
             option = scanner.nextLine();
             if (!option.equalsIgnoreCase("N")) {
                 instruction = instruction.concat(option);
                 instructions.add(instruction);
                 i++;
             }
-        }
+        } while ((!option.equalsIgnoreCase("N") || instructions.size()==0));
         for (String instructionString : instructions) {
-            stringBuilder.append(String.format("%s%n", instructionString));
+            stringBuilder.append(String.format("%s|", instructionString));
         }
+        stringBuilder.setLength(stringBuilder.length() - 1);
         return stringBuilder;
     }
 
     private String defineChoiceQuestionWithInput() {
         StringBuilder stringBuilder = defineChoiceQuestions();
-        stringBuilder.append(i+". Other (please specify)\n");
+        stringBuilder.append("|" + i + "- Other (please specify)\n");
         return stringBuilder.toString();
     }
 
-    private StringBuilder defineScalingOptions() {
-        //TODO aula de LPROG
-        /*i = 0;
-        String option = "";
-        List<String> instructions = new ArrayList<>();
-        String instruction = "";
-        System.out.println("Defining a single choice structure");
-        System.out.println("Insert the options after the value. TYPE \"N\" when no more options");
-        Scanner scanner = new Scanner(System.in);
-        while (!option.equalsIgnoreCase("N")) {
-            instruction = String.format("%d. ", i);
-            System.out.print(i + ".");
-            option = scanner.nextLine();
-            if (!option.equalsIgnoreCase("N")) {
-                instruction = instruction.concat(option);
-                instructions.add(instruction);
-                i++;
-            }
-        }
-        for (String instructionString : instructions) {
-            stringBuilder.append(String.format("%s%n", instructionString));
-        }
-        return stringBuilder;*/
-        return null;
-    }
 
     @Override
     public String headline() {

@@ -54,5 +54,11 @@ public class JpaOrderRepository extends JpaAutoTxRepository<ProductOrder,Long, L
         params.put("number", number);
         return matchOne("e.customer_id=:number", params);
     }
+    @Override
+    public Iterable<ProductOrder> findByDateAscAndState(OrderState orderState){
+        final TypedQuery<ProductOrder> query = entityManager().createQuery("SELECT po FROM ProductOrder po  WHERE po.orderState = :orderstate order by po.date asc",ProductOrder.class);
+        query.setParameter("orderstate",orderState);
+        return query.getResultList();
+    }
 }
 

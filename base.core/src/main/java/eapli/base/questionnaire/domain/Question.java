@@ -12,7 +12,7 @@ public class Question implements DTOable<QuestionDTO>, DomainEntity<String> {
     private final Obligatoriness obligatoriness;
     private final String extraInfo;
 
-    public Question(String id, String questionMessage, String instruction,QuestionType type, Obligatoriness obligatoriness, String extraInfo) {
+    public Question(String id, String questionMessage, String instruction, QuestionType type, Obligatoriness obligatoriness, String extraInfo) {
         this.id = id;
         this.questionMessage = questionMessage;
         this.instruction = instruction;
@@ -51,13 +51,22 @@ public class Question implements DTOable<QuestionDTO>, DomainEntity<String> {
 
     @Override
     public String toString() {
-        return "Question{" +
-                "id='" + id + '\'' +
-                ", question='" + questionMessage + '\'' +
-                ", type=" + type +
-                ", obligatoriness=" + obligatoriness +
-                ", extraInfo='" + extraInfo + '\'' +
-                '}';
+        if (instruction != null) {
+            return "Question " +
+                    "id='" + id + '\'' +
+                    ", questionMessage='" + questionMessage + '\'' +
+                    ", instruction='" + instruction + '\'' +
+                    ", type=" + type +
+                    ", obligatoriness=" + obligatoriness +
+                    ", extraInfo='" + extraInfo;
+        } else {
+            return "Question " +
+                    "id='" + id + '\'' +
+                    ", questionMessage='" + questionMessage + '\'' +
+                    ", type=" + type +
+                    ", obligatoriness=" + obligatoriness +
+                    ", extraInfo='" + extraInfo;
+        }
     }
 
     @Override

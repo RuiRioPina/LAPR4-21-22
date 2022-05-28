@@ -55,45 +55,78 @@ public class ProductOrdersBoostrapper implements Action {
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
         ctrl.addProductToOrder(lProd.get(0),1);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
+
+        }
 
         ctrl.createOrder(12L,ad3,ad4);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
         ctrl.addProductToOrder(lProd.get(1),2);
         ctrl.addProductToOrder(lProd.get(0),1);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(13L,ad5,ad6);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
         ctrl.addProductToOrder(lProd.get(3),2);
         ctrl.addProductToOrder(lProd.get(1),5);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(11L,ad7,ad8);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
         ctrl.addProductToOrder(lProd.get(3),1);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(11L,ad2,ad1);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
         ctrl.addProductToOrder(lProd.get(1),10);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(12L,ad4,ad3);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
         ctrl.addProductToOrder(lProd.get(5),4);
         ctrl.addProductToOrder(lProd.get(6),25);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(13L,ad6,ad5);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
         ctrl.addProductToOrder(lProd.get(2),7);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         ctrl.createOrder(11L,ad8,ad7);
         ctrl.setOrderState(OrderState.READY_FOR_CARRIER);
         ctrl.addProductToOrder(lProd.get(3),5);
         ctrl.saveOrder();
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){
 
+        }
         return false;
     }
 }

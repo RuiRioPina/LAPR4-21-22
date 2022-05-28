@@ -5,9 +5,12 @@ Class "DefineSurveyUI"{
 }
 
 Class "SurveyController"{
-+buildQuestion(questionId, questionMessage, questionType, obligatoriness, extraInfo)
-+buildSection(sectionId, title, description, obligatoriness, repeatability, Collection<Question> questions)
-+buildQuestionnaire(questionnaireId, questionnaireTitle, welcomeMessage, sectionList, finalMessage)
++buildQuestion(questionDTO)
++buildSection(sectionDTO)
++buildQuestionnaire(questionnaireDTO, fileFlag)
++cleanQuestionList()
++receiveSurveyString()
++receiveFullQuestionnaireString()
 }
 
 Class "AlphanumericCode"{
@@ -32,6 +35,96 @@ Class "Description"{
 +hashCode()
 +toString()
 }
+
+Class "QuestionDTO"{
+     +String questionId
+     +String questionMessage
+     +String instruction
+     +String questionType
+     +String obligatoriness
+     +String extraInfo
+}
+
+Class "QuestionnaireDTO"{
+     +String questionnaireId
+     +String questionnaireTitle
+     +String welcomeMessage
+     +String finalMessage
+}
+
+Class "SectionDTO"{
+    +String sectionId
+    +String sectionTitle
+    +String descriptionString
+    +String obligatoriness
+    +String repeatability
+}
+
+Class "SurveyDTO"{
+     +String alphanumericCodeString
+     +String descriptionString
+     +String period
+     +String content
+}
+
+Class "QuestionDTOParser"{
+     +valueOf(final QuestionDTO dto)
+}
+
+Class "QuestionnaireDTOParser"{
+     +valueOf(final QuestionnaireDTO dto)
+}
+
+Class "SectionDTOParser"{
+     +valueOf(final SectionDTO dto)
+}
+
+Class "SurveyDTOParser"{
+     +valueOf(final SurveyDTO dto)
+}
+
+Class "QuestionBuilder"{
+     -String questionId
+     -String questionMessage
+     -String instruction
+     -String questionType
+     -String obligatoriness
+     -String extraInfo
+
+     +QuestionBuilder(String id, String questionMessage, String type, String obligatoriness)
+     +withInstruction(final String instruction)
+     +withExtraInfo(final String extraInfo)
+     +build()
+}
+
+
+Class "QuestionnaireBuilder"{
+     -String questionnaireId
+     -String questionnaireTitle
+     -String welcomeMessage
+     -String finalMessage
+     -List<Section> sections
+     +QuestionnaireBuilder(String id, String title)
+     +withWelcomeMessage(final String welcomeMessage)
+     +withFinalMessage(final String finalMessage)
+     +build()
+}
+
+Class "SectionBuilder"{
+     - String sectionId
+     - String sectionTitle
+     - String sectionDescription
+     - String obligatoriness
+     - String repeatability
+     - List<Question> questions
+     +SectionBuilder(String sectionId, String sectionTitle, String obligatoriness)
+     +withSectionDescription(final String sectionDescription)
+     +withRepeability(final String repeatability)
+     +build()
+}
+
+
+
 Class "Period"{
      -String days
      +Period(String days)
@@ -108,15 +201,38 @@ class SurveyRepository{
 +findById(Long number)
 }
 
+DefineSurveyUI..> "SectionDTO"
+DefineSurveyUI..> "QuestionnaireDTO"
+DefineSurveyUI..> "QuestionDTO"
+DefineSurveyUI..> "SurveyDTO"
 
-DefineSurveyUI..> SurveyController
-SurveyController..> Survey
+SurveyController <.u. "SectionDTO"
+SurveyController <.u. "QuestionnaireDTO"
+SurveyController <.u. "QuestionDTO"
+SurveyController <.u. "SurveyDTO"
 
-"AlphanumericCode" "1" <-- "1" Survey : contains
-"Description" "1" <-- "1" Survey : contains
-"Period" "1" <-- "1" Survey : contains
-"Questionnaire" "1" <-- "1" Survey : contains
-"Content" "1" <-- "1" Survey : contains
+SurveyController --> Survey
+
+SurveyController --> "SurveyDTOParser"
+SurveyController --> "QuestionnaireDTOParser"
+SurveyController --> "SectionDTOParser"
+SurveyController --> "QuestionDTOParser"
+
+"Survey" <-u- "SurveyDTOParser"
+"QuestionnaireBuilder" <-u- "QuestionnaireDTOParser"
+"SectionBuilder" <-u- "SectionDTOParser"
+QuestionBuilder <-u- "QuestionDTOParser"
+
+"QuestionnaireBuilder" -d-> "Questionnaire" :builds
+"SectionBuilder" -d-> "Section" :builds
+QuestionBuilder -d-> "Question" :builds
+
+
+"AlphanumericCode" "1" <-u- "1" Survey : contains
+"Description" "1" <-u- "1" Survey : contains
+"Period" "1" <-u- "1" Survey : contains
+"Questionnaire" "1" <-u- "1" Survey : contains
+"Content" "1" <-u- "1" Survey : contains
 
 "Questionnaire" "1" --> "1..*" "Section" :contains
 

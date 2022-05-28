@@ -1,3 +1,4 @@
+package eapli.base.packet;
 
 import java.io.*;
 import java.net.InetAddress;
@@ -40,9 +41,9 @@ public class Packet implements Serializable {
         return str;
     }
 
-    public static void main(String[] args) {
-        System.out.println(Packet.calculateDlength1(1000));
-        System.out.println(Packet.calculateDlength2(1000));
+ //   public static void main(String[] args) {
+  //      System.out.println(Packet.calculateDlength1(1000));
+    //    System.out.println(Packet.calculateDlength2(1000));
 
-    }
+    //}
 }

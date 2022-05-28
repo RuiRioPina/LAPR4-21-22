@@ -21,7 +21,10 @@ Ter customers presentes no sistema, que fazem orders (para se tornarem numa popu
 
 ## 2.3 Pós Condições
 
+###Implementado já neste sprint
 Validar o questionário usando uma gramática (US3000).
+
+###Próximos sprints
 Enviar notificações aos clientes de quando têm questionários disponíveis para responderem.
 Responder aos questionários.
 Consultar respostas dos questionários.
@@ -174,18 +177,223 @@ If a question is "condition dependent", it means the system needs to evaluate th
 
 ## 3.3. Padrões Aplicados
 
+* Foi utilizado o CRUD (Create, Read, Update, Delete) para trabalhar sobre os surveys.
+
+* Foi utilizado o GRASP: no uso de DTOS, para alta coesão e acoplamento reduzido. Polimorfismo para gerir os métodos que
+  criam o survey, caso o survey é criado com o txt ou a introduzir os dados. Pure fabrication (Content) to create the syntax
+* o
+
+* Foi utilizado o Builder, já que há certos atributos que são opcionais. O padrão builder dá-nos um processo passo a passo
+  para construir um objeto completo. Este processo tem sempre a mesma implementação, porém os objetos finais podem possuir
+  diferentes representações. Neste contexto o processo irá passar por criar os atributos obrigatórios de construtor, dando
+  a possibilidade de definir apenas alguns atributos opcionais. Exemplo: customer com endereço de residência, mas sem género
+  definido, nem data de aniversário.
+
+
+* Foram utilizados o padrão repository, de modo a isolar os objetos de domínio de lógica de bases de dados. Os nossos objetos
+  de domínio, que por já são complexos contendo muitas regras de domínio para impor, beneficia de outra camada onde apenas
+  teremos lógica de bases de dados. Isto ajuda-nos a reduzir código duplicado, fazendo com que a layer de repositório
+  possua capacidades de fazer querying complexo. Um repositório encapsula a lista de objetos persistidos numa base de dados
+  dando-nos uma visão orientada a objetos à camada de persitência.
 
 ## 3.4. Testes 
 
 
 # 4. Implementação
 
+### Builder Section
+
+    public class SectionBuilder implements DomainFactory<Section> {
+
+    private String sectionId;
+    private String sectionTitle;
+    private String sectionDescription;
+    private String obligatoriness;
+    private String repeatability;
+    private final List<Question> questions = new ArrayList<>();
+
+    protected SectionBuilder() {
+
+    }
+
+    public SectionBuilder(String sectionId, String sectionTitle, String obligatoriness) {
+        Preconditions.noneNull(sectionId, sectionTitle, obligatoriness);
+        this.sectionId = sectionId;
+        this.sectionTitle = sectionTitle;
+        this.obligatoriness = obligatoriness;
+    }
+
+    public SectionBuilder withSectionDescription(final String sectionDescription) {
+        this.sectionDescription = sectionDescription;
+        return this;
+    }
+
+    public SectionBuilder withRepeability(final String repeatability) {
+        this.repeatability = repeatability;
+        return this;
+    }
 
 
+    @Override
+    public Section build() {
+        // since the factory knows that all the parts are needed it could throw
+        // an exception. however, we will leave that to the constructor
+        return new Section(sectionId, sectionTitle, Description.valueOf(sectionDescription), Obligatoriness.valueOf(obligatoriness), repeatability, questions);
+    }
+
+### Survey
+
+    public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDTO> {
+    @Id
+    @Column(nullable = false)
+    private AlphaNumericCode alphaNumericCode;
+
+    @Embedded
+    private Description description;
+
+    @Embedded
+    @Column(name = "period_in_days")
+    private Period period;
+
+    @Embedded
+    private Questionnaire questionnaire;
+
+    @Embedded
+    private Content content;
+
+    protected Survey() {
+        //ORM
+    }
+
+
+    @Override
+    public boolean sameAs(Object other) {
+        Survey otherSurvey = (Survey) other;
+        return alphaNumericCode.equals(otherSurvey.alphaNumericCode);
+    }
+
+    @Override
+    public AlphaNumericCode identity() {
+        return alphaNumericCode;
+    }
+
+    public void addContentToSurvey(Content content) {
+        this.content = content;
+    }
+
+    @Override
+    public String toString() {
+        if(questionnaire!= null) {
+            return "Survey{" +
+                    "alphaNumericCode=" + alphaNumericCode +
+                    ", description=" + description +
+                    ", period=" + period +
+                    ", questionnaire=" + questionnaire +
+                    ", content=" + content +
+                    '}';
+        }else{
+            return "Survey{" +
+                    "alphaNumericCode=" + alphaNumericCode +
+                    ", description=" + description +
+                    ", period=" + period +
+                    ", content=" + content +
+                    '}';
+        }
+    }
+
+    public Survey(AlphaNumericCode alphaNumericCode, Description description, Period period, Questionnaire questionnaire) {
+        this.alphaNumericCode = alphaNumericCode;
+        this.description = description;
+        this.period = period;
+        this.questionnaire = questionnaire;
+        this.content = new Content(questionnaire);
+    }
+    public Survey(AlphaNumericCode alphaNumericCode, Description description, Period period ) {
+        this.alphaNumericCode = alphaNumericCode;
+        this.description = description;
+        this.period = period;
+    }
+
+    public Survey(AlphaNumericCode alphaNumericCode, Description description, Period period, Content content) {
+        this.alphaNumericCode = alphaNumericCode;
+        this.description = description;
+        this.period = period;
+        this.content = content;
+    }
+
+
+    /**
+     * Showcase the {@link DTOable} interface. In this case it is the Dish class
+     * that dictates the DTO structure.
+     *
+     *
+     */
+    @Override
+    public SurveyDTO toDTO() {
+        return new SurveyDTO(alphaNumericCode.code(),
+                description.toString(),
+                period.toString());
+    }
+
+### Controller
+    public class SurveyController {
+
+    private Questionnaire questionnaire = null;
+    private final List<Section> sections = new ArrayList<>();
+    private List<Question> questions = new ArrayList<>();
+    private final SurveyRepository repo = PersistenceContext.repositories().surveys();
+    private Content content;
+    private Survey newSurvey;
+
+    public SurveyDTO buildSurvey(final SurveyDTO dto, int flagFile) {
+        if (flagFile == 1) {
+            newSurvey = new SurveyDTOParser().valueOf(dto);
+            newSurvey.addContentToSurvey(new Content(dto.content));
+            repo.save(newSurvey);
+            return newSurvey.toDTO();
+        } else {
+            newSurvey = new SurveyDTOParser().valueOf(dto);
+            content = new Content(questionnaire);
+            newSurvey.addContentToSurvey(content);
+            repo.save(newSurvey);
+            return newSurvey.toDTO();
+        }
+    }
+
+    public QuestionnaireDTO buildQuestionnaire(final QuestionnaireDTO dto) {
+        questionnaire = new QuestionnaireDTOParser().valueOf(dto);
+        questionnaire.setSections(sections);
+        return questionnaire.toDTO();
+    }
+
+    public void buildSections(final SectionDTO dto) {
+        final var newSection = new SectionDTOParser().valueOf(dto);
+        sections.add(newSection);
+        newSection.setContent(questions);
+    }
+
+    public QuestionDTO buildQuestions(final QuestionDTO dto) {
+        final var newQuestion = new QuestionDTOParser().valueOf(dto);
+        questions.add(newQuestion);
+        return newQuestion.toDTO();
+    }
+
+
+    public void cleanQuestionList() {
+        questions = new ArrayList<>();
+    }
+
+    public String receiveSurveyString() {
+        return newSurvey.toString();
+    }
+
+    public String receiveFullQuestionnaireString() {
+        return content.toString();
+    }
 
 # 5. Integração/Demonstração
 
-- Foi adicionada uma opção (Questionnaire -> Set up new Questionnaire) ao menu do Sales Manager.
+- Foi adicionada uma opção (Survey -> Define new Survey) ao menu do Sales Manager.
 
 # 6. Observações
 
