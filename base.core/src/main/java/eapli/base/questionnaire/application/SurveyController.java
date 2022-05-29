@@ -56,14 +56,14 @@ public class SurveyController {
 
     public QuestionnaireDTO buildQuestionnaire(final QuestionnaireDTO dto) {
         questionnaire = new QuestionnaireDTOParser().valueOf(dto);
-        questionnaire.setSections(sections);
+        questionnaire.buildSections(sections);
         return questionnaire.toDTO();
     }
 
     public void buildSections(final SectionDTO dto) {
         final var newSection = new SectionDTOParser().valueOf(dto);
         sections.add(newSection);
-        newSection.setContent(questions);
+        newSection.buildContent(questions);
     }
 
     public QuestionDTO buildQuestions(final QuestionDTO dto) {

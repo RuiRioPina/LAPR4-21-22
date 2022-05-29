@@ -48,7 +48,7 @@ public final class BaseUserApp {
     }
 
     static ServerSocket sock;
-    private static final  int PORT_NUMBER = 2020;
+    private static final int PORT_NUMBER = 2020;
 
     public static void main(String[] args) throws Exception {
         Socket cliSock;
@@ -87,7 +87,7 @@ class TcpServerAGVDigitalTwinThread implements Runnable {
         try {
             sOut = new ObjectOutputStream(s.getOutputStream());
             sIn = new ObjectInputStream(s.getInputStream());
-            while(true) {
+            while (true) {
                 Packet packet = null;
                 try {
                     packet = (Packet) sIn.readObject();

@@ -4,6 +4,7 @@ import eapli.base.questionnaire.dto.QuestionDTO;
 import eapli.base.questionnaire.dto.QuestionnaireDTO;
 import eapli.framework.domain.model.DomainEntity;
 import eapli.framework.representations.dto.DTOable;
+import eapli.framework.validations.Preconditions;
 
 import javax.persistence.Embeddable;
 import javax.persistence.Embedded;
@@ -29,45 +30,33 @@ public class Questionnaire implements DTOable<QuestionnaireDTO>, DomainEntity<St
     }
 
 
-    protected String getId() {
+    protected String idToBuildContent() {
         return id;
     }
 
-    protected void setId(String id) {
-        this.id = id;
-    }
 
-    protected String getTitle() {
+    protected String titleToBuildContent() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
 
-    protected String getWelcomeMessage() {
+    protected String welcomeMessageToBuildContent() {
         return welcomeMessage;
     }
 
-    public void setWelcomeMessage(String welcomeMessage) {
-        this.welcomeMessage = welcomeMessage;
-    }
 
-    protected List<Section> getSections() {
+    protected List<Section> buildSections() {
         return sections;
     }
 
-    public void setSections(List<Section> sections) {
+    public void buildSections(List<Section> sections) {
         this.sections = sections;
     }
 
-    public String getFinalMessage() {
+    public String finalMessageToBuildContent() {
         return finalMessage;
     }
 
-    public void setFinalMessage(String finalMessage) {
-        this.finalMessage = finalMessage;
-    }
 
     @Override
     public String toString() {
@@ -88,6 +77,7 @@ public class Questionnaire implements DTOable<QuestionnaireDTO>, DomainEntity<St
     }
 
     public Questionnaire(String id, String title, String welcomeMessage, List<Section> sections, String finalMessage) {
+        Preconditions.noneNull(id, title, finalMessage);
         this.id = id;
         this.title = title;
         this.welcomeMessage = welcomeMessage;

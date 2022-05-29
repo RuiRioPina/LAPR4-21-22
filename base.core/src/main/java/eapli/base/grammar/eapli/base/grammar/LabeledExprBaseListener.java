@@ -1,4 +1,4 @@
-// Generated from C:/Users/Asus/Documents/lei21_22_s4_2dh_05/base.core/src/main/java/eapli/base/grammar\LabeledExpr.g4 by ANTLR 4.10.1
+// Generated from C:/Users/ruiri/IdeaProjects/lei21_22_s4_2dh_05/base.core/src/main/java/eapli/base/grammar\LabeledExpr.g4 by ANTLR 4.10.1
 package eapli.base.grammar;
 
 import org.antlr.v4.runtime.ParserRuleContext;
@@ -100,6 +100,18 @@ public class LabeledExprBaseListener implements LabeledExprListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterMultipleChoiceWithInput(LabeledExprParser.MultipleChoiceWithInputContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitMultipleChoiceWithInput(LabeledExprParser.MultipleChoiceWithInputContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterSingleChoice(LabeledExprParser.SingleChoiceContext ctx) { }
 	/**
 	 * {@inheritDoc}
@@ -107,6 +119,42 @@ public class LabeledExprBaseListener implements LabeledExprListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitSingleChoice(LabeledExprParser.SingleChoiceContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSingleChoiceWithInput(LabeledExprParser.SingleChoiceWithInputContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSingleChoiceWithInput(LabeledExprParser.SingleChoiceWithInputContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterSortingOptions(LabeledExprParser.SortingOptionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitSortingOptions(LabeledExprParser.SortingOptionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterScalingOptions(LabeledExprParser.ScalingOptionsContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitScalingOptions(LabeledExprParser.ScalingOptionsContext ctx) { }
 	/**
 	 * {@inheritDoc}
 	 *

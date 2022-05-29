@@ -1,4 +1,4 @@
-// Generated from C:/Users/Asus/Documents/lei21_22_s4_2dh_05/base.core/src/main/java/eapli/base/grammar\LabeledExpr.g4 by ANTLR 4.10.1
+// Generated from C:/Users/ruiri/IdeaProjects/lei21_22_s4_2dh_05/base.core/src/main/java/eapli/base/grammar\LabeledExpr.g4 by ANTLR 4.10.1
 package eapli.base.grammar;
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
@@ -78,6 +78,16 @@ public interface LabeledExprListener extends ParseTreeListener {
 	 */
 	void exitMultipleChoice(LabeledExprParser.MultipleChoiceContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link LabeledExprParser#multipleChoiceWithInput}.
+	 * @param ctx the parse tree
+	 */
+	void enterMultipleChoiceWithInput(LabeledExprParser.MultipleChoiceWithInputContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LabeledExprParser#multipleChoiceWithInput}.
+	 * @param ctx the parse tree
+	 */
+	void exitMultipleChoiceWithInput(LabeledExprParser.MultipleChoiceWithInputContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link LabeledExprParser#singleChoice}.
 	 * @param ctx the parse tree
 	 */
@@ -87,6 +97,36 @@ public interface LabeledExprListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitSingleChoice(LabeledExprParser.SingleChoiceContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LabeledExprParser#singleChoiceWithInput}.
+	 * @param ctx the parse tree
+	 */
+	void enterSingleChoiceWithInput(LabeledExprParser.SingleChoiceWithInputContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LabeledExprParser#singleChoiceWithInput}.
+	 * @param ctx the parse tree
+	 */
+	void exitSingleChoiceWithInput(LabeledExprParser.SingleChoiceWithInputContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LabeledExprParser#sortingOptions}.
+	 * @param ctx the parse tree
+	 */
+	void enterSortingOptions(LabeledExprParser.SortingOptionsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LabeledExprParser#sortingOptions}.
+	 * @param ctx the parse tree
+	 */
+	void exitSortingOptions(LabeledExprParser.SortingOptionsContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link LabeledExprParser#scalingOptions}.
+	 * @param ctx the parse tree
+	 */
+	void enterScalingOptions(LabeledExprParser.ScalingOptionsContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link LabeledExprParser#scalingOptions}.
+	 * @param ctx the parse tree
+	 */
+	void exitScalingOptions(LabeledExprParser.ScalingOptionsContext ctx);
 	/**
 	 * Enter a parse tree produced by {@link LabeledExprParser#numeric}.
 	 * @param ctx the parse tree

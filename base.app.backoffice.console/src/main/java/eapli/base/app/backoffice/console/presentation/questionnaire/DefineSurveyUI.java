@@ -94,7 +94,6 @@ public class DefineSurveyUI extends AbstractUI {
         LabeledExprLexer lexer = new LabeledExprLexer(new ANTLRInputStream(theController.receiveFullQuestionnaireString()));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LabeledExprParser parser = new LabeledExprParser(tokens);
-        String debug = theController.receiveFullQuestionnaireString();
         System.out.println(theController.receiveFullQuestionnaireString());
         parser.prog();
         return false;
@@ -134,6 +133,9 @@ public class DefineSurveyUI extends AbstractUI {
             questionnairePath = "questionnaire/" + chooser.getSelectedFile().getName();
         } catch (HeadlessException a) {
             questionnairePath = "questionnaire/" + Console.readLine("Insert file name to be imported");
+        }
+        if(!questionnairePath.contains(".txt")) {
+            questionnairePath = questionnairePath + ".txt";
         }
         try {
             questionnaire = Files.readString(Path.of(questionnairePath));

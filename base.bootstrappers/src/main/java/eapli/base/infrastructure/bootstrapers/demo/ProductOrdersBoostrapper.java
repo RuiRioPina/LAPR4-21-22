@@ -64,7 +64,7 @@ public class ProductOrdersBoostrapper implements Action {
         ctrl.createOrder(12L,ad3,ad4);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
         ctrl.addProductToOrder(lProd.get(1),2);
-        ctrl.addProductToOrder(lProd.get(0),1);
+        ctrl.addProductToOrder(lProd.get(2),1);
         ctrl.saveOrder();
         try {
             Thread.sleep(1000);
@@ -74,7 +74,7 @@ public class ProductOrdersBoostrapper implements Action {
         ctrl.createOrder(13L,ad5,ad6);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
         ctrl.addProductToOrder(lProd.get(3),2);
-        ctrl.addProductToOrder(lProd.get(1),5);
+        ctrl.addProductToOrder(lProd.get(4),5);
         ctrl.saveOrder();
         try {
             Thread.sleep(1000);
@@ -83,7 +83,7 @@ public class ProductOrdersBoostrapper implements Action {
         }
         ctrl.createOrder(11L,ad7,ad8);
         ctrl.setOrderState(OrderState.TO_BE_PREPARED);
-        ctrl.addProductToOrder(lProd.get(3),1);
+        ctrl.addProductToOrder(lProd.get(5),1);
         ctrl.saveOrder();
         try {
             Thread.sleep(1000);

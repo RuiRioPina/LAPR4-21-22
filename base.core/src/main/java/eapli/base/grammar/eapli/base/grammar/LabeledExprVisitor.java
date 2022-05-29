@@ -1,4 +1,4 @@
-// Generated from C:/Users/Asus/Documents/lei21_22_s4_2dh_05/base.core/src/main/java/eapli/base/grammar\LabeledExpr.g4 by ANTLR 4.10.1
+// Generated from C:/Users/ruiri/IdeaProjects/lei21_22_s4_2dh_05/base.core/src/main/java/eapli/base/grammar\LabeledExpr.g4 by ANTLR 4.10.1
 package eapli.base.grammar;
 import org.antlr.v4.runtime.tree.ParseTreeVisitor;
 
@@ -53,11 +53,35 @@ public interface LabeledExprVisitor<T> extends ParseTreeVisitor<T> {
 	 */
 	T visitMultipleChoice(LabeledExprParser.MultipleChoiceContext ctx);
 	/**
+	 * Visit a parse tree produced by {@link LabeledExprParser#multipleChoiceWithInput}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitMultipleChoiceWithInput(LabeledExprParser.MultipleChoiceWithInputContext ctx);
+	/**
 	 * Visit a parse tree produced by {@link LabeledExprParser#singleChoice}.
 	 * @param ctx the parse tree
 	 * @return the visitor result
 	 */
 	T visitSingleChoice(LabeledExprParser.SingleChoiceContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LabeledExprParser#singleChoiceWithInput}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSingleChoiceWithInput(LabeledExprParser.SingleChoiceWithInputContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LabeledExprParser#sortingOptions}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitSortingOptions(LabeledExprParser.SortingOptionsContext ctx);
+	/**
+	 * Visit a parse tree produced by {@link LabeledExprParser#scalingOptions}.
+	 * @param ctx the parse tree
+	 * @return the visitor result
+	 */
+	T visitScalingOptions(LabeledExprParser.ScalingOptionsContext ctx);
 	/**
 	 * Visit a parse tree produced by {@link LabeledExprParser#numeric}.
 	 * @param ctx the parse tree

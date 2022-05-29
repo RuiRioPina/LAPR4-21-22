@@ -1,5 +1,7 @@
 package eapli.base.app.backoffice.console.presentation.productcatalog;
 
+import eapli.base.app.backoffice.console.presentation.productCategory.ProductCategoryPrinter;
+import eapli.base.app.backoffice.console.presentation.products.BrandPrinter;
 import eapli.base.app.backoffice.console.presentation.products.ProductPrinter;
 import eapli.base.product.domain.Brand;
 import eapli.base.product.domain.Product;
@@ -77,12 +79,12 @@ public class CheckProductCatalogUI extends AbstractUI {
         if (this.mode == CATEGORY_MODE) {
             System.out.println("Available Categories:");
             Iterable<Category> categories=theController.allCategories();
-            for (Category category:categories ){
-                System.out.println(category.toString());
-            }
-            final String category = Console.readLine("Please type the name of the category you wish to search:");
+            Category selectedCategory= null;
+            final SelectWidget<Category> selectorCategory = new SelectWidget<>("Catehory:", categories, new ProductCategoryPrinter());
+            selectorCategory.show();
+            selectedCategory=selectorCategory.selectedElement();
             Product selectedProduct = null;
-            final Iterable<Product> allProductsWithCategory = this.theController.allProductsWithCategory(category,sort_mode);
+            final Iterable<Product> allProductsWithCategory = this.theController.allProductsWithCategory(selectedCategory.identity(),sort_mode);
             //sortList(productList,sort_mode);
             final SelectWidget<Product> selector = new SelectWidget<>("Products:", allProductsWithCategory, new ProductPrinter());
             do {
@@ -98,13 +100,13 @@ public class CheckProductCatalogUI extends AbstractUI {
 
         if (this.mode == BRAND_MODE) {
             System.out.println("Available Brands:");
-            Iterable<Brand> brands = theController.allBrands();
-            for (Brand brand:brands){
-                System.out.println(brand.toString());
-            }
-            final String brand = Console.readLine("Please type the name of the brand you wish to search:");
+            Iterable<Brand> brands=theController.allBrands();
+            Brand selectedBrand= null;
+            final SelectWidget<Brand> selectorBrand = new SelectWidget<>("Brand:", brands, new BrandPrinter());
+            selectorBrand.show();
+            selectedBrand=selectorBrand.selectedElement();
             Product selectedProduct = null;
-            final Iterable<Product> allProductsWithBrand = this.theController.allProductsWithBrand(brand,sort_mode);
+            final Iterable<Product> allProductsWithBrand = this.theController.allProductsWithBrand(selectedBrand.toString(),sort_mode);
             //sortList(productList,sort_mode);
             final SelectWidget<Product> selector = new SelectWidget<>("Products:", allProductsWithBrand, new ProductPrinter());
             do {
@@ -143,19 +145,19 @@ public class CheckProductCatalogUI extends AbstractUI {
         }
         if (this.mode == BRAND_CATEGORY_MODE) {
             System.out.println("Available Brands:");
-            Iterable<Brand> brands = theController.allBrands();
-            for (Brand brand:brands){
-                System.out.println(brand.toString());
-            }
-            final String brand = Console.readLine("Please type the name of the brand you wish to search:");
+            Iterable<Brand> brands=theController.allBrands();
+            Brand selectedBrand= null;
+            final SelectWidget<Brand> selectorBrand = new SelectWidget<>("Brand:", brands, new BrandPrinter());
+            selectorBrand.show();
+            selectedBrand=selectorBrand.selectedElement();
             System.out.println("Available Categories:");
             Iterable<Category> categories=theController.allCategories();
-            for (Category category:categories ){
-                System.out.println(category.toString());
-            }
-            final String category = Console.readLine("Please type the name of the category you wish to search:");
+            Category selectedCategory= null;
+            final SelectWidget<Category> selectorCategory = new SelectWidget<>("Category:", categories, new ProductCategoryPrinter());
+            selectorCategory.show();
+            selectedCategory=selectorCategory.selectedElement();
             Product selectedProduct = null;
-            final Iterable<Product> allProductsWithBrandCategory = this.theController.allProductsWithBrandCategory(brand,category,sort_mode);
+            final Iterable<Product> allProductsWithBrandCategory = this.theController.allProductsWithBrandCategory(selectedBrand.toString(),selectedCategory.toString(),sort_mode);
             //sortList(productList,sort_mode);
             final SelectWidget<Product> selector = new SelectWidget<>("Products:", allProductsWithBrandCategory, new ProductPrinter());
             do {

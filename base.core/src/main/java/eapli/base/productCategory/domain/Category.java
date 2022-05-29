@@ -18,13 +18,13 @@ public class Category implements AggregateRoot<String> {
     @Column(name="ID")
     @GeneratedValue
     private Long id;
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private AlphaNumericCode alphanumericCode;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private Description description;
 
-    @Column(nullable = false)
+    @Column(nullable = false,unique = true)
     private Designation name;
 
     @XmlElement
