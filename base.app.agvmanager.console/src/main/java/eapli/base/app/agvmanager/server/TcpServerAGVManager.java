@@ -39,6 +39,7 @@ class TcpServerAGVManager {
  }
 
 
+
     class TcpServerAGVManagerThread implements Runnable {
         private final Socket s;
         private ObjectOutputStream sOut;
@@ -104,7 +105,7 @@ class TcpServerAGVManager {
                             agv.get().setAgvState(statePacketParser(packet));
                             agvRepository.save(agv.get());
 
-                            if (statePacketParser(packet)==AGVState.FREE){
+                            if (statePacketParser(packet)==AGVState.OCCUPIED_SERVING_A_GIVEN_ORDER){
                                 Iterable<ProductOrder> orderList=orderRepository.findByDateAscAndState(OrderState.TO_BE_PREPARED);
                                 if (orderList.iterator().hasNext()){
                                     ProductOrder order=orderList.iterator().next();
@@ -113,10 +114,20 @@ class TcpServerAGVManager {
                                 }
 
                             }
+                            if (statePacketParser(packet)==AGVState.FREE){
+                                Iterable<ProductOrder> orderList=orderRepository.findByDateAscAndState(OrderState.BEING_PREPARED);
+                                if (orderList.iterator().hasNext()){
+                                    ProductOrder order=orderList.iterator().next();
+                                    order.setOrderState(OrderState.READY_FOR_CARRIER);
+                                    orderRepository.save(order);
+
+                                }
+                            }
                             Packet packet1= new Packet((byte) 0,(byte) 4,"Work".getBytes(StandardCharsets.UTF_8));
                             sOut.writeObject(packet1);
                             sOut.flush();
                             System.out.println("==> Send message to the client saying it has to work");
+
                             break;
 
                         case 5:
@@ -131,6 +142,7 @@ class TcpServerAGVManager {
                             break;
 
                     }
+
                 }
             } catch (IOException ex) {
                 System.out.println("IOException");
@@ -138,7 +150,7 @@ class TcpServerAGVManager {
         }
 
         public  Long idPacketParser(Packet packet){
-        if (packet.getCode()!=3){
+        if (packet.getCode()!=3&& packet.getCode()!=5){
             return null;
         }
         String str= packet.data();

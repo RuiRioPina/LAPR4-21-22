@@ -19,7 +19,8 @@ public class TcpClientAGVDigitalTwin {
     public static void main(String[] args) throws Exception {
         System.out.println("Client side: Waiting for you to send a request");
 
-        if (args.length == 0) {
+        if (args.length != 2 && args.length!=1) {
+
             System.out.println("Server IPv4/IPv6 address or DNS name is required as argument");
             System.exit(1);
         }
@@ -48,23 +49,42 @@ public class TcpClientAGVDigitalTwin {
 
 
         do {
+            System.out.println("Please type the code of the type of request you wish to change.(check SPOMSP and SPOMSP Code extension)");
             conteudo = in.readLine();
-            //Packet packet = new Packet(version, code, conteudo.getBytes(StandardCharsets.UTF_8));
-            Packet packetOccupied = buildStateChangeRequestData(AGVState.OCCUPIED_SERVING_A_GIVEN_ORDER, Long.valueOf(35));
-            outputStream.writeObject(packetOccupied);
-            System.out.println("sent packet with data " + packetOccupied.data());
-            Packet packetReceived = (Packet) inputStream.readObject();
-            if (packetReceived.getCode() == 2 && packetReceived.getCode() == 1) {
+            if (Integer.parseInt(conteudo)==0){
+                Packet packetCommtest= new Packet((byte) 0,(byte) 0,"".getBytes(StandardCharsets.UTF_8));
+                outputStream.writeObject(packetCommtest);
+                System.out.println("sent packet with data " + packetCommtest.data());
+                Packet packetReceived= (Packet) inputStream.readObject();
+                System.out.println("received packet with data "+ packetReceived.data());
+
+            }
+            if (Integer.parseInt(conteudo)==1){
+                Packet packetDisconnect= new Packet((byte) 0,(byte) 1,"".getBytes(StandardCharsets.UTF_8));
+                outputStream.writeObject(packetDisconnect);
+                System.out.println("sent packet with data " + packetDisconnect.data());
+                Packet packetReceived= (Packet) inputStream.readObject();
+                System.out.println("received packet with data "+ packetReceived.data());
                 break;
             }
+            if(Integer.parseInt(conteudo)==3) {
+                //Packet packet = new Packet(version, code, conteudo.getBytes(StandardCharsets.UTF_8));
+                Packet packetOccupied = buildStateChangeRequestData(AGVState.OCCUPIED_SERVING_A_GIVEN_ORDER, Long.valueOf(args[1]));
+                outputStream.writeObject(packetOccupied);
+                System.out.println("sent packet with data " + packetOccupied.data());
+                Packet packetReceived = (Packet) inputStream.readObject();
+                if (packetReceived.getCode() == 2 && packetReceived.getCode() == 1) {
+                    break;
+                }
 
-            System.out.println("received packet with data " + packetReceived.data());
-            Packet packetFree = buildStateChangeRequestData(AGVState.FREE, Long.valueOf(35));
+                System.out.println("received packet with data " + packetReceived.data());
+                Packet packetFree = buildStateChangeRequestData(AGVState.FREE, Long.valueOf(args[1]));
 
-            if (packetReceived.getCode() == 4) {
-                Thread.sleep(10000); //simulates work
-                System.out.println("Work has finished");
-                outputStream.writeObject(packetFree);
+                if (packetReceived.getCode() == 4) {
+                    Thread.sleep(10000); //simulates work
+                    System.out.println("Work has finished");
+                    outputStream.writeObject(packetFree);
+                }
             }
 
 
