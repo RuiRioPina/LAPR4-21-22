@@ -10,7 +10,7 @@ import java.io.Serializable;
 @Entity
 public class Address implements ValueObject, Serializable {
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id", nullable = false)
     private Long id;
 
