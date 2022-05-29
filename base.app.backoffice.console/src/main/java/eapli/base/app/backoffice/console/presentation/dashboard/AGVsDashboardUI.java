@@ -22,7 +22,6 @@ public class AGVsDashboardUI extends AbstractUI {
             uri = new URI("http://localhost:11555/"); //porta correta?
             Desktop.getDesktop().browse(uri);
         } catch ( HeadlessException|AWTError | URISyntaxException | IOException e) {
-            return false;
         }
         return true;
     }
