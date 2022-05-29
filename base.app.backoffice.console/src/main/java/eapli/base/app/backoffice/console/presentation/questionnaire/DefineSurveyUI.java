@@ -32,6 +32,8 @@ import eapli.framework.presentation.console.AbstractUI;
 import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 
+import javax.swing.*;
+import java.awt.*;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -92,6 +94,7 @@ public class DefineSurveyUI extends AbstractUI {
         LabeledExprLexer lexer = new LabeledExprLexer(new ANTLRInputStream(theController.receiveFullQuestionnaireString()));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LabeledExprParser parser = new LabeledExprParser(tokens);
+        String debug = theController.receiveFullQuestionnaireString();
         System.out.println(theController.receiveFullQuestionnaireString());
         parser.prog();
         return false;
@@ -123,8 +126,17 @@ public class DefineSurveyUI extends AbstractUI {
         insertSurveyData();
         flag = 1;
         String questionnaire = "";
+        String currentDirectory = "";
+        String questionnairePath;
         try {
-            questionnaire = Files.readString(Path.of("questionnaire/Question.txt"));
+            JFileChooser chooser = new JFileChooser(currentDirectory);
+            chooser.showSaveDialog(null);
+            questionnairePath = "questionnaire/" + chooser.getSelectedFile().getName();
+        } catch (HeadlessException a) {
+            questionnairePath = "questionnaire/" + Console.readLine("Insert file name to be imported");
+        }
+        try {
+            questionnaire = Files.readString(Path.of(questionnairePath));
         } catch (IOException e) {
             e.printStackTrace();
         }
