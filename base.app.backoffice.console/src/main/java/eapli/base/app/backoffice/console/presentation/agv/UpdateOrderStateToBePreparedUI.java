@@ -33,8 +33,8 @@ public class UpdateOrderStateToBePreparedUI extends AbstractUI {
         System.out.print("--------------------------------------------------------------\n");
         ProductOrder rProductOrder = (ProductOrder) Utils.selectsObject((List) lProdOrder);
 
-        if (rProductOrder.equals(null)){
-            System.out.printf("No Product Order selected! (Null Product Order");
+        if (rProductOrder == null){
+            System.out.print("No Product Order selected! (Null Product Order)\n");
             return false;
         }
 
@@ -52,7 +52,7 @@ public class UpdateOrderStateToBePreparedUI extends AbstractUI {
         System.out.print("--------------------------------------------------------------\n");
         AGV rAGV = (AGV) Utils.selectsObject((List) lAGV);
 
-        if(rAGV.equals(null)){
+        if(rAGV == null){
             System.out.println("No object selected! (Null AGV)");
             return false;
         }
