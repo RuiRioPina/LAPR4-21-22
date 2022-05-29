@@ -3,7 +3,7 @@
 #REM set the class path,
 #REM assumes the build was executed with maven copy-dependencies
 # shellcheck disable=SC2125
-export BASE_CP=base.app.agvmanager.console/target/classes/eapli/base.app.agvmanager.server-1.4.0-SNAPSHOT.jar:base.app.agvmanager.server/target/dependency/*;
+export BASE_CP=base.app.agvmanager.console/target/agvmanager 1.4.0-SNAPSHOT.jar:base.app.agvmanager.console/target/dependency/*;
 
 #REM call the java VM, e.g,
-java -cp $BASE_CP eapli.base.app.agvmanager.server.TcpServerAGVManager
+java -cp $BASE_CP agvmanager.console.TcpServerAGVManager
