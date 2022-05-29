@@ -44,7 +44,12 @@ public class CreateAGVUI extends AbstractUI {
             do {
                 try {
                     autonomy = Integer.parseInt(Console.readLine("Introduce the AGV autonomy: "));
-                    validation = true;
+                    if(autonomy < 0){
+                        validation = false;
+                        System.out.println("Enter a positive value!");
+                    } else {
+                        validation = true;
+                    }
                 } catch (NumberFormatException exception) {
                     System.out.println(exception.getMessage());
                     validation = false;
@@ -58,7 +63,12 @@ public class CreateAGVUI extends AbstractUI {
             do {
                 try {
                     capacity = Double.parseDouble(Console.readLine("Introduce the AGV capacity: "));
-                    validation = true;
+                    if(capacity < 0){
+                        validation = false;
+                        System.out.println("Enter a positive value!");
+                    } else {
+                        validation = true;
+                    }
                 } catch (NumberFormatException exception) {
                     System.out.println(exception.getMessage());
                     validation = false;
@@ -69,7 +79,12 @@ public class CreateAGVUI extends AbstractUI {
             do {
                 try {
                     weight = Double.parseDouble(Console.readLine("Introduce the AGV weight: "));
-                    validation = true;
+                    if(weight < 0){
+                        validation = false;
+                        System.out.println("Enter a positive value!");
+                    } else {
+                        validation = true;
+                    }
                 } catch (NumberFormatException exception) {
                     System.out.println(exception.getMessage());
                     validation = false;
@@ -81,7 +96,12 @@ public class CreateAGVUI extends AbstractUI {
             do {
                 try {
                     volume = Double.parseDouble(Console.readLine("Introduce the AGV volume: "));
-                    validation = true;
+                    if(volume < 0){
+                        validation = false;
+                        System.out.println("Enter a positive value!");
+                    } else {
+                        validation = true;
+                    }
                 } catch (NumberFormatException exception) {
                     System.out.println(exception.getMessage());
                     validation = false;
