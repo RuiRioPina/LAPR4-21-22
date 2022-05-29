@@ -30,7 +30,13 @@ public class CreateProductOrderUI extends AbstractUI {
         System.out.print("--------------------------------------------------------------\n");
         Customer customer = (Customer) Utils.selectsObject(lCustomer);
 
-        this.ctrl.createOrder(customer.identity(),customer.defaultAddress(),customer.defaultAddress());
+        if(!customer.getAddress().isEmpty()) {
+            this.ctrl.createOrder(customer.identity(), customer.defaultAddress(), customer.defaultAddress());
+        } else {
+            System.out.print("The chosen customer doesn't have a specified default address!\n"
+                            + "Returning to menu..\n");
+            return false;
+        }
 
         List<Product> lProd = this.ctrl.getProductList();
 

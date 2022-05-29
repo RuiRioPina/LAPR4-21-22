@@ -37,6 +37,12 @@ public class OrderBuilder implements DomainFactory<ProductOrder> {
     }
 
     public OrderBuilder addProduct(Product product, Integer quantity){
+        if(this.productIntegerMap.containsKey(product)){
+            quantity  += this.productIntegerMap.get(product);
+            this.productIntegerMap.put(product,quantity);
+            this.totalAmount = calculateTotalAmount();
+            return this;
+        }
         this.productIntegerMap.put(product,quantity);
         this.totalAmount = calculateTotalAmount();
         return this;

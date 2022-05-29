@@ -34,6 +34,7 @@ import eapli.framework.validations.Preconditions;
 
 import java.io.Serializable;
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -123,6 +124,10 @@ public class Customer implements Serializable, AggregateRoot<Long> {
         this.address = address;
     }
 
+    public List<Address> getAddress(){
+        return address;
+    }
+
 
 
 
@@ -149,7 +154,7 @@ public class Customer implements Serializable, AggregateRoot<Long> {
     }
 
     public Address defaultAddress(){
-        return address.iterator().next();
+        return address.get(0);
     }
 
     @Override
