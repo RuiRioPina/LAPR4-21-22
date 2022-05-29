@@ -41,7 +41,8 @@ public class SurveyController {
     public SurveyDTO buildSurvey(final SurveyDTO dto, int flagFile) {
         if (flagFile == 1) {
             newSurvey = new SurveyDTOParser().valueOf(dto);
-            newSurvey.addContentToSurvey(new Content(dto.content));
+            content = new Content(dto.content);
+            newSurvey.addContentToSurvey(content);
             repo.save(newSurvey);
             return newSurvey.toDTO();
         } else {
