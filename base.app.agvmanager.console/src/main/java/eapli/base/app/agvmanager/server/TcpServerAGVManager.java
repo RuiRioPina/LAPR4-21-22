@@ -25,7 +25,7 @@ class TcpServerAGVManager {
          Socket cliSock;
 
          try {
-             sock = new ServerSocket(8080);
+             sock = new ServerSocket(2020);
          } catch (IOException ex) {
              System.out.println("Failed to open server socket");
              System.exit(1);
@@ -103,6 +103,8 @@ class TcpServerAGVManager {
                             System.out.println("==> Request to change the state of the AGV sent by digital twin client received with success");
                             Optional<AGV> agv = agvRepository.findById(idPacketParser(packet));
                             agv.get().setAgvState(statePacketParser(packet));
+                            System.out.println("identidade:"+agv.get().identity());
+                            System.out.println("state="+statePacketParser(packet).toString());
                             agvRepository.save(agv.get());
 
                             if (statePacketParser(packet)==AGVState.OCCUPIED_SERVING_A_GIVEN_ORDER){
@@ -164,7 +166,7 @@ class TcpServerAGVManager {
         return  num;
         }
         public AGVState statePacketParser(Packet packet) {
-            if (packet.getCode()!=3 || packet.getCode() != 5){
+            if (packet.getCode()!=3 && packet.getCode() != 5){
                 return null;
             }
             String str= packet.data();
