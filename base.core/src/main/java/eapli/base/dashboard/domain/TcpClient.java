@@ -13,7 +13,7 @@ public class TcpClient {
 
     static InetAddress serverIP;
     static Socket sock;
-    private static final  int PORT_NUMBER = 8080;
+    private static final  int PORT_NUMBER = 2020;
 
 
     public static AGVState main(String[] args) throws Exception {
