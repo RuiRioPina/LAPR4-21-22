@@ -24,51 +24,32 @@ public class Section implements DTOable<SectionDTO>, DomainEntity<String> {
         this.content = content;
     }
 
-    public String getId() {
+    public String idToBuildContent() {
         return id;
     }
 
-    public void setId(String id) {
-        this.id = id;
-    }
-
-    public String getTitle() {
+    public String titleToBuildContent() {
         return title;
     }
 
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public Description getDescription() {
+    public Description descriptionToBuildContent() {
         return description;
     }
 
-    public void setDescription(Description description) {
-        this.description = description;
-    }
-
-    public Obligatoriness getObligatoriness() {
+    public Obligatoriness obligatorinessToBuildContent() {
         return obligatoriness;
     }
 
-    public void setObligatoriness(Obligatoriness obligatoriness) {
-        this.obligatoriness = obligatoriness;
-    }
-
-    public String getRepeatability() {
+    public String repeatabilityToBuildContent() {
         return repeatability;
     }
 
-    public void setRepeatability(String repeatability) {
-        this.repeatability = repeatability;
-    }
 
-    public List<Question> getContent() {
+    public List<Question> contentToBuildContent() {
         return content;
     }
 
-    public void setContent(List<Question> content) {
+    public void buildContent(List<Question> content) {
         this.content = content;
     }
 

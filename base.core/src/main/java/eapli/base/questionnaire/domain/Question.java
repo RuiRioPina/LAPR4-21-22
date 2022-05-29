@@ -3,6 +3,7 @@ package eapli.base.questionnaire.domain;
 import eapli.base.questionnaire.dto.QuestionDTO;
 import eapli.framework.domain.model.DomainEntity;
 import eapli.framework.representations.dto.DTOable;
+import eapli.framework.validations.Preconditions;
 
 public class Question implements DTOable<QuestionDTO>, DomainEntity<String> {
     private final String id;
@@ -13,6 +14,7 @@ public class Question implements DTOable<QuestionDTO>, DomainEntity<String> {
     private final String extraInfo;
 
     public Question(String id, String questionMessage, String instruction, QuestionType type, Obligatoriness obligatoriness, String extraInfo) {
+        Preconditions.noneNull(id, questionMessage, type);
         this.id = id;
         this.questionMessage = questionMessage;
         this.instruction = instruction;
@@ -21,31 +23,31 @@ public class Question implements DTOable<QuestionDTO>, DomainEntity<String> {
         this.extraInfo = extraInfo;
     }
 
-    public String getId() {
+    public String idToBuildContent() {
         return id;
     }
 
 
-    public String getQuestionMessage() {
+    public String questionMessageToBuildContent() {
         return questionMessage;
     }
 
 
-    public QuestionType getType() {
+    public QuestionType typeToBuildContent() {
         return type;
     }
 
 
-    public Obligatoriness getObligatoriness() {
+    public Obligatoriness obligatorinessToBuildContent() {
         return obligatoriness;
     }
 
 
-    public String getExtraInfo() {
+    public String extraInfoToBuildContent() {
         return extraInfo;
     }
 
-    public String getInstruction() {
+    public String instructionToBuildContent() {
         return instruction;
     }
 
