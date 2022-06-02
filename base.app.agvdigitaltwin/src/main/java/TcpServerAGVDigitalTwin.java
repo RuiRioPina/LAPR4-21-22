@@ -2,25 +2,37 @@
 
 import eapli.base.packet.Packet;
 
+import javax.net.ssl.SSLServerSocket;
+import javax.net.ssl.SSLServerSocketFactory;
 import java.io.*;
 import java.net.*;
 import java.nio.charset.StandardCharsets;
 
 class TcpServerAGVDigitalTwin {
-    static ServerSocket sock;
-    private static final  int PORT_NUMBER = 2020;
+    private static final int PORT_NUMBER = 2020;
+    private static final String TRUSTED_STORE = "server.jks";
+    private static final String KEYSTORE_PASS = "SPOMS@G05_2DH";
 
     public static void main(String[] args) throws Exception {
+        SSLServerSocket sock = null;
         Socket cliSock;
-        System.out.println("Server side: Waiting for requests");
+
+        System.setProperty("javax.net.ssl.trustStore", TRUSTED_STORE);
+        System.setProperty("javax.net.ssl.trustStorePassword", KEYSTORE_PASS);
+
+        System.setProperty("javax.net.ssl.keyStore", TRUSTED_STORE);
+        System.setProperty("javax.net.ssl.keyStorePassword", KEYSTORE_PASS);
+
+        SSLServerSocketFactory sslF = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
 
         try {
-            sock = new ServerSocket(PORT_NUMBER);
+            sock = (SSLServerSocket) sslF.createServerSocket(PORT_NUMBER);
+            sock.setNeedClientAuth(true);
         } catch (IOException ex) {
             System.out.println("Failed to open server socket");
             System.exit(1);
         }
-
+        System.out.println("Server side: Waiting for requests");
         while (true) {
             cliSock = sock.accept();
             new Thread(new TcpServerAGVDigitalTwinThread(cliSock)).start();
@@ -47,7 +59,7 @@ class TcpServerAGVDigitalTwinThread implements Runnable {
         try {
             sOut = new ObjectOutputStream(s.getOutputStream());
             sIn = new ObjectInputStream(s.getInputStream());
-            while(true) {
+            while (true) {
                 Packet packet = null;
                 try {
                     packet = (Packet) sIn.readObject();
