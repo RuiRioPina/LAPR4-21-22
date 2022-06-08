@@ -1,6 +1,8 @@
 import eapli.base.agv.domain.AGVState;
 import eapli.base.packet.Packet;
 
+import javax.net.ssl.SSLSocket;
+import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 import java.net.InetAddress;
 import java.net.Socket;
@@ -11,20 +13,29 @@ import java.nio.charset.StandardCharsets;
 public class TcpClientAGVDigitalTwin {
 
     static InetAddress serverIP;
-    static Socket sock;
+    static SSLSocket sock;
     private static final int PORT_NUMBER = 2020;
+
+    static final String KEYSTORE_PASS="SPOMS@G05_2DH";
 
     //args[0]= server ip
     //args[1]= AGV ID
     public static void main(String[] args) throws Exception {
         System.out.println("Client side: Waiting for you to send a request");
 
-        if (args.length != 2 && args.length!=1) {
+        if (args.length != 3 && args.length!=1) {
 
             System.out.println("Server IPv4/IPv6 address or DNS name is required as argument");
             System.exit(1);
         }
 
+        System.setProperty("javax.net.ssl.trustStore",args[2]+".jks");
+        System.setProperty("javax.net.ssl.trustStorePassword",KEYSTORE_PASS);
+
+        // Use this certificate and private key for client certificate when requested by the server
+        System.setProperty("javax.net.ssl.keyStore",args[2]+".jks");
+        System.setProperty("javax.net.ssl.keyStorePassword",KEYSTORE_PASS);
+        SSLSocketFactory sf = (SSLSocketFactory) SSLSocketFactory.getDefault();
         try {
             serverIP = InetAddress.getByName(args[0]);
         } catch (UnknownHostException ex) {
@@ -33,11 +44,17 @@ public class TcpClientAGVDigitalTwin {
         }
 
         try {
-            sock = new Socket(serverIP, PORT_NUMBER);
+            sock = (SSLSocket) sf.createSocket(serverIP, PORT_NUMBER);
         } catch (IOException ex) {
-            System.out.println("Failed to establish TCP connection");
+            System.out.println("Failed to connect to: " + args[0] + ":" + PORT_NUMBER);
+            System.out.println("Application aborted.");
             System.exit(1);
         }
+
+        System.out.println("Connected to: " + args[0] + ":" + PORT_NUMBER);
+
+
+        sock.startHandshake();
 
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         ObjectOutputStream outputStream = new ObjectOutputStream(sock.getOutputStream());
@@ -85,6 +102,16 @@ public class TcpClientAGVDigitalTwin {
                     System.out.println("Work has finished");
                     outputStream.writeObject(packetFree);
                 }
+            }
+            if(Integer.parseInt(conteudo)==10) {
+                Packet packet = new Packet(version, (byte) 10, "us5001".getBytes(StandardCharsets.UTF_8));
+                outputStream.writeObject(packet);
+                System.out.println("sent packet with data " + packet.data());
+                Packet packetReceived = (Packet) inputStream.readObject();
+
+
+                System.out.println("received packet with data " + packetReceived.data());
+
             }
 
 
