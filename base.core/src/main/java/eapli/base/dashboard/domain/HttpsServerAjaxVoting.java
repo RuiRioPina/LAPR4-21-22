@@ -4,67 +4,57 @@ import eapli.base.dashboard.application.AGVsDashboardController;
 import eapli.framework.infrastructure.authz.application.AuthorizationService;
 import eapli.framework.infrastructure.authz.application.AuthzRegistry;
 
+import javax.net.ssl.SSLServerSocket;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import java.util.List;
-import java.util.Properties;
+import javax.net.ssl.SSLServerSocketFactory;
+import javax.net.ssl.SSLSocket;
 
 /**
  *
  * @author ANDRE MOREIRA (asc@isep.ipp.pt)
  */
 
-public class HttpServerAjaxVoting extends Thread {
+public class HttpsServerAjaxVoting extends Thread {
     private final static AuthorizationService authz = AuthzRegistry.authorizationService();
     private final static String username = authz.session().get().authenticatedUser().username().toString();
     private final static String email = authz.session().get().authenticatedUser().email().toString();
 
     static private final String BASE_FOLDER = "base.core/src/main/java/eapli/base/dashboard/domain/www";
-    static private ServerSocket sock;
-    static private List<AGVsDashboardInfoDTO> agvsDashboard;
-    static String PORT = "11555";
-    private static AGVsDashboardController controller;
-
-    public HttpServerAjaxVoting() {
-    }
+    static private SSLServerSocket sock;
 
     @Override
-    public void run () {
-	Socket cliSock = null;
+    public void run() {
+        SSLSocket cliSock = null;
 
-	try {
-        sock = new ServerSocket(Integer.parseInt(PORT));
-    }
-	catch (IOException ex) {
-            System.out.println("Server failed to open local port " + PORT);
+        System.setProperty("javax.net.ssl.keyStore", "B.jks");
+        System.setProperty("javax.net.ssl.keyStorePassword","secret");
+/*
+        System.setProperty("javax.net.ssl.trustStore", "B.jks");
+        System.setProperty("javax.net.ssl.trustStorePassword", "secret");
+*/
+        try {
+            SSLServerSocketFactory sslF = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
+            sock = (SSLServerSocket) sslF.createServerSocket(11555);
+        } catch (IOException ex) {
+            System.out.println("Server failed to open local port " + 11555);
             System.exit(1);
-    }
+        }
 
-	    while (true) {
+        while (true) {
             try {
-            cliSock=sock.accept();
+                cliSock = (SSLSocket) sock.accept();
             } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-        HttpAjaxVotingRequest req = new HttpAjaxVotingRequest(cliSock, BASE_FOLDER);
-        req.start();
-        incAccessesCounter();
+                e.printStackTrace();
+            }
+            HttpAjaxVotingRequest req = new HttpAjaxVotingRequest(cliSock, BASE_FOLDER);
+            req.start();
         }
     }
-	
-    
-    // DATA ACCESSED BY THREADS - LOCKING REQUIRED
 
-    private static final int candidatesNumber = 4;
-    private static final String[] candidateName = new String[candidatesNumber];
-    private static final int[] candidateVotes = new int[candidatesNumber];
-    private static int accessesCounter;
-    
-    private static synchronized void incAccessesCounter() { accessesCounter++; }
-    
-    public static synchronized String getPersonalInfo () {
+
+
+        public static synchronized String getPersonalInfo () {
         return " <div class=\"topnav\" id=\"personalInformation\">\n" +
                 "    <a class=\"active\" href=\"#home\">Personal Information</a>\n" +
                 "    <a href=> Name: " + username + "</a>\n" +
@@ -73,9 +63,9 @@ public class HttpServerAjaxVoting extends Thread {
     }
 
     public static synchronized String refreshAGVsDashboardInfo() {
+        AGVsDashboardController controller = new AGVsDashboardController();
         try {
-            AGVsDashboardController controller = new AGVsDashboardController();
-            agvsDashboard = controller.infoAGVs();
+            List<AGVsDashboardInfoDTO> agvsDashboard = controller.infoAGVs();
             if (agvsDashboard != null) {
                 StringBuilder s = new StringBuilder();
                 for (AGVsDashboardInfoDTO agv : agvsDashboard) {

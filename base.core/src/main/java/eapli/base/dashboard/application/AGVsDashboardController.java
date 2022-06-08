@@ -6,6 +6,7 @@ import eapli.base.agv.repositories.AGVRepository;
 import eapli.base.dashboard.domain.*;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,7 +15,7 @@ public class AGVsDashboardController {
    static private AGVRepository agvRepository = PersistenceContext.repositories().agvs();
 
     public void showDashboard() {
-        HttpServerAjaxVoting server = new HttpServerAjaxVoting();
+        HttpsServerAjaxVoting server = new HttpsServerAjaxVoting();
         server.start();
     }
 
@@ -22,7 +23,7 @@ public class AGVsDashboardController {
         PersistenceContext.repositories().newTransactionalContext();
         List <AGVsDashboardInfoDTO> agvsDashboardInfoDTOList = new ArrayList<>();
         for (AGV agv : agvRepository.findAll()) {
-            AGVState state = getAgvState(agv.identity());
+           AGVState state = getAgvState(agv.identity());
                 agvsDashboardInfoDTOList.add(new AGVsDashboardInfoDTO(agv.shortDescription(), state.toString(),
                         location(agv)));
             }
@@ -30,10 +31,17 @@ public class AGVsDashboardController {
     }
 
     private AGVState getAgvState(Long identity) throws Exception {
-        String [] tcp = new String [2];
-        tcp[0] = "127.0.0.1";
-        tcp[1] = identity.toString();
-        return TcpClient.main(tcp);
+        AGVState agvState = null;
+        TcpClient tcp = new TcpClient();
+        tcp.startConnection("127.0.0.1");
+        try {
+            agvState = tcp.getAgvState(identity);
+            tcp.stopConnection();
+        } catch (IOException e) {
+            e.printStackTrace();
+            tcp.stopConnection();
+        }
+        return agvState;
     }
 
     public String location(AGV agv) {
