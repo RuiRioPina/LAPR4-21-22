@@ -5,7 +5,6 @@ import javax.net.ssl.SSLSocket;
 import javax.net.ssl.SSLSocketFactory;
 import java.io.*;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.nio.charset.StandardCharsets;
@@ -24,7 +23,6 @@ public class TcpClientAGVDigitalTwin {
     public static void main(String[] args) throws Exception {
         while (true) {
             try {
-                System.out.println("Client side: Waiting for you to send a request");
 
                 if (args.length != 3 && args.length != 1) {
 
@@ -48,12 +46,12 @@ public class TcpClientAGVDigitalTwin {
 
                 try {
                     sock = (SSLSocket) sf.createSocket(serverIP, PORT_NUMBER);
+                    System.out.println("Client side: Waiting for you to send a request");
+                    System.out.println("Connected to: " + args[0] + ":" + PORT_NUMBER);
+
                 } catch (IOException ex) {
-                    System.out.println("Server foi desligado!");
                     Thread.sleep(3000);
                 }
-
-                System.out.println("Connected to: " + args[0] + ":" + PORT_NUMBER);
 
 
                 sock.startHandshake();
@@ -84,6 +82,9 @@ public class TcpClientAGVDigitalTwin {
                         System.out.println("sent packet with data " + packetDisconnect.data());
                         Packet packetReceived = (Packet) inputStream.readObject();
                         System.out.println("received packet with data " + packetReceived.data());
+                        sock.close();
+                        System.exit(0);
+
                         break;
                     }
                     if (Integer.parseInt(conteudo) == 3) {
@@ -121,7 +122,10 @@ public class TcpClientAGVDigitalTwin {
                 while (!conteudo.equals("-1"));
                 sock.close();
             } catch (SocketException e) {
+                sock = null;
                 System.out.println("Server foi desligado!");
+            } catch (NullPointerException e) {
+                System.out.println("O server não está ligado! A tentar de novo!");
             }
         }
     }

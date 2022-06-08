@@ -104,7 +104,6 @@ class TcpServerAGVDigitalTwinThread implements Runnable {
                 }
             }
         } catch (IOException ex) {
-            System.out.println("IOException");
         }
     }
 }
