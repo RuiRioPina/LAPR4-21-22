@@ -32,7 +32,10 @@ public class HttpAjaxVotingRequest extends Thread {
 			// System.out.println(request.getURI());
 
 			if(request.getMethod().equals("GET")) {
-				if(request.getURI().equals("/personalInfo")) {
+				if(request.getURI().equals("/agvsWarehouse")) {
+					response.setContentFromString(HttpsServerAjaxVoting.refreshAgvsWarehouse(), "text/html");
+					response.setResponseStatus("200 Ok");
+				} else if(request.getURI().equals("/personalInfo")) {
 					response.setContentFromString(HttpsServerAjaxVoting.getPersonalInfo(), "text/html");
 					response.setResponseStatus("200 Ok");
 				} else if(request.getURI().equals("/agvsDashboard")) {

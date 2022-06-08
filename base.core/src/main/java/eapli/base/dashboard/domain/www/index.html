@@ -3,15 +3,16 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <link rel="stylesheet" href="style.css">
-    <script src="rcomp-ajax.js"></script>
+    <script src="rcomp-ajax.js"></script><style>
+    </style>
 </head>
-<body onload="refreshAGVsDashboardInfo();refreshPersonalInfo();">
+<body onload="refreshAGVsDashboardInfo();refreshPersonalInfo();refreshAgvsWarehouse();">
 
 <div class="topnav" id="personalInfo">
     <a>Personal Information</a>
     <a>Nome:</a>
     <a>Email:</a>
-    </div>
+</div>
 
 <div class="context">
     <h1>AGVs DASHBOARD</h1>
@@ -32,12 +33,12 @@
                     <tbody id = "agvsDashboard">
                     </tbody>
                 </table>
+                <div id = "agvsWarehouse">
                 </div>
             </div>
-        </div >
-    </div>
+        </div>
+    </div >
 </div>
 
 </body>
 </html>
-

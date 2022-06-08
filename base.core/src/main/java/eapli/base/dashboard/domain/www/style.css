@@ -1,4 +1,52 @@
-@import url('https://fonts.googleapis.com/css?family=Exo:400,700');
+.grid-container {
+    display: grid;
+    grid-template-columns: auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto auto ;
+    width: 35%;
+    height: 35%;
+    margin-left: auto;
+    margin-right: auto;
+}
+.grid-item {
+    border: 0.5px solid black;
+    padding: 12px;
+    font-size: 2px;
+    text-align: center;
+    width: 2px;
+    height: 2px;
+    background-color: white;
+}
+.grid-item1 {
+    border: 0.5px solid black;
+    padding: 12px;
+    font-size: 12px;
+    color: white;
+    text-align: center;
+    width: 2px;
+    height: 2px;
+    background-color: #adabab;
+}
+
+.grid-item3 {
+    border: 0.5px solid black;
+    padding: 12px;
+    font-size: 12px;
+    color: white;
+    text-align: center;
+    width: 2px;
+    height: 2px;
+    background-color: #ff8b3d;
+}
+
+.grid-item2 {
+    border: 0.5px solid black;
+    padding: 12px;
+    font-size: 12px;
+    color: white;
+    text-align: center;
+    width: 2px;
+    height: 2px;
+    background-color: #efc225;
+}
 
 * {
     margin: 0px;
@@ -20,13 +68,14 @@ body {
 .context h1 {
     text-align: center;
     color: #000000;
-    font-size: 50px;
+    font-size: 40px;
+    margin-top: -5px;
 }
 
 .topnav {
     overflow: hidden;
     background-color: #0c4b77;
-   }
+}
 
 .topnav a {
     float: left;
@@ -51,7 +100,7 @@ body {
     font-size: 0.35em;
     font-family: sans-serif;
     min-width: 250px;
-    box-shadow: 0 0 20px #2f8869;
+
 }
 
 .styled-table thead tr {
@@ -62,11 +111,11 @@ body {
 
 .styled-table th,
 .styled-table td {
-    padding: 12px 12px;
+    padding: 8px 8px;
 }
 
 .styled-table tbody tr {
-    border-bottom: 2px solid #2f8869;
+    border-bottom: 0.5px solid #2f8869;
 }
 
 .styled-table tbody tr:nth-of-type(even) {
@@ -74,7 +123,7 @@ body {
 }
 
 .styled-table tbody tr:last-of-type {
-    border-bottom: 0px solid #2f8869;
+    border-bottom: 15px solid #0c4b77;
 }
 
 .styled-table tbody tr.active-row {
@@ -85,7 +134,7 @@ body {
 
 .title{
     margin-top: 15px;
-    margin-bottom: 25px;
+    margin-bottom: 0px;
     text-align-all: justify;
     font-family: Arial, Helvetica, sans-serif;
     font-weight: bolder;
@@ -102,7 +151,7 @@ body {
 }
 
 .insideBox {
-    margin-top: 4.5rem;
+    margin-top: 3rem;
     margin-bottom: 4.5rem;
     margin-left: 0rem;
     background: #0c4b77;
@@ -112,12 +161,12 @@ body {
     text-align: center;
 }
 
-    .table-wrapper {
+.table-wrapper {
     position: relative;
-    }
+}
 
 .table-scroll {
-    height:550px;
+    height:700px;
     overflow: auto;
 }
 

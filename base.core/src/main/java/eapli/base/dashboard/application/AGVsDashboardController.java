@@ -5,7 +5,9 @@ import eapli.base.agv.domain.AGVState;
 import eapli.base.agv.repositories.AGVRepository;
 import eapli.base.dashboard.domain.*;
 import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.warehousemanagement.domain.WarehouseInfo;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,6 +54,10 @@ public class AGVsDashboardController {
         }
     }
 
+    public String[][] agvsWarehouse () throws FileNotFoundException {
+        WarehouseInfo wi = new WarehouseInfo();
+        return wi.warehouseDashboard();
+    }
 }
 
 

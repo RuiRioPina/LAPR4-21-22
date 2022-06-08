@@ -1,7 +1,29 @@
+function refreshAgvsWarehouse() {
+    var request = new XMLHttpRequest();
+    var vBoard=document.getElementById("agvsWarehouse");
 
-// IMPORTANT: notice the next request is scheduled only after the
-//            previous request is fully processed either successfully
-//	      or not.
+    request.onload = function() {
+        vBoard.innerHTML = this.responseText;
+        vBoard.style.color="black";
+        setTimeout(refreshAgvsWarehouse, 2000);
+    };
+
+    request.ontimeout = function() {
+        vBoard.innerHTML = "Server timeout, still trying ...";
+        vBoard.style.color="red";
+        setTimeout(refreshAgvsWarehouse, 100);
+    };
+
+    request.onerror = function() {
+        vBoard.innerHTML = "No server reply, still trying ...";
+        vBoard.style.color="red";
+        setTimeout(refreshAgvsWarehouse, 5000);
+    };
+
+    request.open("GET", "/agvsWarehouse", true);
+    request.timeout = 5000;
+    request.send();
+}
 function refreshAGVsDashboardInfo() {
     var request = new XMLHttpRequest();
     var vBoard=document.getElementById("agvsDashboard");
