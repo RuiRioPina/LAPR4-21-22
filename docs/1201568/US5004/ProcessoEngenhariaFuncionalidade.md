@@ -76,7 +76,7 @@ server.jks
 
 //KeyStore Password
 
-SPOMS@G05_2DH -> Private password
+SPOMS@G05_2DH -> Keystore password
 
 ## 2.1 Sequência das ações
 

@@ -1,0 +1,136 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+Class "AnswerToSurveyUI"{
+}
+
+Class "SurveyController"{
++buildQuestion(questionDTO)
++buildSection(sectionDTO)
++buildQuestionnaire(questionnaireDTO, fileFlag)
++cleanQuestionList()
++receiveSurveyString()
++receiveFullQuestionnaireString()
++saveSurvey()
+}
+
+Class "AlphanumericCode"{
+-String code
+
++AlphanumericCode(String code)
++valueOf()
++firstName()
++lastName()
++equals(Object o)
++hashCode()
++toString()
+}
+
+Class "Description"{
+-String value
+
++Description(String name)
++valueOf()
++length()
++equals(Object o)
++hashCode()
++toString()
+}
+
+
+
+
+
+Class "Period"{
+     -String days
+     +Period(String days)
+     +valueOf(String prefix, String phoneNumber)
+}
+Class "Questionnaire"{
+     -String id;
+     -String title;
+     -String welcomeMessage;
+     -List<Section> sections;
+     -String finalMessage;
+
++Questionnaire(id, title, welcomeMessage, sections, finalMessage)
+}
+
+class Content {
+-String fullQuestionnaire;
+-StringBuilder stringbuilder
+
++Content(questionnaire)
++Content(fullQuestionnaire)
++buildQuestionnaireSyntax(questionnaire)
++buildSectionSyntax(sections)
++buildQuestionSyntax(question)
++toString()
+
+}
+
+
+
+class Survey{
+-AlphanumericCode alphanumericCode
+-Description description
+-Period period
+-Questionnaire questionnaire
+-Content content
+}
+
+class Answer{
+ - Long id;
+ - String answer;
+ - String sectionID;
+ - String questionID;
+}
+
+class PersistenceContext {
+-Logger LOGGER
+-RepositoryFactory theFactory
++repositories()
+}
+
+class RepositoryFactory{
++customers()
+}
+
+class SurveyRepository{
++findById(Long number)
+}
+
+AnswerToSurveyUI..> "SurveyController"
+
+
+SurveyController --> Survey
+
+
+
+
+
+"AlphanumericCode" "1" <-u- "1" Survey : contains
+"Description" "1" <-u- "1" Survey : contains
+"Period" "1" <-u- "1" Survey : contains
+"Questionnaire" "1" <-u- "1" Survey : contains
+"Content" "1" <-u- "1" Survey : contains
+"Answer" "0..*" <-u- "1" Survey : contains
+
+
+"Questionnaire" "1" --> "1..*" "Section" :contains
+
+"Section" "1" --> "1..*" "Question" :contains
+
+
+
+"SurveyController" "1" --> "1" "PersistenceContext" :creates
+
+
+"PersistenceContext" "1" --> "1" "RepositoryFactory" :creates
+
+
+"RepositoryFactory" "1" --> "1" "SurveyRepository"  :creates
+
+
+"Survey" "1" --> "1" "SurveyRepository" :in
+@enduml

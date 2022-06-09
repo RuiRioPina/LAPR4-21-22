@@ -1,0 +1,81 @@
+@startuml
+autonumber
+actor "Customer" as MEDLT
+participant ":AnswerToSurveyUI" as SYS
+participant "Survey Controller" as CTRL
+participant ":EvalVisitor" as EVAL
+participant ":QuestionDTOParser" as QDTOP
+participant ":SectionDTO" as SDTO
+participant ":SectionDTOParser" as SDTOP
+participant ":QuestionnaireDTO" as QTDTO
+participant ":QuestionnaireDTOParser" as QTDTOP
+participant ":SurveyDTO" as SURDTO
+participant ":SurveyDTOParser" as SURDTOP
+participant "Content" as CONTENT
+participant "Survey" as SUR
+participant "Question" as QUESTION
+participant "Section" as SECTION
+participant "Questionnaire" as QUESTIONNAIRE
+participant ":PersistenceContext<persistence>" as PC
+participant ":RepositoryFactory<factory>" as RF
+participant ":SurveyRepository" as CR
+
+
+
+activate MEDLT
+MEDLT-> SYS : Answer to Survey
+
+activate SYS
+SYS --> MEDLT : Show list of Survey to answer
+
+deactivate SYS
+
+
+MEDLT-> SYS : begins answering to the question
+activate SYS
+
+SYS->EVAL : visitSection()
+
+SYS->EVAL : visitQuestion()
+
+SYS->EVAL : treatObligatoriness()
+
+SYS->EVAL : treatQuestionTyoe()
+
+
+
+activate CTRL
+
+
+CTRL-> PC**: repositories()
+activate PC
+PC-> RF**: create
+PC-> CTRL: factory
+deactivate PC
+
+CTRL-> RF: surveys()
+activate RF
+RF->CR**: create
+
+RF->CTRL: surveyRepository
+deactivate RF
+
+CTRL->CR: save(survey)
+activate CR
+
+CTRL->SYS:surveyString
+deactivate CR
+deactivate CTRL
+
+deactivate PC
+
+
+
+
+
+
+
+deactivate CTRL
+SYS -> MEDLT : presents the survey created
+deactivate SYS
+@enduml

@@ -1,0 +1,15 @@
+@startuml
+autonumber
+actor "Customer" as MEDLT
+
+activate MEDLT
+MEDLT-> ":System" : Answer  Survey
+
+activate ":System"
+":System" --> MEDLT : Show list of Survey to answer
+
+deactivate ":System"
+
+MEDLT-> ":System" : answer to survey
+deactivate ":System"
+@enduml
