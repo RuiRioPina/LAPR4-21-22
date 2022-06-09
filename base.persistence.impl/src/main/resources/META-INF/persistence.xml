@@ -28,6 +28,8 @@
     <class>eapli.base.agv.domain.AGVModel</class>
     <class>eapli.base.agv.domain.DockingPoint</class>
     <class>eapli.base.questionnaire.domain.Survey</class>
+    <class>eapli.base.questionnaire.domain.Answer</class>
+
 
     <class>java.time.LocalDate</class>
 
