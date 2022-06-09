@@ -27,6 +27,7 @@ import eapli.framework.application.UseCaseController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @UseCaseController
@@ -53,6 +54,9 @@ public class SurveyController {
             return newSurvey.toDTO();
         }
     }
+    public void saveSurvey(Survey survey) {
+        repo.save(survey);
+    }
 
     public QuestionnaireDTO buildQuestionnaire(final QuestionnaireDTO dto) {
         questionnaire = new QuestionnaireDTOParser().valueOf(dto);
@@ -72,6 +76,9 @@ public class SurveyController {
         return newQuestion.toDTO();
     }
 
+    public void buildQuestions(List<Answer> listOfAnswers) {
+        //repo.getQuestionnaireUsingAlphanumericCode();
+    }
 
     public void cleanQuestionList() {
         questions = new ArrayList<>();
@@ -84,4 +91,9 @@ public class SurveyController {
     public String receiveFullQuestionnaireString() {
         return content.toString();
     }
+
+    public Optional<Survey> surveyToBeAnswered() {
+        return repo.getQuestionnaireUsingAlphanumericCode("12");
+    }
+
 }

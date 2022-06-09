@@ -21,16 +21,16 @@
 package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
-import eapli.base.clientusermanagement.domain.Customer;
-import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.productCategory.domain.AlphaNumericCode;
+import eapli.base.questionnaire.domain.Answer;
 import eapli.base.questionnaire.domain.Survey;
+import eapli.base.questionnaire.dto.SurveyDTO;
 import eapli.base.questionnaire.repositories.SurveyRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
-import eapli.framework.infrastructure.authz.domain.model.Username;
 import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -52,9 +52,10 @@ class JpaSurveyRepository
 
 
     @Override
-    public Optional<Survey> getQuestionnaireUsingAlphanumericCode(AlphaNumericCode alphaNumericCode) {
+    public Optional<Survey> getQuestionnaireUsingAlphanumericCode(String alphaNumericCode) {
         final Map<String, Object> params = new HashMap<>();
         params.put("alphaNumericCode", alphaNumericCode);
-        return matchOne("e.alphanumericcode=:alphaNumericCode", params);
+        Optional<Survey> result = matchOne("ALPHANUMERICCODE=:alphaNumericCode", params);
+        return result;
     }
 }

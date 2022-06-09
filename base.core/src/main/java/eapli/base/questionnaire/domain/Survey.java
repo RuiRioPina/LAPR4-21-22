@@ -6,10 +6,8 @@ import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.general.domain.model.Description;
 import eapli.framework.representations.dto.DTOable;
 
-import javax.persistence.Column;
-import javax.persistence.Embedded;
-import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.*;
+import java.util.List;
 
 @Entity
 public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDTO> {
@@ -30,6 +28,11 @@ public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDT
     @Embedded
     private Content content;
 
+    @OneToMany(cascade = CascadeType.ALL)
+    @Column(name = "answers")
+    private List<Answer> answers;
+
+
     protected Survey() {
         //ORM
     }
@@ -39,6 +42,34 @@ public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDT
     public boolean sameAs(Object other) {
         Survey otherSurvey = (Survey) other;
         return alphaNumericCode.equals(otherSurvey.alphaNumericCode);
+    }
+
+    public AlphaNumericCode alphaNumericCode() {
+        return alphaNumericCode;
+    }
+
+    public Description description() {
+        return description;
+    }
+
+    public Period period() {
+        return period;
+    }
+
+    public Questionnaire questionnaire() {
+        return questionnaire;
+    }
+
+    public Content content() {
+        return content;
+    }
+
+    public List<Answer> getAnswers() {
+        return answers;
+    }
+
+    public void setAnswers(List<Answer> answers) {
+        this.answers = answers;
     }
 
     @Override
@@ -52,7 +83,7 @@ public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDT
 
     @Override
     public String toString() {
-        if(questionnaire!= null) {
+        if (questionnaire != null) {
             return "Survey{" +
                     "alphaNumericCode=" + alphaNumericCode +
                     ", description=" + description +
@@ -60,7 +91,7 @@ public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDT
                     ", questionnaire=" + questionnaire +
                     ", content=" + content +
                     '}';
-        }else{
+        } else {
             return "Survey{" +
                     "alphaNumericCode=" + alphaNumericCode +
                     ", description=" + description +
@@ -77,7 +108,8 @@ public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDT
         this.questionnaire = questionnaire;
         this.content = new Content(questionnaire);
     }
-    public Survey(AlphaNumericCode alphaNumericCode, Description description, Period period ) {
+
+    public Survey(AlphaNumericCode alphaNumericCode, Description description, Period period) {
         this.alphaNumericCode = alphaNumericCode;
         this.description = description;
         this.period = period;
@@ -89,19 +121,23 @@ public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDT
         this.period = period;
         this.content = content;
     }
-
+    public Survey(AlphaNumericCode alphaNumericCode, Description description, Period period, Content content, List<Answer> answers) {
+        this.alphaNumericCode = alphaNumericCode;
+        this.description = description;
+        this.period = period;
+        this.content = content;
+        this.answers = answers;
+    }
 
     /**
      * Showcase the {@link DTOable} interface. In this case it is the Dish class
      * that dictates the DTO structure.
-     *
-     *
      */
     @Override
     public SurveyDTO toDTO() {
         return new SurveyDTO(alphaNumericCode.code(),
                 description.toString(),
-                period.toString());
+                period.toString(), content.toString());
     }
 
 }

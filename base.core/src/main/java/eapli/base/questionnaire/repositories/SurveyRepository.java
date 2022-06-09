@@ -7,5 +7,5 @@ import eapli.framework.domain.repositories.DomainRepository;
 import java.util.Optional;
 
 public interface SurveyRepository extends DomainRepository<AlphaNumericCode, Survey> {
-    Optional<Survey> getQuestionnaireUsingAlphanumericCode(AlphaNumericCode alphaNumericCode);
+    Optional<Survey> getQuestionnaireUsingAlphanumericCode(String alphaNumericCode);
 }

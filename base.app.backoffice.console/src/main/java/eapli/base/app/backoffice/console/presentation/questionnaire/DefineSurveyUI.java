@@ -85,7 +85,7 @@ public class DefineSurveyUI extends AbstractUI {
 
         if (option.equals("1")) {
             inputData();
-            SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period);
+            SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period, null);
             theController.buildSurvey(surveyDTO, flag);
             System.out.println(theController.receiveSurveyString());
         } else {
@@ -134,7 +134,7 @@ public class DefineSurveyUI extends AbstractUI {
         } catch (HeadlessException a) {
             questionnairePath = "questionnaire/" + Console.readLine("Insert file name to be imported");
         }
-        if(!questionnairePath.contains(".txt")) {
+        if (!questionnairePath.contains(".txt")) {
             questionnairePath = questionnairePath + ".txt";
         }
         try {
@@ -142,7 +142,7 @@ public class DefineSurveyUI extends AbstractUI {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period);
+        SurveyDTO surveyDTO = new SurveyDTO(alphanumericCodeString, descriptionString, period, null);
         surveyDTO.content = questionnaire;
         theController.buildSurvey(surveyDTO, flag);
         System.out.println(theController.receiveSurveyString());
@@ -299,7 +299,7 @@ public class DefineSurveyUI extends AbstractUI {
                 instructions.add(instruction);
                 i++;
             }
-        } while ((!option.equalsIgnoreCase("N") || instructions.size()==0));
+        } while ((!option.equalsIgnoreCase("N") || instructions.size() == 0));
         for (String instructionString : instructions) {
             stringBuilder.append(String.format("%s|", instructionString));
         }
