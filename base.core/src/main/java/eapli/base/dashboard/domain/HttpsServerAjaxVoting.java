@@ -5,6 +5,7 @@ import eapli.framework.infrastructure.authz.application.AuthorizationService;
 import eapli.framework.infrastructure.authz.application.AuthzRegistry;
 
 import javax.net.ssl.SSLServerSocket;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.List;
 import javax.net.ssl.SSLServerSocketFactory;
@@ -85,6 +86,29 @@ public class HttpsServerAjaxVoting extends Thread {
             e.printStackTrace();
         }
         return null;
+    }
+
+    public static synchronized String refreshAgvsWarehouse () throws FileNotFoundException {
+        AGVsDashboardController controller = new AGVsDashboardController();
+        String[][] warehouse = controller.agvsWarehouse();
+        StringBuilder s = new StringBuilder("<div class=\"grid-container\">\n");
+        for (int i = 0; i < 18 ; i++){
+            for (int j = 0; j <20 ;j++) {
+                if (warehouse[i][j] == null){
+                    s.append("<div class=\"grid-item\"></div>\n");
+                }
+                if (warehouse[i][j] == "grey"){
+                    s.append("<div class=\"grid-item1\"></div>\n");
+                }
+                if (warehouse[i][j] == "orange"){
+                    s.append("<div class=\"grid-item3\"></div>\n");
+                }
+                if (warehouse[i][j] == "dock"){
+                    s.append("<div class=\"grid-item2\"></div>\n");
+                }
+            }
+        }
+        return s + "</div>";
     }
 
 }
