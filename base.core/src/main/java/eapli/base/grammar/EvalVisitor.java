@@ -1,25 +1,39 @@
 package eapli.base.grammar;
 
+import eapli.base.clientusermanagement.domain.Customer;
 import eapli.base.questionnaire.application.SurveyController;
 import eapli.base.questionnaire.domain.Answer;
 import eapli.base.questionnaire.domain.Obligatoriness;
 import eapli.base.questionnaire.domain.QuestionType;
+import eapli.base.questionnaire.domain.Survey;
+import eapli.base.usermanagement.application.AddCustomerController;
 import eapli.framework.io.util.Console;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
 import java.util.*;
 
 public class EvalVisitor extends LabeledExprBaseVisitor<String> {
-    private final SurveyController theController = new SurveyController();
+    //private final SurveyController theController = new SurveyController();
 
     //TODO falta guardar as respostas e fazer o condition dependant com essas respostas
-    List<Answer> answers = new ArrayList<>();
-    Map<String, Boolean> mapObligatoriness = new HashMap<>();
-    String section;
+    private List<Answer> answers = new ArrayList<>();
+    private Map<String, Boolean> mapObligatoriness = new HashMap<>();
+    private String section;
+
+    private String questionId;
+
+    private Customer customer1;
+
+    private Survey survey;
+
+    AddCustomerController controller = new AddCustomerController();
+
+    SurveyController surveyController = new SurveyController();
+
 
     @Override
     public String visitSection(LabeledExprParser.SectionContext ctx) {
-        theController.surveyToBeAnswered();
+        //theController.surveyToBeAnswered();
         System.out.println("---------------------------------------------------------------------");
         System.out.println(ctx.SECTION_ID());
         System.out.println(ctx.SECTION_TITLE());
@@ -42,12 +56,17 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
 
     @Override
     public String visitQuestion(LabeledExprParser.QuestionContext ctx) {
+        Optional<Customer> customer = controller.getCustomer(11L);
+        customer1 = customer.get();
+
+        survey = surveyController.surveyToBeAnswered().get();
         System.out.println(ctx.QUESTION_ID());
         System.out.println(ctx.Q());
         if (!ctx.INSTRUCTION().isEmpty()) {
             System.out.println(ctx.INSTRUCTION());
         }
         System.out.println(ctx.OBLIGATORINESS());
+        questionId = ctx.QUESTION_ID().toString();
 
         String questionType = ctx.questionType().getText();
         questionType = questionType.split(" ")[1].replace("EXTRA", "");
@@ -60,9 +79,10 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
             String response = "QUESTION " + ctx.QUESTION_ID().toString().replace("QUESTION ID: ", "");
             mapObligatoriness.put(response, true);
         }
+
         assert yau != null;
         if (!yau.equalsIgnoreCase("n")) {
-            answers.add(new Answer(yau, section, ctx.QUESTION_ID().toString()));
+            answers.add(new Answer(yau, section, ctx.QUESTION_ID().toString(), customer1, survey));
         }
         System.out.println();
         return ctx.getText();
@@ -139,7 +159,6 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
         return response;
     }
 
-
     public String visitMultipleChoice(LabeledExprParser.MultipleChoiceContext ctx) {
         int i = 0;
         String response;
@@ -159,8 +178,8 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
                 response = String.valueOf(Integer.MAX_VALUE);
                 System.out.println("Option not available");
             }
-            if(!response.equalsIgnoreCase("n")) {
-                answers.add(new Answer(response, section, ctx.getText()));
+            if (!response.equalsIgnoreCase("n")) {
+                answers.add(new Answer(response, section, questionId, customer1, survey));
             }
         } while ((answers.size() != numberOfOptions) && (!response.equalsIgnoreCase("N") && !response.equalsIgnoreCase("NO")));
         return response;
@@ -185,8 +204,8 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
                 response = String.valueOf(Integer.MAX_VALUE);
                 System.out.println("Option not available");
             }
-            if(!response.equalsIgnoreCase("n")) {
-                answers.add(new Answer(response, section, ctx.getText()));
+            if (!response.equalsIgnoreCase("n")) {
+                answers.add(new Answer(response, section, questionId, customer1, survey));
             }
         } while ((answers.size() != numberOfOptions) && (!response.equalsIgnoreCase("N") && !response.equalsIgnoreCase("NO")));
 

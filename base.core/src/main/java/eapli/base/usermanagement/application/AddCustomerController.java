@@ -27,6 +27,7 @@ import eapli.framework.application.UseCaseController;
 import eapli.framework.general.domain.model.EmailAddress;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * Created by nuno on 21/03/16.
@@ -40,17 +41,21 @@ public class AddCustomerController {
                                     final String phoneNumber, final String birthday, final Gender gender,
                                     final List<Address> addresses) {
         CustomerBuilder customerBuilder = new CustomerBuilder(firstName, lastName, vatId, email, phoneNumber);
-        Customer customer= (customerBuilder.withBirthday(birthday)
+        Customer customer = (customerBuilder.withBirthday(birthday)
                 .withGender(gender)
                 .withAddress(addresses)
                 .build());
-        for (Address adr: addresses) {
+        for (Address adr : addresses) {
             adr.setCustomer(customer);
         }
-        if(customer != null) {
+        if (customer != null) {
             return repo.save(customer);
         }
         return null;
+    }
+
+    public Optional<Customer> getCustomer(Long id) {
+        return repo.findById(id);
     }
 
 

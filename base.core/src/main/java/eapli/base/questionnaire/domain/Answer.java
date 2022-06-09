@@ -43,10 +43,12 @@ public class Answer {
         this.survey = survey;
     }
 
-    public Answer(String answer, String sectionID, String questionID) {
+    public Answer(String answer, String sectionID, String questionID, Customer customer, Survey survey) {
         this.answer = answer;
         this.sectionID = sectionID;
         this.questionID = questionID;
+        this.customer = customer;
+        this.survey = survey;
     }
 
     protected Answer() {
