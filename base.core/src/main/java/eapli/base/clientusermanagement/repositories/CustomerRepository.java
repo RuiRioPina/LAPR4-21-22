@@ -20,14 +20,16 @@
  */
 package eapli.base.clientusermanagement.repositories;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.domain.Gender;
 import eapli.framework.domain.repositories.DomainRepository;
 import eapli.framework.infrastructure.authz.domain.model.Username;
 
 /**
- *
  * @author Jorge Santos ajs@isep.ipp.pt 02/04/2016
  */
 public interface CustomerRepository
@@ -36,8 +38,7 @@ public interface CustomerRepository
     /**
      * returns the client user (utente) whose username is given
      *
-     * @param name
-     *            the username to search for
+     * @param name the username to search for
      * @return
      */
     Optional<Customer> findByUsername(Username name);
@@ -52,5 +53,9 @@ public interface CustomerRepository
         return ofIdentity(number);
     }
 
-    public Iterable<Customer> findAllActive();
+    Iterable<Customer> findAllActive();
+
+    List<Customer> calculateAge(int age);
+
+    List<Customer> getCustomerWithGender(String gender);
 }

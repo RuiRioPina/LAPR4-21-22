@@ -20,19 +20,25 @@
  */
 package eapli.base.persistence.impl.jpa;
 
+import java.time.LocalDate;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import eapli.base.Application;
 import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.domain.Gender;
 import eapli.base.clientusermanagement.repositories.CustomerRepository;
+import eapli.base.product.domain.Product;
 import eapli.framework.domain.repositories.TransactionalContext;
 import eapli.framework.infrastructure.authz.domain.model.Username;
 import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
+
 /**
- *
  * @author Jorge Santos ajs@isep.ipp.pt 02/04/2016
  */
 class JpaCustomerRepository
@@ -65,5 +71,19 @@ class JpaCustomerRepository
     @Override
     public Iterable<Customer> findAllActive() {
         return match("e.systemUser.active = true");
+    }
+    public List<Customer> calculateAge(int age) {
+        final TypedQuery<Customer> query = super.createQuery(
+                "SELECT c FROM Customer c WHERE DATEDIFF(YY, BIRTH_DATE ,CURDATE()) < :age1", Customer.class);
+        query.setParameter("age1", age);
+        return query.getResultList();
+    }
+
+    @Override
+    public List<Customer> getCustomerWithGender(String gender) {
+        final TypedQuery<Customer> query = super.createQuery(
+                "SELECT c FROM Customer c WHERE GENDER = :gender1", Customer.class);
+        query.setParameter("gender1", gender);
+        return query.getResultList();
     }
 }

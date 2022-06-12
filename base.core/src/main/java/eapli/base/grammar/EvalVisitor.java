@@ -16,9 +16,10 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
     //private final SurveyController theController = new SurveyController();
 
     //TODO falta guardar as respostas e fazer o condition dependant com essas respostas
-    private List<Answer> answers = new ArrayList<>();
-    private Map<String, Boolean> mapObligatoriness = new HashMap<>();
+    private final List<Answer> answers = new ArrayList<>();
     private String section;
+
+    private LabeledExprParser.MultipleChoiceContext questionContext;
 
     private String questionId;
 
@@ -26,27 +27,48 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
 
     private Survey survey;
 
-    AddCustomerController controller = new AddCustomerController();
-
-    SurveyController surveyController = new SurveyController();
+    private final AddCustomerController controller = new AddCustomerController();
+    private final SurveyController surveyController = new SurveyController();
 
 
     @Override
     public String visitSection(LabeledExprParser.SectionContext ctx) {
-        //theController.surveyToBeAnswered();
-        System.out.println("---------------------------------------------------------------------");
-        System.out.println(ctx.SECTION_ID());
-        System.out.println(ctx.SECTION_TITLE());
-        if (ctx.SECTION_DESCRIPTION() != null) {
-            System.out.println(ctx.SECTION_DESCRIPTION());
-        }
-        System.out.println(ctx.OBLIGATORINESS());
+        String teste = ctx.OBLIGATORINESS().toString().replace("OBLIGATORINESS: ", "");
+        String siuuuu = Obligatoriness.OPTIONAL.toString();
+        if (teste.equals(siuuuu)) {
+            //theController.surveyToBeAnswered();
+            System.out.println("---------------------------------------------------------------------");
+            System.out.println(ctx.SECTION_ID());
+            System.out.println(ctx.SECTION_TITLE());
+            if (ctx.SECTION_DESCRIPTION() != null) {
+                System.out.println(ctx.SECTION_DESCRIPTION());
+            }
+            System.out.println(ctx.OBLIGATORINESS());
 
-        System.out.println("---------------------------------------------------------------------");
-        System.out.println();
+            System.out.println("---------------------------------------------------------------------");
+            System.out.println();
 
-        section = ctx.SECTION_ID().toString();
-        if (!treatObligatoriness(ctx.SECTION_ID(), ctx.OBLIGATORINESS()).equalsIgnoreCase("N")) {
+            section = ctx.SECTION_ID().toString();
+            if (!treatObligatoriness(ctx.OBLIGATORINESS()).equalsIgnoreCase("N")) {
+                for (LabeledExprParser.QuestionContext context : ctx.question()) {
+                    visitQuestion(context);
+                }
+            }
+        } else if (!treatObligatoriness(ctx.OBLIGATORINESS()).equalsIgnoreCase("N")) {
+
+            //theController.surveyToBeAnswered();
+            System.out.println("---------------------------------------------------------------------");
+            System.out.println(ctx.SECTION_ID());
+            System.out.println(ctx.SECTION_TITLE());
+            if (ctx.SECTION_DESCRIPTION() != null) {
+                System.out.println(ctx.SECTION_DESCRIPTION());
+            }
+            System.out.println(ctx.OBLIGATORINESS());
+
+            System.out.println("---------------------------------------------------------------------");
+            System.out.println();
+
+            section = ctx.SECTION_ID().toString();
             for (LabeledExprParser.QuestionContext context : ctx.question()) {
                 visitQuestion(context);
             }
@@ -56,10 +78,10 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
 
     @Override
     public String visitQuestion(LabeledExprParser.QuestionContext ctx) {
-        Optional<Customer> customer = controller.getCustomer(11L);
+        Optional<Customer> customer = controller.getCustomer(13L);
         customer1 = customer.get();
 
-        survey = surveyController.surveyToBeAnswered().get();
+        survey = surveyController.surveyToBeAnswered("12").get();
         System.out.println(ctx.QUESTION_ID());
         System.out.println(ctx.Q());
         if (!ctx.INSTRUCTION().isEmpty()) {
@@ -67,17 +89,15 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
         }
         System.out.println(ctx.OBLIGATORINESS());
         questionId = ctx.QUESTION_ID().toString();
-
         String questionType = ctx.questionType().getText();
         questionType = questionType.split(" ")[1].replace("EXTRA", "");
         System.out.println(questionType);
         String yau = "";
-        if (!treatObligatoriness(ctx.QUESTION_ID(), ctx.OBLIGATORINESS()).equalsIgnoreCase("N")) {
+        if (!treatObligatoriness(ctx.OBLIGATORINESS()).equalsIgnoreCase("N")) {
             yau = treatQuestionType(questionType, ctx);
         }
         if (yau != null) {
             String response = "QUESTION " + ctx.QUESTION_ID().toString().replace("QUESTION ID: ", "");
-            mapObligatoriness.put(response, true);
         }
 
         assert yau != null;
@@ -163,6 +183,8 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
         int i = 0;
         String response;
         String optionToBeShown;
+        questionContext = ctx;
+
         int numberOfOptions = ctx.CHOOSE().size();
         do {
             while (i < numberOfOptions) {
@@ -246,14 +268,14 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
 
 
                 Collections.swap(nodesInStringFormat, 0, Integer.parseInt(response) - 1);
-            } catch (NumberFormatException | IndexOutOfBoundsException e) {
+            } catch (NumberFormatException | IndexOutOfBoundsException ignored) {
 
             }
 
 
         } while (!response.equalsIgnoreCase("N") && !response.equalsIgnoreCase("NO"));
 
-        return response;
+        return nodesInStringFormat.toString();
     }
 
 
@@ -306,7 +328,7 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
     }
 
 
-    private String treatObligatoriness(TerminalNode questionOrSection, TerminalNode obligatoriness) {
+    private String treatObligatoriness(TerminalNode obligatoriness) {
         String treat = obligatoriness.toString().replace("OBLIGATORINESS: ", "").trim();
         if (treat.contains("CONDITION_DEPENDENT")) {
             treat = treat.split(" ")[0];
@@ -316,33 +338,33 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
 
         switch (obligatorinessConverted) {
             case MANDATORY:
-                break;
+                return "S";
             case OPTIONAL:
                 String optional = Console.readLine("This is optional! Do you want to answer it?");
                 if (optional.equalsIgnoreCase("N") || optional.equalsIgnoreCase("NO")) {
                     return "N";
-                }
-                break;
-            case CONDITION_DEPENDENT:
-                String result = "";
-                int indexOfQuestion = obligatoriness.toString().indexOf("QUESTION");
-                int indexOfSection = obligatoriness.toString().indexOf("SECTION");
-
-                if (indexOfQuestion != -1) {
-                    result = obligatoriness.toString().substring(indexOfQuestion);
-                } else if (indexOfSection != -1) {
-                    result = obligatoriness.toString().substring(indexOfSection);
-
-                }
-                String yau = result.replace(")", "");
-                boolean conditionDependent = mapObligatoriness.get(yau);
-                if (conditionDependent) {
-                    return "S";
                 } else {
-                    return "N";
+                    return "S";
                 }
+            case CONDITION_DEPENDENT:
+                String debug = obligatoriness.toString().toLowerCase();
+                List<TerminalNode> debugExtraInfo = questionContext.CHOOSE();
+
+                for (TerminalNode options : debugExtraInfo) {
+                    String resultOptions = options.toString().substring(0, 1).toLowerCase();
+                    String obligatorinessOptions = options.toString().substring(3, options.toString().length() - 1).toLowerCase();
+
+                    for (Answer answer : answers) {
+                        String pppp = answer.getAnswer();
+                        if (pppp.equals(resultOptions) && debug.contains(obligatorinessOptions)) {
+                            return "S";
+                        }
+                    }
+                }
+
+                return "N";
         }
-        return "";
+        return "N";
     }
 
 

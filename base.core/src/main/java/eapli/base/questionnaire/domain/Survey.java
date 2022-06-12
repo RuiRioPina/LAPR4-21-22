@@ -1,7 +1,10 @@
 package eapli.base.questionnaire.domain;
 
+import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.domain.Gender;
 import eapli.base.productCategory.domain.AlphaNumericCode;
 import eapli.base.questionnaire.dto.SurveyDTO;
+import eapli.base.usermanagement.application.AddCustomerController;
 import eapli.framework.domain.model.AggregateRoot;
 import eapli.framework.general.domain.model.Description;
 import eapli.framework.representations.dto.DTOable;
@@ -31,6 +34,10 @@ public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDT
     @OneToMany(cascade = CascadeType.ALL)
     @Column(name = "answers")
     private List<Answer> answers;
+
+    @OneToMany
+    @Column(name = "customers_in_survey")
+    private List<Customer> customersSelected;
 
 
     protected Survey() {
@@ -107,12 +114,14 @@ public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDT
         this.period = period;
         this.questionnaire = questionnaire;
         this.content = new Content(questionnaire);
+        setRules();
     }
 
     public Survey(AlphaNumericCode alphaNumericCode, Description description, Period period) {
         this.alphaNumericCode = alphaNumericCode;
         this.description = description;
         this.period = period;
+        setRules();
     }
 
     public Survey(AlphaNumericCode alphaNumericCode, Description description, Period period, Content content) {
@@ -120,13 +129,26 @@ public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDT
         this.description = description;
         this.period = period;
         this.content = content;
+        setRules();
     }
+
     public Survey(AlphaNumericCode alphaNumericCode, Description description, Period period, Content content, List<Answer> answers) {
         this.alphaNumericCode = alphaNumericCode;
         this.description = description;
         this.period = period;
         this.content = content;
         this.answers = answers;
+        setRules();
+    }
+
+    public void setRules() {
+        AddCustomerController customerController = new AddCustomerController();
+        List<Customer> customersOfTheSurvey = customerController.getCustomersWithLessThanAge(25);
+
+        List<Customer> customersOfTheSurveyMale = customerController.getCustomersWithGender(Gender.MALE);
+        customersOfTheSurvey.retainAll(customersOfTheSurveyMale);
+
+        this.customersSelected = customersOfTheSurveyMale;
     }
 
     /**

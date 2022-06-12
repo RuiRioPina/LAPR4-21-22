@@ -58,6 +58,13 @@ public class AddCustomerController {
         return repo.findById(id);
     }
 
+    public List<Customer> getCustomersWithLessThanAge(int age) {
+        return repo.calculateAge(age);
+    }
+
+    public List<Customer> getCustomersWithGender(Gender gender) {
+        return repo.getCustomerWithGender(gender.toString());
+    }
 
     public void validateEmail(String email) {
         EmailAddress.valueOf(email);

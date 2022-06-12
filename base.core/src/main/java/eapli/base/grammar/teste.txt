@@ -62,7 +62,7 @@ EXTRA INFO: (Type it in hours)
 
 QUESTION ID: 7
 Q: Which factors do you consider when buying a mobile phone
-OBLIGATORINESS: CONDITION_DEPENDENT (if not Never/0h is said becomes mandatory QUESTION 6)
+OBLIGATORINESS: CONDITION_DEPENDENT (If Mobile Phone is selected on QUESTION 4)
 TYPE: SORTING_OPTIONS
 EXTRA INFO: 1- Price|2- Battery Life|3- Brand Reputation|4- Quality|5- Colour
 
@@ -86,7 +86,7 @@ EXTRA INFO: (Type it in hours)
 
 QUESTION ID: 10
 Q: Which factors do you consider when buying a laptop
-OBLIGATORINESS: CONDITION_DEPENDENT (if not Never/0h is said becomes mandatory QUESTION 6)
+OBLIGATORINESS: CONDITION_DEPENDENT (If Laptop is selected on QUESTION 4)
 TYPE: SORTING_OPTIONS
 EXTRA INFO: 1- Price|2- Battery Life|3- Brand Reputation|4- Quality|5- Colour
 
@@ -110,7 +110,7 @@ EXTRA INFO: (Type it in hours)
 
 QUESTION ID: 13
 Q: Which factors do you consider when buying a television
-OBLIGATORINESS: CONDITION_DEPENDENT (if not Never/0h is said becomes mandatory QUESTION 6)
+OBLIGATORINESS: CONDITION_DEPENDENT (If Television is selected on QUESTION 4)
 TYPE: SORTING_OPTIONS
 EXTRA INFO: 1- Price|2- Energy Consumption|3- Brand Reputation|4- Image Quality|5- Colour
 
@@ -203,5 +203,5 @@ EXTRA INFO: 1- Yes|2- No
 
 QUESTION ID: 25
 Q: How many children have you got?
-OBLIGATORINESS: CONDITION_DEPENDENT (If yes was selected on QUESTION 22)
+OBLIGATORINESS: MANDATORY
 TYPE: FREE_TEXT

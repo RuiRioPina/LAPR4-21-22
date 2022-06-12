@@ -92,8 +92,8 @@ public class SurveyController {
         return content.toString();
     }
 
-    public Optional<Survey> surveyToBeAnswered() {
-        return repo.getQuestionnaireUsingAlphanumericCode("12");
+    public Optional<Survey> surveyToBeAnswered(String alphanumericCode) {
+        return repo.getQuestionnaireUsingAlphanumericCode(alphanumericCode);
     }
 
 }

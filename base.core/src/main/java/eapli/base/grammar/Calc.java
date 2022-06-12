@@ -11,7 +11,6 @@ import org.antlr.v4.runtime.*;
 import org.antlr.v4.runtime.tree.ParseTree;
 
 public class Calc {
-    static List<String> questions = new ArrayList<>();
 
     public static void main(String[] args) throws IOException {
         FileInputStream fis = new FileInputStream("base.core/src/main/java/eapli/base/grammar/teste.txt");

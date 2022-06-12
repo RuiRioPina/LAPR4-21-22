@@ -43,6 +43,14 @@ public class Answer {
         this.survey = survey;
     }
 
+    public String getAnswer() {
+        return answer;
+    }
+
+    public String getQuestionID() {
+        return questionID;
+    }
+
     public Answer(String answer, String sectionID, String questionID, Customer customer, Survey survey) {
         this.answer = answer;
         this.sectionID = sectionID;

@@ -20,9 +20,12 @@
  */
 package eapli.base.persistence.impl.inmemory;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.clientusermanagement.domain.Gender;
 import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.framework.infrastructure.authz.domain.model.Username;
 import eapli.framework.infrastructure.repositories.impl.inmemory.InMemoryDomainRepository;
@@ -52,5 +55,15 @@ public class InMemoryCustomerRepository
     @Override
     public Iterable<Customer> findAllActive() {
         return match(e -> e.user().isActive());
+    }
+
+    @Override
+    public List<Customer> calculateAge(int age) {
+        return null;
+    }
+
+    @Override
+    public List<Customer> getCustomerWithGender(String gender) {
+        return null;
     }
 }

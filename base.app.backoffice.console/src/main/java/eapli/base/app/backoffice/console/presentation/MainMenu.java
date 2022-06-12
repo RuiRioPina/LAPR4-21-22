@@ -40,6 +40,7 @@ import eapli.base.Application;
 import eapli.base.app.backoffice.console.presentation.authz.DeactivateUserAction;
 import eapli.base.app.backoffice.console.presentation.authz.ListUsersAction;
 import eapli.base.app.backoffice.console.presentation.clientuser.AcceptRefuseSignupRequestAction;
+import eapli.base.questionnaire.domain.Answer;
 import eapli.base.usermanagement.domain.BaseRoles;
 import eapli.framework.actions.Actions;
 import eapli.framework.actions.menu.Menu;
@@ -79,7 +80,7 @@ public class MainMenu extends AbstractUI {
     // MAIN MENU
     private static final int MY_USER_OPTION = 1;
     private static final int USERS_OPTION = 2;
-    private static final int CUSTOMERS_OPTION = 4;
+    private static final int CUSTOMERS_OPTION = 12;
     private static final int PRODUCT_CATALOG_OPTION = 5;
     private static final int TRACEABILITY_OPTION = 6;
     private static final int MEALS_OPTION = 7;
@@ -185,6 +186,11 @@ public class MainMenu extends AbstractUI {
 
         }
 
+        if(authz.isAuthenticatedUserAuthorizedTo(BaseRoles.CUSTOMER_USER)){
+            final Menu clientMenu = buildCustomerMenu();
+            clientMenu.addSubMenu(8, clientMenu);
+        }
+
         /* example
         if (authz.isAuthenticatedUserAuthorizedTo(BaseRoles.POWER_USER, BaseRoles.ADMIN)) {
             final Menu usersMenu = buildUsersMenu();
@@ -265,7 +271,11 @@ public class MainMenu extends AbstractUI {
         return menu;
     }
 
-
+    private Menu buildCustomerMenu() {
+        final Menu menu = new Menu("Customer Menu");
+        menu.addItem(2, "Answer to Survey", new AnswerToSurvey()::show);
+        return menu;
+    }
 
     private Menu BuildCategoryMenu() {
         final Menu menuCategory = new Menu("Categories >");
