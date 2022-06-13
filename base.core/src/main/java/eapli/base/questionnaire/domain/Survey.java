@@ -161,5 +161,4 @@ public class Survey implements AggregateRoot<AlphaNumericCode>, DTOable<SurveyDT
                 description.toString(),
                 period.toString(), content.toString());
     }
-
 }

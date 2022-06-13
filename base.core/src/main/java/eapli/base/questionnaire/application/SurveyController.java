@@ -19,6 +19,7 @@ package eapli.base.questionnaire.application;/*
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import eapli.base.clientusermanagement.domain.Customer;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.questionnaire.domain.*;
 import eapli.base.questionnaire.dto.*;
@@ -94,6 +95,10 @@ public class SurveyController {
 
     public Optional<Survey> surveyToBeAnswered(String alphanumericCode) {
         return repo.getQuestionnaireUsingAlphanumericCode(alphanumericCode);
+    }
+
+    public List<String> findSurveyByCustomer(Customer customer) {
+        return repo.findSurveyByCustomer(customer);
     }
 
 }

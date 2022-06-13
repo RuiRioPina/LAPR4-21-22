@@ -48,10 +48,6 @@ public class MasterUsersBootstrapper extends UsersBootstrapperBase implements Ac
         WAREHOUSEEMPLYEE.add(BaseRoles.WAREHOUSE_EMPLOYEE);
         registerUser("user3","Password3","Luigi","Lemon","joejones@mail.com",WAREHOUSEEMPLYEE);
 
-        Set <Role> CUSTOMER = new HashSet<>();
-        CUSTOMER.add(BaseRoles.CUSTOMER_USER);
-        registerUser("customer1","Customer1","Kyle","Monteiro","kylemonteiro@mail.com",CUSTOMER);
-
         return true;
     }
 

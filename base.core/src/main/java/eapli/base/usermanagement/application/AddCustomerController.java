@@ -23,11 +23,21 @@ package eapli.base.usermanagement.application;
 import eapli.base.clientusermanagement.domain.*;
 import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.usermanagement.domain.BaseRoles;
 import eapli.framework.application.UseCaseController;
+import eapli.framework.domain.repositories.ConcurrencyException;
+import eapli.framework.domain.repositories.IntegrityViolationException;
 import eapli.framework.general.domain.model.EmailAddress;
+import eapli.framework.infrastructure.authz.application.PasswordPolicy;
+import eapli.framework.infrastructure.authz.domain.model.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+
+import static org.hibernate.bytecode.BytecodeLogger.LOGGER;
 
 /**
  * Created by nuno on 21/03/16.
@@ -54,8 +64,58 @@ public class AddCustomerController {
         return null;
     }
 
+    public Customer customerBuilder(final String firstName, final String lastName, final String vatId, final String email,
+                                    final String phoneNumber, final String birthday, final Gender gender,
+                                    final List<Address> addresses, String username, String password) {
+        CustomerBuilder customerBuilder = new CustomerBuilder(firstName, lastName, vatId, email, phoneNumber);
+        Customer customer = (customerBuilder.withBirthday(birthday)
+                .withGender(gender)
+                .withAddress(addresses)
+                .build());
+        for (Address adr : addresses) {
+            adr.setCustomer(customer);
+        }
+
+        Set<Role> CUSTOMER = new HashSet<>();
+        CUSTOMER.add(BaseRoles.CUSTOMER_USER);
+        customer.setUser(registerUser(username, password, firstName, lastName, email, CUSTOMER));
+
+        if (customer != null) {
+            return repo.save(customer);
+        }
+        return null;
+    }
+
+    private void registerAdmin(final String username, final String password, final String firstName,
+                               final String lastName, final String email) {
+        final Set<Role> roles = new HashSet<>();
+        roles.add(BaseRoles.ADMIN);
+
+        registerUser(username, password, firstName, lastName, email, roles);
+    }
+
+    final AddUserController userController = new AddUserController();
+    final ListUsersController listUserController = new ListUsersController();
+
+    protected SystemUser registerUser(final String username, final String password, final String firstName,
+                                      final String lastName, final String email, final Set<Role> roles) {
+        SystemUser u = null;
+        try {
+            u = userController.addUser(username, password, firstName, lastName, email, roles);
+        } catch (final IntegrityViolationException | ConcurrencyException e) {
+            // assuming it is just a primary key violation due to the tentative
+            // of inserting a duplicated user. let's just lookup that user
+            u = listUserController.find(Username.valueOf(username)).orElseThrow(() -> e);
+        }
+        return u;
+    }
+
     public Optional<Customer> getCustomer(Long id) {
         return repo.findById(id);
+    }
+
+    public Optional<Customer> findByUsername(Username username) {
+        return repo.findByUsername(username);
     }
 
     public List<Customer> getCustomersWithLessThanAge(int age) {

@@ -30,7 +30,7 @@ public class SurveyBootstraper implements Action {
     public boolean execute() {
         String questionnairePath;
         questionnairePath = "questionnaire/Question.txt";
-        SurveyDTO surveyDTO = new SurveyDTO("12","description", "3",null);
+        SurveyDTO surveyDTO = new SurveyDTO("12","Electronics Questionnaire", "3",null);
         try {
             questionnaire = Files.readString(Path.of(questionnairePath));
         } catch (IOException e) {
@@ -40,6 +40,18 @@ public class SurveyBootstraper implements Action {
         surveyDTO.content = questionnaire;
         SurveyController controller = new SurveyController();
         controller.buildSurvey(surveyDTO, 1);
+
+        /*String questionnairePath2;
+        questionnairePath2 = "questionnaire/QuestionnaireSmartphones.txt";
+        SurveyDTO surveyDTO2 = new SurveyDTO("0","Smartphones Questionnaire", "1",null);
+        try {
+            questionnaire = Files.readString(Path.of(questionnairePath2));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+
+        surveyDTO2.content = questionnaire;
+        controller.buildSurvey(surveyDTO2, 1);*/
         return false;
     }
 

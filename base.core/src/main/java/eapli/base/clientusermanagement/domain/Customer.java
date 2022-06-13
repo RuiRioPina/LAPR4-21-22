@@ -129,6 +129,9 @@ public class Customer implements Serializable, AggregateRoot<Long> {
     }
 
 
+    public void setUser(SystemUser systemUser) {
+        this.systemUser = systemUser;
+    }
 
 
     public SystemUser user() {
