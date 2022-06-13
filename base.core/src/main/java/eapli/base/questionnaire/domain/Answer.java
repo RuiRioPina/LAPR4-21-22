@@ -2,11 +2,13 @@ package eapli.base.questionnaire.domain;
 
 
 import eapli.base.clientusermanagement.domain.Customer;
+import eapli.base.productCategory.domain.AlphaNumericCode;
+import eapli.framework.domain.model.AggregateRoot;
 
 import javax.persistence.*;
 
 @Entity
-public class Answer {
+public class Answer implements AggregateRoot<AlphaNumericCode> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
@@ -22,6 +24,18 @@ public class Answer {
     })
     private Survey survey;
 
+    @Override
+    public String toString() {
+        final StringBuffer sb = new StringBuffer("Answer{");
+        sb.append("id=").append(id);
+        sb.append(", answer='").append(answer).append('\'');
+        sb.append(", sectionID='").append(sectionID).append('\'');
+        sb.append(", questionID='").append(questionID).append('\'');
+        sb.append(", survey=").append(survey);
+        sb.append(", customer=").append(customer);
+        sb.append('}');
+        return sb.toString();
+    }
 
     @OneToOne
     @JoinColumn(name = "customer_customer_id")
@@ -61,5 +75,23 @@ public class Answer {
 
     protected Answer() {
 
+    }
+
+    public String answer() {
+        return answer;
+    }
+
+    public String questionID() {
+        return questionID;
+    }
+
+    @Override
+    public boolean sameAs(Object other) {
+        return false;
+    }
+
+    @Override
+    public AlphaNumericCode identity() {
+        return null;
     }
 }
