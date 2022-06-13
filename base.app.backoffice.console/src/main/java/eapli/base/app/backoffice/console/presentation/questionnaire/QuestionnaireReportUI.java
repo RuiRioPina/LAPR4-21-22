@@ -1,5 +1,6 @@
 package eapli.base.app.backoffice.console.presentation.questionnaire;
 
+import eapli.base.app.backoffice.console.presentation.MainMenu;
 import eapli.base.grammar.AnswerVisitor;
 import eapli.base.grammar.LabeledExprLexer;
 import eapli.base.grammar.LabeledExprParser;
@@ -13,11 +14,9 @@ import org.antlr.v4.runtime.ANTLRInputStream;
 import org.antlr.v4.runtime.CommonTokenStream;
 import org.antlr.v4.runtime.tree.ParseTree;
 
-import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
+import java.util.Objects;
 
 public class QuestionnaireReportUI extends AbstractUI {
 
@@ -31,27 +30,26 @@ public class QuestionnaireReportUI extends AbstractUI {
         selector.show();
         Survey selectSurvey = selector.selectedElement();
         List<Answer> answers = (List<Answer>) controller.getAnswersByQuestionnaireId(selectSurvey.alphaNumericCode());
-        FileInputStream fis = null;
+
+        AnswerVisitor eval = null;
         try {
-            fis = new FileInputStream("base.core/src/main/java/eapli/base/grammar/teste.txt");
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
+            LabeledExprLexer lexer = new LabeledExprLexer(new ANTLRInputStream(Objects.requireNonNull(selectSurvey).content().toString()));
+            CommonTokenStream tokens = new CommonTokenStream(lexer);
+            LabeledExprParser parser = new LabeledExprParser(tokens);
+            ParseTree tree = parser.prog();
+            eval = new AnswerVisitor();
+            eval.questionnaireAnswers(answers);
+            eval.visit(tree);
+        } catch ( NullPointerException e ){
+            System.out.println("\n-----------------\nThere are no answers related to this Survey!\n-----------------\n");
+            MainMenu mm = new MainMenu();
+            mm.mainLoop();
         }
-        LabeledExprLexer lexer = null;
-        try {
-            lexer = new LabeledExprLexer(new ANTLRInputStream(fis));
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        CommonTokenStream tokens = new CommonTokenStream(lexer);
-        LabeledExprParser parser = new LabeledExprParser(tokens);
-        ParseTree tree = parser.prog();
-        AnswerVisitor eval = new AnswerVisitor();
-        eval.questionnaireAnswers(answers);
-        eval.visit(tree);
+
 
         List <Integer> universe = controller.universe();
 
+        assert eval != null;
         QuestionnaireReport qr = new QuestionnaireReport(universe.get(0),universe.get(1),eval.singleChoice(),eval.multipleChoice(),eval.sortingOptions(),eval.scalingOptions());
         System.out.println(qr.reportPrint());
 

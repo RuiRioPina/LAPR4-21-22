@@ -179,14 +179,55 @@ public class QuestionnaireReport {
             }
         }
         int other = 0;
-        for (String set : singleChoice.keySet()) {
-            if (set.equals("1") || set.equals("2") || set.equals("3")) {
-                float percent = ((float) singleChoice.get(set).size() / (float) totalSingleChoice) * 100;
-                aux.append("OPTION: ").append(set).append(" - ").append(decimalFormat.format(percent)).append(" %\n");
-            } else {
-                    other = other + singleChoice.get(set).size();
+        boolean boo1 = false; int a = 0;
+        boolean boo2 = false; int b = 0;
+        boolean boo3 = false; int c = 0;
+
+        for(String set : singleChoice.keySet()) {
+            if (set.equals("1")) {
+                a++;
+                boo1 = true;
             }
         }
+        if (boo1){
+            float percent = ((float) singleChoice.get("1").size() / (float) totalSingleChoice) * 100;
+            aux.append("OPTION: ").append(1).append(" - ").append(decimalFormat.format(percent)).append(" %\n");
+        }else {
+            aux.append("OPTION: ").append(1).append(" - ").append(0).append(" %\n");
+        }
+
+        for(String set : singleChoice.keySet()) {
+            if (set.equals("2")) {
+                b++;
+                boo2 = true;
+            }
+        }
+        if (boo2){
+            float percent = ((float) singleChoice.get("2").size() / (float) totalSingleChoice) * 100;
+            aux.append("OPTION: ").append(2).append(" - ").append(decimalFormat.format(percent)).append(" %\n");
+        } else {
+            aux.append("OPTION: ").append(2).append(" - ").append(0).append(" %\n");
+        }
+
+        for(String set : singleChoice.keySet()) {
+            if (set.equals("3")) {
+                c++;
+                boo3 = true;
+            }
+        }
+        if (boo3){
+            float percent = ((float) singleChoice.get("3").size() / (float) totalSingleChoice) * 100;
+            aux.append("OPTION: ").append(3).append(" - ").append(decimalFormat.format(percent)).append(" %\n");
+        }else {
+            aux.append("OPTION: ").append(3).append(" - ").append(0).append(" %\n");
+        }
+
+        for(String set : singleChoice.keySet()) {
+            if (!set.equals("1") && !set.equals("2") && !set.equals("3")){
+            other = other + singleChoice.get(set).size();
+        }
+        }
+
         float percent2 = ((float) other / (float) totalSingleChoice )* 100;
         aux.append("OTHERS" + " - ").append(decimalFormat.format(percent2)).append(" %\n");
         return aux.toString();
