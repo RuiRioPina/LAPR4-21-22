@@ -15,7 +15,6 @@ import java.util.*;
 public class EvalVisitor extends LabeledExprBaseVisitor<String> {
     //private final SurveyController theController = new SurveyController();
 
-    //TODO falta guardar as respostas e fazer o condition dependant com essas respostas
     private final List<Answer> answers = new ArrayList<>();
     private String section;
 
@@ -29,6 +28,7 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
 
     private final AddCustomerController controller = new AddCustomerController();
     private final SurveyController surveyController = new SurveyController();
+    private List<String> semReplacedList = new ArrayList<>();
 
 
     @Override
@@ -76,10 +76,13 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
         return ctx.getText();
     }
 
+
+    public void setCustomer(Customer customer1) {
+        this.customer1 = customer1;
+    }
+
     @Override
     public String visitQuestion(LabeledExprParser.QuestionContext ctx) {
-        Optional<Customer> customer = controller.getCustomer(13L);
-        customer1 = customer.get();
 
         survey = surveyController.surveyToBeAnswered("12").get();
         System.out.println(ctx.QUESTION_ID());
@@ -101,7 +104,9 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
         }
 
         assert yau != null;
-        if (!yau.equalsIgnoreCase("n")) {
+        if(questionType.equalsIgnoreCase("SORTING_OPTIONS")){
+            answers.add(new Answer(semReplacedList.toString(), section, ctx.QUESTION_ID().toString(), customer1, survey));
+        }else if (!yau.equalsIgnoreCase("n")) {
             answers.add(new Answer(yau, section, ctx.QUESTION_ID().toString(), customer1, survey));
         }
         System.out.println();
@@ -247,8 +252,10 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
 
         List<TerminalNode> list = ctx.CHOOSE();
         List<String> nodesInStringFormat = new ArrayList<>();
+
         for (TerminalNode node : list) {
             nodesInStringFormat.add(node.toString());
+            semReplacedList.add(node.toString());
         }
 
         do {
@@ -259,7 +266,15 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
                 i++;
             }
             response = Console.readLine("Select the option you want to be first (INPUT \"N\" to exit)");
+
             try {
+                String semReplaced = semReplacedList.get(Integer.parseInt(response) - 1);
+                semReplacedList.set(Integer.parseInt(response) - 1, semReplaced);
+                String semReplacedTheFirstElement = semReplacedList.get(0);
+                semReplacedList.set(0, semReplacedTheFirstElement);
+                Collections.swap(semReplacedList, 0, Integer.parseInt(response) - 1);
+
+
                 String replaced = nodesInStringFormat.get(Integer.parseInt(response) - 1).replace(response, "1");
                 nodesInStringFormat.set(Integer.parseInt(response) - 1, replaced);
                 String replacedTheFirstElement = nodesInStringFormat.get(0).replace("1", response);

@@ -61,6 +61,8 @@ public class AnswerToSurvey extends AbstractUI {
 
         EvalVisitor eval = new EvalVisitor();
 
+        eval.setCustomer(customer);
+
         List<Answer> answerList = eval.getAnswers();
         Survey survey = null;
         if (surveyController.surveyToBeAnswered(result).isPresent()) {
