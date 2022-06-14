@@ -58,7 +58,7 @@ int warehouse[5][5]={
 		{2,0,0,0,0},
 		{1,0,1,1,0},
 		{0,0,1,1,0},
-		{0,0,0,0,0},
+		{0,0,9,0,0},
 		{2,0,0,0,4},
 		};
 
@@ -67,11 +67,11 @@ int main(){
 	current_battery=50;
 	battery_capacity=100;
 	
-	current_positionX=3;
-	current_positionY=1;
+	current_positionX=4;
+	current_positionY=4;
 	
-	product_positionX=1;
-	product_positionY=4;
+	product_positionX=0;
+	product_positionY=0;
 	
 	pthread_t threadBatteryManagement;
 	pthread_t threadRoutePlanner;
@@ -101,8 +101,8 @@ int main(){
 	printf("Wposvalue =%d\n",warehouse[4][2]);
 	//sleep(10);
 	sleep(5);
-	printf("current_position = %d\n",current_positionX);
-	current_positionX++;
+	printf("Current positon x = %d\n",current_positionX);
+	printf("Current position y = %d\n",current_positionY);
 	//sleep(10);
 	//pthread_exit(null);
 	
@@ -140,42 +140,52 @@ void* thread_battery_management(void *arg){
 */
 
 void* thread_route_planner(void *arg){
-	printf("%d\n",current_positionX);
-	printf("%d\n",current_positionY);
-	printf("%d\n",product_positionX);
-	printf("%d\n",product_positionY);
-	int distance_to_end = distance(current_positionX, current_positionY, product_positionX, product_positionY);
+	printf("Current positon y = %d\n",current_positionX);
+	printf("Current position x = %d\n\n",current_positionY);
+	printf("Product position x = %d\n",product_positionX);
+	printf("Product position y = %d\n\n",product_positionY);
+	float distance_to_end = distance(current_positionX, current_positionY, product_positionX, product_positionY);
 	
-	printf("Distance to end: %d\n",distance_to_end);
-	
-	//while(distance_to_end != 0) {
+	printf("Distance to end: %f\n",distance_to_end);
+
+	while(distance_to_end != 0.0) {
+		printf("DISTANCE TO END !!!!!!!!!! %f\n", distance_to_end);
 		for(int i = 0; i < 4; i++){  
 			switch(i){
-				case 1:
-					if(distance(current_positionX--, current_positionY, product_positionX, product_positionY) < distance_to_end) {
+				case 0:
+				printf("x- %f\n", distance(current_positionX - 1, current_positionY, product_positionX, product_positionY));
+					if(distance(current_positionX - 1, current_positionY, product_positionX, product_positionY) < distance_to_end) {
 						distance_to_end = distance(current_positionX - 1, current_positionY, product_positionX, product_positionY);
 						//send signal to positioning module current_positionY = current_positionY--;
+						current_positionX--;
+					}
+				break;
+			
+				case 1:
+				printf("x+ %f\n", distance(current_positionX + 1, current_positionY, product_positionX, product_positionY));
+					if(distance(current_positionX + 1, current_positionY, product_positionX, product_positionY) < distance_to_end) {
+						distance_to_end = distance(current_positionX + 1, current_positionY, product_positionX, product_positionY);
+						//send signal to positioning module current_positionY = current_positionY--;
+						current_positionX++;
 					}
 				break;
 			
 				case 2:
-					if(distance(current_positionX++, current_positionY, product_positionX, product_positionY) < distance_to_end) {
-						distance_to_end = distance(current_positionX + 1, current_positionY, product_positionX, product_positionY);
+				printf("y- %f\n", distance(current_positionX, current_positionY - 1, product_positionX, product_positionY));
+					if(distance(current_positionX, current_positionY - 1, product_positionX, product_positionY) < distance_to_end) {
+						distance_to_end = distance(current_positionX, current_positionY - 1, product_positionX, product_positionY);
 						//send signal to positioning module current_positionY = current_positionY--;
+						current_positionY--;
+
 					}
 				break;
 			
 				case 3:
-					if(distance(current_positionX, current_positionY - 1, product_positionX, product_positionY) < distance_to_end) {
-						distance_to_end = distance(current_positionX, current_positionY - 1, product_positionX, product_positionY);
-						//send signal to positioning module current_positionY = current_positionY--;
-					}
-				break;
-			
-				case 4:
+				printf("y+ %f\n", distance(current_positionX, current_positionY + 1, product_positionX, product_positionY));
 					if(distance(current_positionX, current_positionY + 1, product_positionX, product_positionY) < distance_to_end) {
-						distance_to_end = distance(current_positionX, current_positionY++, product_positionX, product_positionY);
+						distance_to_end = distance(current_positionX, current_positionY + 1, product_positionX, product_positionY);
 						//send signal to positioning module current_positionY = current_positionY--;
+						current_positionY++;
 					}
 				break;
 			
@@ -183,7 +193,11 @@ void* thread_route_planner(void *arg){
 					//printf("Error in the route planner. Please reference to that module!\n");
 				break;
 			}
-		//}
+			
+			printf("\nCurrent positon y = %d",current_positionX);
+			printf("Current position x = %d\n\n",current_positionY);
+			printf("DISTANCE TO END ???????? %f\n", distance_to_end);
+		}
 	}
 	
 	
@@ -340,7 +354,7 @@ void* thread_communications(void *arg) {
 float distance(int currentX, int currentY, int endX, int endY) {
     // Calculating distance
     return sqrt(pow(endX - currentX, 2)
-                + pow(endY - endX, 2) * 1.0);
+                + pow(endY - currentY, 2) * 1.0);
 }
 
 
