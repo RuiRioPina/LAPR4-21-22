@@ -8,4 +8,6 @@ public interface AnswerRepository extends DomainRepository <AlphaNumericCode, An
 
     Iterable <Answer> getAnswersByQuestionnaireId(AlphaNumericCode alphaNumericCode);
 
+    Iterable <String> costumersId ();
+
 }

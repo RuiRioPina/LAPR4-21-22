@@ -32,6 +32,19 @@ public class JpaAnswerRepository extends BasepaRepositoryBase <Answer,Long,Long>
     }
 
     @Override
+    public Iterable<String> costumersId() {
+        List<String> c = new ArrayList<>();
+        final TypedQuery<Answer> query = super.createQuery(
+                "SELECT p FROM Answer p WHERE p.id != 0",Answer.class);
+        for (Answer a : query.getResultList()) {
+            if (!c.contains(a.getCustomer().identity().toString())) {
+                c.add(a.getCustomer().identity().toString());
+            }
+        }
+        return c;
+    }
+
+    @Override
     public Optional<Answer> ofIdentity(AlphaNumericCode id) {
         return Optional.empty();
     }
