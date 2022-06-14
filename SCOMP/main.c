@@ -1,250 +1,361 @@
-#include <stdlib.h>
-#include <stdio.h>
-#include <string.h>
-#include <float.h>
-/* and not not_eq */
-#include <iso646.h>
-/* add -lm to command line to compile with this header */
-#include <math.h>
- 
-#define map_size_rows 10
-#define map_size_cols 10
- 
-char map[map_size_rows][map_size_cols] = {
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 1, 1, 1, 0, 1},
-    {1, 0, 0, 1, 0, 0, 0, 1, 0, 1},
-    {1, 0, 0, 1, 0, 0, 0, 1, 0, 1},
-    {1, 0, 0, 1, 1, 1, 1, 1, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 0, 0, 0, 0, 0, 0, 0, 0, 1},
-    {1, 1, 1, 1, 1, 1, 1, 1, 1, 1}
-};
- 
-/* description of graph node */
-struct stop {
-    double col, row;
-    /* array of indexes of routes from this stop to neighbours in array of all routes */
-    int * n;
-    int n_len;
-    double f, g, h;
-    int from;
-};
- 
-int ind[map_size_rows][map_size_cols] = {
-    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1},
-    {-1, -1, -1, -1, -1, -1, -1, -1, -1, -1}
-};
- 
-/* description of route between two nodes */
-struct route {
-    /* route has only one direction! */
-    int x; /* index of stop in array of all stops of src of this route */
-    int y; /* intex of stop in array of all stops od dst of this route */
-    double d;
-};
- 
-int main() {
-    int i, j, k, l, b, found;
-    int p_len = 0;
-    int * path = NULL;
-    int c_len = 0;
-    int * closed = NULL;
-    int o_len = 1;
-    int * open = (int*)calloc(o_len, sizeof(int));
-    double min, tempg;
-    int s;
-    int e;
-    int current;
-    int s_len = 0;
-    struct stop * stops = NULL;
-    int r_len = 0;
-    struct route * routes = NULL;
- 
-    for (i = 1; i < map_size_rows - 1; i++) {
-        for (j = 1; j < map_size_cols - 1; j++) {
-            if (!map[i][j]) {
-                ++s_len;
-                stops = (struct stop *)realloc(stops, s_len * sizeof(struct stop));
-                int t = s_len - 1;
-                stops[t].col = j;
-                stops[t].row = i;
-                stops[t].from = -1;
-                stops[t].g = DBL_MAX;
-                stops[t].n_len = 0;
-                stops[t].n = NULL;
-                ind[i][j] = t;
-            }
-        }
-    }
- 
-    /* index of start stop */
-    s = 0;
-    /* index of finish stop */
-    e = s_len - 1;
- 
-    for (i = 0; i < s_len; i++) {
-        stops[i].h = sqrt(pow(stops[e].row - stops[i].row, 2) + pow(stops[e].col - stops[i].col, 2));
-    }
- 
-    for (i = 1; i < map_size_rows - 1; i++) {
-        for (j = 1; j < map_size_cols - 1; j++) {
-            if (ind[i][j] >= 0) {
-                for (k = i - 1; k <= i + 1; k++) {
-                    for (l = j - 1; l <= j + 1; l++) {
-                        if ((k == i) and (l == j)) {
-                            continue;
-                        }
-                        if (ind[k][l] >= 0) {
-                            ++r_len;
-                            routes = (struct route *)realloc(routes, r_len * sizeof(struct route));
-                            int t = r_len - 1;
-                            routes[t].x = ind[i][j];
-                            routes[t].y = ind[k][l];
-                            routes[t].d = sqrt(pow(stops[routes[t].y].row - stops[routes[t].x].row, 2) + pow(stops[routes[t].y].col - stops[routes[t].x].col, 2));
-                            ++stops[routes[t].x].n_len;
-                            stops[routes[t].x].n = (int*)realloc(stops[routes[t].x].n, stops[routes[t].x].n_len * sizeof(int));
-                            stops[routes[t].x].n[stops[routes[t].x].n_len - 1] = t;
-                        }
-                    }
-                }
-            }
-        }
-    }
- 
-    open[0] = s;
-    stops[s].g = 0;
-    stops[s].f = stops[s].g + stops[s].h;
-    found = 0;
- 
-    while (o_len and not found) {
-        min = DBL_MAX;
- 
-        for (i = 0; i < o_len; i++) {
-            if (stops[open[i]].f < min) {
-                current = open[i];
-                min = stops[open[i]].f;
-            }
-        }
- 
-        if (current == e) {
-            found = 1;
- 
-            ++p_len;
-            path = (int*)realloc(path, p_len * sizeof(int));
-            path[p_len - 1] = current;
-            while (stops[current].from >= 0) {
-                current = stops[current].from;
-                ++p_len;
-                path = (int*)realloc(path, p_len * sizeof(int));
-                path[p_len - 1] = current;
-            }
-        }
- 
-        for (i = 0; i < o_len; i++) {
-            if (open[i] == current) {
-                if (i not_eq (o_len - 1)) {
-                    for (j = i; j < (o_len - 1); j++) {
-                        open[j] = open[j + 1];
-                    }
-                }
-                --o_len;
-                open = (int*)realloc(open, o_len * sizeof(int));
-                break;
-            }
-        }
- 
-        ++c_len;
-        closed = (int*)realloc(closed, c_len * sizeof(int));
-        closed[c_len - 1] = current;
- 
-        for (i = 0; i < stops[current].n_len; i++) {
-            b = 0;
- 
-            for (j = 0; j < c_len; j++) {
-                if (routes[stops[current].n[i]].y == closed[j]) {
-                    b = 1;
-                }
-            }
- 
-            if (b) {
-                continue;
-            }
- 
-            tempg = stops[current].g + routes[stops[current].n[i]].d;
- 
-            b = 1;
- 
-            if (o_len > 0) {
-                for (j = 0; j < o_len; j++) {
-                    if (routes[stops[current].n[i]].y == open[j]) {
-                        b = 0;
-                    }
-                }
-            }
- 
-            if (b or (tempg < stops[routes[stops[current].n[i]].y].g)) {
-                stops[routes[stops[current].n[i]].y].from = current;
-                stops[routes[stops[current].n[i]].y].g = tempg;
-                stops[routes[stops[current].n[i]].y].f = stops[routes[stops[current].n[i]].y].g + stops[routes[stops[current].n[i]].y].h;
- 
-                if (b) {
-                    ++o_len;
-                    open = (int*)realloc(open, o_len * sizeof(int));
-                    open[o_len - 1] = routes[stops[current].n[i]].y;
-                }
-            }
-        }
-    }
- 
-    for (i = 0; i < map_size_rows; i++) {
-        for (j = 0; j < map_size_cols; j++) {
-            if (map[i][j]) {
-                putchar(0xdb);
-            } else {
-                b = 0;
-                for (k = 0; k < p_len; k++) {
-                    if (ind[i][j] == path[k]) {
-                        ++b;
-                    }
-                }
-                if (b) {
-                    putchar('x');
-                } else {
-                    putchar('.');
-                }
-            }
-        }
-        putchar('\n');
-    }
- 
-    if (not found) {
-        puts("IMPOSSIBLE");
-    } else {
-        printf("path cost is %d:\n", p_len);
-        for (i = p_len - 1; i >= 0; i--) {
-            printf("(%1.0f, %1.0f)\n", stops[path[i]].col, stops[path[i]].row);
-        }
-    }
- 
-    for (i = 0; i < s_len; ++i) {
-        free(stops[i].n);
-    }
-    free(stops);
-    free(routes);
-    free(path);
-    free(open);
-    free(closed);
- 
-    return 0;
+#include "agv.h"
+
+
+
+
+
+
+#define BUF_SIZE 300
+#define SERVER_PORT "2020"
+
+#define SERVER_SSL_CERT_FILE "server.pem"
+#define SERVER_SSL_KEY_FILE "server.key"
+#define AUTH_CLIENTS_SSL_CERTS_FILE "authentic-clients.pem"
+
+
+#define FREE_POSITION 0
+#define STATIONARY_OBSTACLE 1
+#define FREE_DOCK 2
+#define SPACE_OCCUPIED_BY_AGV 3
+#define DOCK_OCCUPIED_BY_AGV 4
+#define WAREHOUSE_WIDTH 5
+#define WAREHOUSE_LENGTH 5
+#define MAX_STR_SIZE 1000
+#define NUMBER_OF_SENSORS 8
+
+#define UP 1
+#define DOWN 2
+#define RIGHT 3
+#define LEFT 4
+
+
+#define AGV_SPEED 1
+
+
+typedef struct Packet{
+char version;
+char code;
+char d_length1;
+char d_length2;
+char data[MAX_STR_SIZE];
+}Packet;
+
+
+pthread_mutex_t mutex;
+pthread_cond_t can_move;
+
+int movement_direction;
+int current_positionX;
+int current_positionY;
+int product_positionX;
+int	product_positionY;
+int battery_capacity;
+int current_battery;
+int obstaculo;
+
+int warehouse[5][5]={
+	// 0-Free Position,1-Stationary Obstacle(eg:shelves),2-AGVDock ,3-Space Occupied by AGV ,4- AGV Dock Occupied By AGV
+		{2,0,0,0,0},
+		{1,0,1,1,0},
+		{0,0,1,1,0},
+		{0,0,9,0,0},
+		{2,0,0,0,4},
+		};
+
+
+int main(){
+	current_battery=50;
+	battery_capacity=100;
+
+	current_positionX=4;
+	current_positionY=4;
+
+	product_positionX=0;
+	product_positionY=0;
+
+	pthread_t threadBatteryManagement;
+	pthread_t threadRoutePlanner;
+	pthread_t threadSimulationEngine;
+	pthread_t threadPositioning;
+	pthread_t threadControlSystem;
+	pthread_t threadSensors[NUMBER_OF_SENSORS];
+	pthread_t threadCommunications;
+	int sensor_args[NUMBER_OF_SENSORS];
+
+	pthread_cond_init(&can_move,NULL);
+
+	pthread_mutex_init(&mutex, NULL);
+
+	pthread_create(&threadBatteryManagement, NULL, thread_battery_management,NULL);
+	pthread_create(&threadRoutePlanner, NULL, thread_route_planner,NULL);
+	pthread_create(&threadSimulationEngine, NULL, thread_simulation_engine,NULL);
+	pthread_create(&threadPositioning, NULL, thread_positioning,NULL);
+	pthread_create(&threadControlSystem, NULL, thread_control_system,NULL);
+	for(int i=0;i<NUMBER_OF_SENSORS;i++){
+		sensor_args[i]=i;
+		pthread_create(&threadSensors[i],NULL,thread_sensors,(void*)&sensor_args[i]);
+	}
+	pthread_create(&threadCommunications, NULL, thread_communications, NULL);
+
+
+	printf("Wposvalue =%d\n",warehouse[4][2]);
+	//sleep(10);
+	sleep(5);
+	printf("Current positon x = %d\n",current_positionX);
+	printf("Current position y = %d\n",current_positionY);
+	//sleep(10);
+	//pthread_exit(null);
+
 }
+
+void* thread_battery_management(void *arg){
+	while(1){
+		if(warehouse[current_positionY][current_positionX]==FREE_DOCK || warehouse[current_positionY][current_positionX]==DOCK_OCCUPIED_BY_AGV){
+			if(current_battery<battery_capacity){
+				sleep(1);
+				//printf("Charging\n");
+				//printf("Current battery : %d Total Capacity : %d \n",current_battery,battery_capacity);
+				pthread_mutex_lock(&mutex);
+				current_battery++;
+				pthread_mutex_unlock(&mutex);
+			}else{
+				//printf("Battery Full\n");
+				//printf("Current battery : %d Total Capacity : %d \n",current_battery,battery_capacity);
+			}
+		}else{ // errado, por enquanto, a bateria deveria descer consoante o movimento do AGV e não do tempo, alterar depois
+			sleep(1);
+			//printf("Battery Dropping\n");
+			//printf("Current battery : %d Total Capacity : %d \n",current_battery,battery_capacity);
+			pthread_mutex_lock(&mutex);
+			current_battery--;
+			pthread_mutex_unlock(&mutex);
+			}
+	}
+	pthread_exit(NULL);
+}
+
+/*
+*
+*
+*/
+
+void* thread_route_planner(void *arg){
+	printf("Current positon y = %d\n",current_positionX);
+	printf("Current position x = %d\n\n",current_positionY);
+	printf("Product position x = %d\n",product_positionX);
+	printf("Product position y = %d\n\n",product_positionY);
+	float distance_to_end = distance(current_positionX, current_positionY, product_positionX, product_positionY);
+
+	printf("Distance to end: %f\n",distance_to_end);
+
+	while(distance_to_end != 0.0) {
+		printf("DISTANCE TO END !!!!!!!!!! %f\n", distance_to_end);
+		for(int i = 0; i < 4; i++){
+			switch(i){
+				case 0:
+				printf("x- %f\n", distance(current_positionX - 1, current_positionY, product_positionX, product_positionY));
+					if(distance(current_positionX - 1, current_positionY, product_positionX, product_positionY) < distance_to_end) {
+						distance_to_end = distance(current_positionX - 1, current_positionY, product_positionX, product_positionY);
+						//send signal to positioning module current_positionY = current_positionY--;
+						current_positionX--;
+					}
+				break;
+
+				case 1:
+				printf("x+ %f\n", distance(current_positionX + 1, current_positionY, product_positionX, product_positionY));
+					if(distance(current_positionX + 1, current_positionY, product_positionX, product_positionY) < distance_to_end) {
+						distance_to_end = distance(current_positionX + 1, current_positionY, product_positionX, product_positionY);
+						//send signal to positioning module current_positionY = current_positionY--;
+						current_positionX++;
+					}
+				break;
+
+				case 2:
+				printf("y- %f\n", distance(current_positionX, current_positionY - 1, product_positionX, product_positionY));
+					if(distance(current_positionX, current_positionY - 1, product_positionX, product_positionY) < distance_to_end) {
+						distance_to_end = distance(current_positionX, current_positionY - 1, product_positionX, product_positionY);
+						//send signal to positioning module current_positionY = current_positionY--;
+						current_positionY--;
+
+					}
+				break;
+
+				case 3:
+				printf("y+ %f\n", distance(current_positionX, current_positionY + 1, product_positionX, product_positionY));
+					if(distance(current_positionX, current_positionY + 1, product_positionX, product_positionY) < distance_to_end) {
+						distance_to_end = distance(current_positionX, current_positionY + 1, product_positionX, product_positionY);
+						//send signal to positioning module current_positionY = current_positionY--;
+						current_positionY++;
+					}
+				break;
+
+				default:
+					//printf("Error in the route planner. Please reference to that module!\n");
+				break;
+			}
+
+			printf("\nCurrent positon y = %d",current_positionX);
+			printf("Current position x = %d\n\n",current_positionY);
+			printf("DISTANCE TO END ???????? %f\n", distance_to_end);
+		}
+	}
+
+
+pthread_exit(NULL);
+}
+void* thread_simulation_engine(void *arg){
+		movement_direction=UP;
+		pthread_cond_signal(&can_move);
+	pthread_exit(NULL);
+}
+void* thread_positioning(void *arg){
+	while(1){
+
+		pthread_cond_wait(&can_move,&mutex);
+		sleep(AGV_SPEED);
+		int direction_received;
+		direction_received=movement_direction;
+		switch(direction_received){
+			case 1:
+			current_positionX--;
+			break;
+
+			case 2:
+			current_positionX++;
+			break;
+
+			case 3:
+			current_positionY++;
+			break;
+
+			case 4:
+			current_positionY--;
+			break;
+
+			default:
+			printf("error\n");
+			break;
+		}
+	}
+
+pthread_exit(NULL);
+}
+
+void* thread_control_system(void *arg){
+
+	pthread_exit(NULL);
+}
+
+
+void* thread_sensors(void *arg){
+	int num;
+	num = *((int*)arg);
+	int positionXSnapshot=current_positionX;
+
+	int positionYSnapshot=current_positionY;
+	switch(num){
+		case 0:
+		while (positionXSnapshot>0){
+			positionXSnapshot--;
+			if (warehouse[positionXSnapshot][positionYSnapshot]!=0){
+				//printf("Obstacle %d spaces away \n", current_positionX-positionXSnapshot);
+				obstaculo = current_positionX-positionXSnapshot;
+			}
+		}
+		break;
+		case 1:
+		while(positionYSnapshot<WAREHOUSE_WIDTH-1 && positionXSnapshot >0){
+			positionYSnapshot++;
+			positionXSnapshot--;
+			if(warehouse[positionXSnapshot][positionYSnapshot]!=0){
+				//printf("Obstacle %d spaces away \n", positionYSnapshot-current_positionY);
+				obstaculo = positionYSnapshot-current_positionY;
+			}
+		}
+		break;
+		case 2:
+		while (positionYSnapshot<WAREHOUSE_WIDTH-1){
+			positionYSnapshot++;
+			if (warehouse[positionXSnapshot][positionYSnapshot]!=0){
+				//printf("Obstacle %d spaces away \n", positionYSnapshot-current_positionY);
+				obstaculo = positionYSnapshot-current_positionY;
+			}
+		}
+		break;
+		case 3:
+		while (positionYSnapshot<WAREHOUSE_WIDTH-1 && positionXSnapshot<WAREHOUSE_LENGTH-1){
+			positionYSnapshot++;
+			positionXSnapshot++;
+			if(warehouse[positionXSnapshot][positionYSnapshot]!=0){
+				//printf("Obstacle %d spaces away \n",positionYSnapshot-current_positionY);
+				obstaculo = positionYSnapshot-current_positionY;
+			}
+		}
+		break;
+		case 4:
+		while (positionXSnapshot<WAREHOUSE_LENGTH-1){
+			positionXSnapshot++;
+			if (warehouse[positionXSnapshot][positionYSnapshot]!=0){
+				//printf("Obstacle %d spaces away \n", positionXSnapshot-current_positionX);
+				obstaculo = positionXSnapshot-current_positionX;
+			}
+		}
+		break;
+		case 5:
+		while (positionXSnapshot<WAREHOUSE_LENGTH-1 && positionYSnapshot>0){
+			positionXSnapshot++;
+			positionYSnapshot--;
+			if(warehouse[positionXSnapshot][positionYSnapshot]!=0){
+				printf("Obstacle %d spaces away \n",current_positionY-positionYSnapshot);
+				obstaculo = current_positionY-positionYSnapshot;
+			}
+		}
+		break;
+		case 6:
+		while (positionYSnapshot>0){
+
+			positionYSnapshot--;
+			if (warehouse[positionXSnapshot][positionYSnapshot]!=0){
+				//printf("posvalue =%d\n",warehouse[positionXSnapshot][positionYSnapshot]);
+				//printf("Obstacle %d spaces away \n", current_positionY-positionYSnapshot);
+				obstaculo = 1;
+			}
+		}
+		break;
+		case 7:
+		while(positionYSnapshot>0 && positionXSnapshot >0){
+			positionYSnapshot--;
+			positionXSnapshot--;
+			if(warehouse[positionXSnapshot][positionYSnapshot]!=0){
+				//printf("Obstacle %d spaces away\n", current_positionY-positionYSnapshot);
+				obstaculo = current_positionY-positionYSnapshot;
+			}
+		}
+		break;
+		default:
+		printf("error in sensor\n");
+		break;
+	}
+	pthread_exit(NULL);
+}
+
+void* thread_communications(void *arg) {
+	pthread_exit(NULL);
+}
+
+
+
+
+
+
+//Utils Matemática
+
+//Euclidian Distance
+float distance(int currentX, int currentY, int endX, int endY) {
+    // Calculating distance
+    return sqrt(pow(endX - currentX, 2)
+                + pow(endY - currentY, 2) * 1.0);
+}
+
+
+
