@@ -28,7 +28,7 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
 
     private final AddCustomerController controller = new AddCustomerController();
     private final SurveyController surveyController = new SurveyController();
-    private List<String> semReplacedList = new ArrayList<>();
+    private List<String> sortingOptionsAnswers = new ArrayList<>();
 
 
     @Override
@@ -104,9 +104,9 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
         }
 
         assert yau != null;
-        if(questionType.equalsIgnoreCase("SORTING_OPTIONS")){
-            answers.add(new Answer(semReplacedList.toString(), section, ctx.QUESTION_ID().toString(), customer1, survey));
-        }else if (!yau.equalsIgnoreCase("n")) {
+        if (questionType.equalsIgnoreCase("SORTING_OPTIONS")) {
+            answers.add(new Answer(sortingOptionsAnswers.toString(), section, ctx.QUESTION_ID().toString(), customer1, survey));
+        } else if (!yau.equalsIgnoreCase("n")) {
             answers.add(new Answer(yau, section, ctx.QUESTION_ID().toString(), customer1, survey));
         }
         System.out.println();
@@ -255,42 +255,46 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
 
         for (TerminalNode node : list) {
             nodesInStringFormat.add(node.toString());
-            semReplacedList.add(node.toString());
         }
-
-        do {
+        int contagem = 0;
+        sortingOptionsAnswers = new ArrayList<>();
+        while (contagem < 5) {
+            contagem++;
             i = 0;
             while (i < numberOfOptions) {
                 optionToBeShown = nodesInStringFormat.get(i).contains("|") ? nodesInStringFormat.get(i).replace("|", "") : nodesInStringFormat.get(i);
                 System.out.println(optionToBeShown);
                 i++;
             }
-            response = Console.readLine("Select the option you want to be first (INPUT \"N\" to exit)");
+            if (!sortingOptionsAnswers.isEmpty()) {
+                System.out.println("Your selection until now:");
+                System.out.println(sortingOptionsAnswers);
+            }
+            response = Console.readLine("Select the options by order of importance to you.");
 
             try {
-                String semReplaced = semReplacedList.get(Integer.parseInt(response) - 1);
-                semReplacedList.set(Integer.parseInt(response) - 1, semReplaced);
-                String semReplacedTheFirstElement = semReplacedList.get(0);
-                semReplacedList.set(0, semReplacedTheFirstElement);
-                Collections.swap(semReplacedList, 0, Integer.parseInt(response) - 1);
-
-
-                String replaced = nodesInStringFormat.get(Integer.parseInt(response) - 1).replace(response, "1");
-                nodesInStringFormat.set(Integer.parseInt(response) - 1, replaced);
-                String replacedTheFirstElement = nodesInStringFormat.get(0).replace("1", response);
-
-                nodesInStringFormat.set(0, replacedTheFirstElement);
-
-
-                Collections.swap(nodesInStringFormat, 0, Integer.parseInt(response) - 1);
+                if (Integer.parseInt(response) > numberOfOptions || Integer.parseInt(response) <= 0) {
+                    contagem--;
+                    System.out.println("You selected an invalid option please try again\n");
+                } else {
+                    String semReplaced = nodesInStringFormat.get(Integer.parseInt(response) - 1);
+                    sortingOptionsAnswers.add(semReplaced.replace("|", ""));
+                }
             } catch (NumberFormatException | IndexOutOfBoundsException ignored) {
-
+                contagem--;
+                System.out.println("You selected an invalid option please try again");
             }
 
 
-        } while (!response.equalsIgnoreCase("N") && !response.equalsIgnoreCase("NO"));
+        }
 
-        return nodesInStringFormat.toString();
+        System.out.println("Your final selection:");
+        System.out.println(sortingOptionsAnswers);
+
+
+        //if the options are to be persisted just delete this for loop.
+        sortingOptionsAnswers.replaceAll(s -> String.valueOf(s.charAt(0)));
+        return sortingOptionsAnswers.toString();
     }
 
 
