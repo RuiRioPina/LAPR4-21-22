@@ -27,6 +27,7 @@ import eapli.base.app.backoffice.console.presentation.agv.CreateAGVUI;
 import eapli.base.app.backoffice.console.presentation.agv.UpdateOrderStateToBePreparedUI;
 import eapli.base.app.backoffice.console.presentation.dashboard.AGVsDashboardUI;
 import eapli.base.app.backoffice.console.presentation.order.CreateProductOrderUI;
+import eapli.base.app.backoffice.console.presentation.order.UpdateOrderStateDispatchedUI;
 import eapli.base.app.backoffice.console.presentation.order.UpdateOrderStateReadyUI;
 import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNewCategoryUI;
 import eapli.base.app.backoffice.console.presentation.clientuser.AddCustomerUI;
@@ -89,6 +90,7 @@ public class MainMenu extends AbstractUI {
     // PRODUCTS
     private static final int SPECIFY_NEW_PRODUCT = 1;
     private static final int CREATE_PRODUCT_ORDER = 2;
+    private static final int UPDATE_ORDERSTATE_DISPATCHED = 3;
     // WAREHOUSE
     private static final int SET_UP_NEW_WAREHOUSE = 1;
     private static final int WAREHOUSE = 2;
@@ -232,6 +234,7 @@ public class MainMenu extends AbstractUI {
 
         menu.addItem(SPECIFY_NEW_PRODUCT, "Specify New Product", new SpecifyNewProductUI()::show);
         menu.addItem(CREATE_PRODUCT_ORDER, "Place New Product ProductOrder", new CreateProductOrderUI()::show);
+        menu.addItem(UPDATE_ORDERSTATE_DISPATCHED, "Update DISPATCHED product order", new UpdateOrderStateDispatchedUI()::show);
 
         final Menu menuCategory = new Menu("Categories >");
         menuCategory.addItem(REGISTER_NEW_CATEGORY, "Register New Category", new RegisterNewCategoryUI()::show);
