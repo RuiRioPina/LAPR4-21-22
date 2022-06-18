@@ -2,15 +2,15 @@
 
 actor "Warehouse Employee" as ACT
 
-participant "UpdateOrderStateToBePreparedUI" as UI
-participant "UpdateOrderStateToBePreparedController" as CTRL
+participant ":UpdateOrderStateToBePreparedUI" as UI
+participant ":UpdateOrderStateToBePreparedController" as CTRL
 
-participant "OrderRepository" as OREPO
-participant "AGVRepository" as AREPO
+participant "oRepo:OrderRepository" as OREPO
+participant "aRepo:AGVRepository" as AREPO
 
 participant "rProd:ProductOrder" as ORDER
 participant "lProd:Iterable<ProductOrder>" as IORDER
-participant "OrderState" as STATE
+participant "orderState:OrderState" as STATE
 
 participant "rAGV:AGV" as AGV
 participant "lAgv:Iterable<AGV>" as IAGV
@@ -42,9 +42,9 @@ ACT -> UI : selects one
 activate UI
 UI -> CTRL : rProd = updateOrderState(rProd)
 activate CTRL
-CTRL -> PROD : setOrderState(OrderState)
-activate PROD
-deactivate PROD
+CTRL -> ORDER : setOrderState(OrderState)
+activate ORDER
+deactivate ORDER
 deactivate CTRL
 UI -> CTRL : save(rProd)
 activate CTRL
