@@ -19,6 +19,7 @@ package eapli.base.questionnaire.application;/*
  * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
  */
 
+import eapli.base.clientusermanagement.domain.Customer;
 import eapli.base.infrastructure.persistence.PersistenceContext;
 import eapli.base.questionnaire.domain.*;
 import eapli.base.questionnaire.dto.*;
@@ -27,6 +28,7 @@ import eapli.framework.application.UseCaseController;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @UseCaseController
@@ -53,6 +55,9 @@ public class SurveyController {
             return newSurvey.toDTO();
         }
     }
+    public void saveSurvey(Survey survey) {
+        repo.save(survey);
+    }
 
     public QuestionnaireDTO buildQuestionnaire(final QuestionnaireDTO dto) {
         questionnaire = new QuestionnaireDTOParser().valueOf(dto);
@@ -72,6 +77,9 @@ public class SurveyController {
         return newQuestion.toDTO();
     }
 
+    public void buildQuestions(List<Answer> listOfAnswers) {
+        //repo.getQuestionnaireUsingAlphanumericCode();
+    }
 
     public void cleanQuestionList() {
         questions = new ArrayList<>();
@@ -84,4 +92,13 @@ public class SurveyController {
     public String receiveFullQuestionnaireString() {
         return content.toString();
     }
+
+    public Optional<Survey> surveyToBeAnswered(String alphanumericCode) {
+        return repo.getQuestionnaireUsingAlphanumericCode(alphanumericCode);
+    }
+
+    public List<String> findSurveyByCustomer(Customer customer) {
+        return repo.findSurveyByCustomer(customer);
+    }
+
 }

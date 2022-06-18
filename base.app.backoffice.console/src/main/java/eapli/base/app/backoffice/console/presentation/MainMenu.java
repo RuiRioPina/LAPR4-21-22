@@ -33,13 +33,16 @@ import eapli.base.app.backoffice.console.presentation.productCategory.RegisterNe
 import eapli.base.app.backoffice.console.presentation.clientuser.AddCustomerUI;
 import eapli.base.app.backoffice.console.presentation.productcatalog.CheckProductCatalogUI;
 import eapli.base.app.backoffice.console.presentation.products.SpecifyNewProductUI;
+import eapli.base.app.backoffice.console.presentation.questionnaire.AnswerToSurvey;
 import eapli.base.app.backoffice.console.presentation.questionnaire.DefineSurveyUI;
+import eapli.base.app.backoffice.console.presentation.questionnaire.QuestionnaireReportUI;
 import eapli.base.app.backoffice.console.presentation.warehouse.WarehouseUI;
 import eapli.base.app.common.console.presentation.authz.MyUserMenu;
 import eapli.base.Application;
 import eapli.base.app.backoffice.console.presentation.authz.DeactivateUserAction;
 import eapli.base.app.backoffice.console.presentation.authz.ListUsersAction;
 import eapli.base.app.backoffice.console.presentation.clientuser.AcceptRefuseSignupRequestAction;
+import eapli.base.questionnaire.domain.Answer;
 import eapli.base.usermanagement.domain.BaseRoles;
 import eapli.framework.actions.Actions;
 import eapli.framework.actions.menu.Menu;
@@ -79,7 +82,7 @@ public class MainMenu extends AbstractUI {
     // MAIN MENU
     private static final int MY_USER_OPTION = 1;
     private static final int USERS_OPTION = 2;
-    private static final int CUSTOMERS_OPTION = 4;
+    private static final int CUSTOMERS_OPTION = 12;
     private static final int PRODUCT_CATALOG_OPTION = 5;
     private static final int TRACEABILITY_OPTION = 6;
     private static final int MEALS_OPTION = 7;
@@ -102,6 +105,8 @@ public class MainMenu extends AbstractUI {
     // SALES_MANAGER
     private static final int DEFINE_NEW_QUESTIONNAIRE = 1;
     private static final int SALES_MANAGER = 2;
+    private static final int ANSWER_TO_SURVEY = 2;
+
 
     //Product Catalog
     private static final int CHECK_PRODUCT_CATALOG = 1;
@@ -184,13 +189,6 @@ public class MainMenu extends AbstractUI {
 
         }
 
-        /* example
-        if (authz.isAuthenticatedUserAuthorizedTo(BaseRoles.POWER_USER, BaseRoles.ADMIN)) {
-            final Menu usersMenu = buildUsersMenu();
-            mainMenu.addSubMenu(USERS_OPTION, usersMenu);
-            final Menu settingsMenu = buildAdminSettingsMenu();
-            mainMenu.addSubMenu(SETTINGS_OPTION, settingsMenu);
-        }*/
 
         if (!Application.settings().isMenuLayoutHorizontal()) {
             mainMenu.addItem(MenuItem.separator(SEPARATOR_LABEL));
@@ -260,10 +258,16 @@ public class MainMenu extends AbstractUI {
     private Menu buildSalesManagerMenu() {
         final Menu menu = new Menu("Sales Manager Menu");
         menu.addItem(DEFINE_NEW_QUESTIONNAIRE, "Define new Questionnaire", new DefineSurveyUI()::show);
+        menu.addItem(ANSWER_TO_SURVEY, "Answer to Questionnaire", new AnswerToSurvey()::show);
+        menu.addItem(3,"Questionnaire Report",new QuestionnaireReportUI()::show);
         return menu;
     }
 
-
+    private Menu buildCustomerMenu() {
+        final Menu menu = new Menu("Customer Menu");
+        menu.addItem(2, "Answer to Survey", new AnswerToSurvey()::show);
+        return menu;
+    }
 
     private Menu BuildCategoryMenu() {
         final Menu menuCategory = new Menu("Categories >");

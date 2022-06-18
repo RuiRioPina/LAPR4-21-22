@@ -22,15 +22,21 @@ package eapli.base.persistence.impl.jpa;
 
 import eapli.base.Application;
 import eapli.base.clientusermanagement.domain.Customer;
-import eapli.base.clientusermanagement.repositories.CustomerRepository;
+import eapli.base.product.domain.Brand;
+import eapli.base.product.domain.Product;
 import eapli.base.productCategory.domain.AlphaNumericCode;
+import eapli.base.questionnaire.domain.Answer;
 import eapli.base.questionnaire.domain.Survey;
+import eapli.base.questionnaire.dto.SurveyDTO;
 import eapli.base.questionnaire.repositories.SurveyRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
-import eapli.framework.infrastructure.authz.domain.model.Username;
 import eapli.framework.infrastructure.repositories.impl.jpa.JpaAutoTxRepository;
 
+import javax.persistence.EntityManager;
+import javax.persistence.Query;
+import javax.persistence.TypedQuery;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
@@ -52,9 +58,20 @@ class JpaSurveyRepository
 
 
     @Override
-    public Optional<Survey> getQuestionnaireUsingAlphanumericCode(AlphaNumericCode alphaNumericCode) {
+    public Optional<Survey> getQuestionnaireUsingAlphanumericCode(String alphaNumericCode) {
         final Map<String, Object> params = new HashMap<>();
         params.put("alphaNumericCode", alphaNumericCode);
-        return matchOne("e.alphanumericcode=:alphaNumericCode", params);
+        Optional<Survey> result = matchOne("ALPHANUMERICCODE=:alphaNumericCode", params);
+        return result;
+    }
+
+    @Override
+    public List<String> findSurveyByCustomer(Customer customer) {
+        EntityManager em = entityManager();
+        String sql = "SELECT SURVEY_ALPHANUMERICCODE FROM SURVEY_CUSTOMER WHERE CUSTOMERSSELECTED_CUSTOMER_ID = :CUSTOMER";
+        Query query = em.createNativeQuery(sql).setParameter("CUSTOMER", customer);
+
+
+        return query.getResultList();
     }
 }

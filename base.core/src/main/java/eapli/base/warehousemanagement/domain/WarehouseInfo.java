@@ -40,4 +40,22 @@ public class WarehouseInfo {
     public List<AGVDocks> getAVGDocks() {
         return warehouseWithTheLists.agvDocks();
     }
+
+    public String [][] warehouseDashboard() {
+        int Width = 18;
+        int Length = 20;
+        int down = 1;
+        String[][] warehouse = new String[Width][Length];
+        warehouse [3-down][1-down] ="dock";  warehouse [5-down][1-down] ="dock";  warehouse [13-down][1-down] ="dock";
+        warehouse [15-down][1-down] ="dock"; warehouse [4-down][20-down] ="dock"; warehouse [14-down][20-down] ="dock";
+        for (int i = 5; i < 17; i++) {
+            warehouse [0] [i-down] = "grey";
+            warehouse [7] [i-down] = "grey";
+            warehouse [8] [i-down] = "grey";
+            warehouse [17][i-down] = "grey";
+            warehouse [9] [i-down] = "orange";
+            warehouse [10][i-down] = "orange";
+        }
+        return warehouse;
+    }
 }

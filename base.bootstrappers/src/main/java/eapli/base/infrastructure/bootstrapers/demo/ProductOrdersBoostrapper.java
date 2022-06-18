@@ -27,9 +27,9 @@ public class ProductOrdersBoostrapper implements Action {
 
         iProd.forEachRemaining(lProd :: add);
 
-        Optional<Customer> customer1 = PersistenceContext.repositories().customers().findById(11L);
-        Optional<Customer> customer2 = PersistenceContext.repositories().customers().findById(12L);
-        Optional<Customer> customer3 = PersistenceContext.repositories().customers().findById(13L);
+        Optional<Customer> customer1 = PersistenceContext.repositories().customers().findById(13L);
+        Optional<Customer> customer2 = PersistenceContext.repositories().customers().findById(16L);
+        Optional<Customer> customer3 = PersistenceContext.repositories().customers().findById(19L);
 
         Address ad1 = new Address("Rua dos Reis", "75", "3880-241", "Ovar", "Portugal", AddressType.SHIPMENT);
         Address ad2 = new Address("Rua dos Maiores", "123", "4910-123", "Aveiro", "Portugal", AddressType.BILLING);

@@ -79,6 +79,7 @@ public final class BaseBootstrap extends BaseApplication {
         new ProductOrdersBoostrapper().execute();
         new WarehouseBootstrapper().execute();
         new AgvBootstrapper().execute();
+        new SurveyBootstraper().execute();
     }
 
     private void handleArgs(final String[] args) {

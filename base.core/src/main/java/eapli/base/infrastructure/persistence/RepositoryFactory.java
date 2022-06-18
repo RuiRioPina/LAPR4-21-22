@@ -26,6 +26,7 @@ import eapli.base.product.repositories.ProductRepository;
 import eapli.base.productCategory.repositories.CategoryRepository;
 import eapli.base.clientusermanagement.repositories.CustomerRepository;
 import eapli.base.clientusermanagement.repositories.SignupRequestRepository;
+import eapli.base.questionnaire.repositories.AnswerRepository;
 import eapli.base.questionnaire.repositories.SurveyRepository;
 import eapli.base.warehousemanagement.repositories.WarehouseRepository;
 import eapli.framework.domain.repositories.TransactionalContext;
@@ -133,4 +134,6 @@ public interface RepositoryFactory {
     AGVRepository agvs();
 
     AGVRepository agvs(TransactionalContext autoTx);
+
+    AnswerRepository answers();
 }

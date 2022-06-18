@@ -1,10 +1,14 @@
 package eapli.base.grammar;
 
 import java.io.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import eapli.base.grammar.LabeledExprLexer;
 import eapli.base.grammar.LabeledExprParser;
+import eapli.base.questionnaire.application.SurveyController;
 import org.antlr.v4.runtime.*;
+import org.antlr.v4.runtime.tree.ParseTree;
 
 public class Calc {
 
@@ -13,7 +17,10 @@ public class Calc {
         LabeledExprLexer lexer = new LabeledExprLexer(new ANTLRInputStream(fis));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         LabeledExprParser parser = new LabeledExprParser(tokens);
-        parser.prog();
+        ParseTree tree = parser.prog();
+        EvalVisitor eval = new EvalVisitor();
+        eval.visit(tree);
+
     }
 
 }

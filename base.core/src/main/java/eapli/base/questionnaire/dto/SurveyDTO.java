@@ -14,9 +14,10 @@ public class SurveyDTO {
 
     public SurveyDTO(String alphanumericCodeString
             , String descriptionString
-            , String period) {
+            , String period, String content) {
         this.alphanumericCodeString = alphanumericCodeString;
         this.descriptionString = descriptionString;
         this.period = period;
+        this.content = content;
     }
 }

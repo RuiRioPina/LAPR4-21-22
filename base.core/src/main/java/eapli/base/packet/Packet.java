@@ -19,7 +19,7 @@ public class Packet implements Serializable {
         this.code = code;
         this.data = data;
         this.d_length1 = (byte) calculateDlength1(data.length);
-        this.d_length1 = (byte) calculateDlength2(data.length);
+        this.d_length2 = (byte) calculateDlength2(data.length);
     }
 
     private static int calculateDlength1(int size) {
