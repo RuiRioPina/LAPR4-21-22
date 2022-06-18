@@ -220,6 +220,7 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
                 "Delivery Address:           " + this.deliveryAddress.shortToString() + "\n" +
                 "Total Amount With Taxes:    " + String.format("%.2f", this.totalAmount.priceWithTaxes()) + "\n" +
                 "Total Amount Without Taxes: " + String.format("%.2f", this.totalAmount.priceWithoutTaxes()) + "\n" +
+                "Order State:                " +this.getOrderState() +"\n" +
                 "----------------------------" + "\n" +
                 "Products Ordered: \n" +
                 productListToString() +
@@ -239,6 +240,7 @@ public class ProductOrder implements Serializable, AggregateRoot<Long> {
                 "Total Amount Without Taxes: " + String.format("%.2f", this.totalAmount.priceWithoutTaxes()) + "\n" +
                 "Payment:                    " + this.payment + "\n" +
                 "Shipment:                   " + this.shipment + "\n" +
+                "Order State:                " +this.getOrderState() +"\n" +
                 "----------------------------" + "\n" +
                 "Products Ordered: \n" +
                 productListToString() +
