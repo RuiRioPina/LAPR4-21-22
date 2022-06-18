@@ -32,14 +32,20 @@ pthread_mutex_t direction_mutex; //used for movement direction variable
 pthread_mutex_t signal_pos_mutex;
 pthread_mutex_t signal_has_moved_mutex;
 pthread_mutex_t obstacles_mutex;
+
 pthread_cond_t can_move;
 pthread_cond_t battery_discharge;
 pthread_cond_t has_moved;
 
 int position_flag;
 int movement_direction;
+
 int current_positionX;
 int current_positionY;
+
+int previous_positionX;
+int previous_positionY;
+
 int product_positionX;
 int	product_positionY;
 int battery_capacity;
@@ -61,18 +67,23 @@ int warehouse[WAREHOUSE_WIDTH][WAREHOUSE_LENGTH]={
         {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0},
         {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {2,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
+        {2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
         {0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0},
 };
+
 int main(){
     current_battery=50;
     battery_capacity=100;
     current_positionX=14;
     current_positionY=1;
+
     product_positionX=6;
     product_positionY=14;
+
+    previous_positionX = current_positionX;
+	previous_positionY = current_positionY;
     pthread_t threadBatteryManagement;
     pthread_t threadRoutePlanner;
     pthread_t threadSimulationEngine;
@@ -110,6 +121,13 @@ int main(){
     sleep(3);
     printf("Current positon x = %d\n",current_positionX);
     printf("Current position y = %d\n",current_positionY);
+
+    for(int i = 0;i < WAREHOUSE_WIDTH; i++) {
+        for(int j = 0;j < WAREHOUSE_LENGTH; j++) {
+			printf("%d ",warehouse[i][j]);
+		}
+		printf("\n");
+    }
 
     for(int i = 0;i < NUMBER_OF_SENSORS; i++) {
         printf("%d. %d\n", i, obstaculos[i]);
@@ -198,7 +216,7 @@ void* thread_route_planner(void *arg){
             }else pthread_mutex_unlock(&current_position_mutex);
 
             if(current_positionX<product_positionX){
-                printf("chegou 3\n");
+                //printf("chegou 3\n");
                 pthread_mutex_unlock(&current_position_mutex);
                 if(obstaculos[4] != 1){
                     pthread_mutex_unlock(&current_position_mutex);
@@ -326,7 +344,16 @@ void* thread_positioning(void *arg){
                 //printf("amansou1\n");
                 pthread_mutex_lock(&current_position_mutex);
                 //printf("apareceu\n");
+
+
                 current_positionX--;
+
+				warehouse[previous_positionX][previous_positionY] = 0;
+
+				warehouse[current_positionX][current_positionY] = 3;
+
+				previous_positionX = current_positionX;
+				previous_positionY = current_positionY;
 
                 pthread_mutex_unlock(&current_position_mutex);
                 //printf("subiu\n");
@@ -338,6 +365,12 @@ void* thread_positioning(void *arg){
                 pthread_mutex_lock(&current_position_mutex);
                 //printf("mete nojo\n");
                 current_positionX++;
+                warehouse[previous_positionX][previous_positionY] = 0;
+
+				warehouse[current_positionX][current_positionY] = 3;
+
+				previous_positionX = current_positionX;
+				previous_positionY = current_positionY;
                 pthread_mutex_unlock(&current_position_mutex);
                 //printf("desceu\n");
                 pthread_cond_signal(&battery_discharge);
@@ -346,6 +379,12 @@ void* thread_positioning(void *arg){
                 //printf("amansou3");
                 pthread_mutex_lock(&current_position_mutex);
                 current_positionY++;
+                warehouse[previous_positionX][previous_positionY] = 0;
+
+				warehouse[current_positionX][current_positionY] = 3;
+
+				previous_positionX = current_positionX;
+				previous_positionY = current_positionY;
                 pthread_mutex_unlock(&current_position_mutex);
                 //printf("direitou\n");
                 pthread_cond_signal(&battery_discharge);
@@ -354,6 +393,12 @@ void* thread_positioning(void *arg){
                 //printf("amansou4");
                 pthread_mutex_lock(&current_position_mutex);
                 current_positionY--;
+                warehouse[previous_positionX][previous_positionY] = 0;
+
+				warehouse[current_positionX][current_positionY] = 3;
+
+				previous_positionX = current_positionX;
+				previous_positionY = current_positionY;
                 pthread_mutex_unlock(&current_position_mutex);
                 //		printf("esquerdou\n");
                 pthread_cond_signal(&battery_discharge);
