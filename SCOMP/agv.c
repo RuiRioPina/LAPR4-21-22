@@ -1,9 +1,21 @@
+char * ip = "192.168.60.1";
+char * cli = "A";
+#include "communication.h"
 #include "agv.h"
-#define BUF_SIZE 300
-#define SERVER_PORT "2020"
-#define SERVER_SSL_CERT_FILE "server.pem"
-#define SERVER_SSL_KEY_FILE "server.key"
-#define AUTH_CLIENTS_SSL_CERTS_FILE "authentic-clients.pem"
+#define FREE_POSITION 0
+#define STATIONARY_OBSTACLE 1
+#define FREE_DOCK 2
+#define SPACE_OCCUPIED_BY_AGV 3
+#define DOCK_OCCUPIED_BY_AGV 4
+#define WAREHOUSE_WIDTH 18
+#define WAREHOUSE_LENGTH 20
+#define MAX_STR_SIZE 1000
+#define NUMBER_OF_SENSORS 8
+#define UP 1
+#define DOWN 2
+#define RIGHT 3
+#define LEFT 4
+#define AGV_SPEED 1
 #define FREE_POSITION 0
 #define STATIONARY_OBSTACLE 1
 #define FREE_DOCK 2
@@ -51,36 +63,28 @@ int	product_positionY;
 int battery_capacity;
 int current_battery;
 int obstaculos[NUMBER_OF_SENSORS] = {0,0,0,0,0,0,0,0};
-int warehouse[WAREHOUSE_WIDTH][WAREHOUSE_LENGTH]={
-        // 0-Free Position,1-Stationary Obstacle(eg:shelves),2-AGVDock ,3-Space Occupied by AGV , 4- AGV Dock Occupied By AGV
-        {0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,1,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0},
-        {0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0},
-        {0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0},
-        {0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,1,0,0,0,1,0,0,0,0},
-        {4,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,2},
-        {2,3,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,1,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0},
-        {0,0,0,0,1,1,1,1,1,1,1,1,1,1,1,1,0,0,0,0},
-};
+int warehouse[WAREHOUSE_WIDTH][WAREHOUSE_LENGTH];
 
 int main(){
     current_battery=50;
     battery_capacity=100;
-    current_positionX=14;
-    current_positionY=1;
+    getWarehouse(ip,cli,warehouse);
+    for(int i = 0;i < WAREHOUSE_WIDTH; i++) {
+        for(int j = 0;j < WAREHOUSE_LENGTH; j++) {
+			printf("%d ",warehouse[i][j]);
+		}
+		printf("\n");
+    }
+    int p [4];
+	positions(ip,cli,p);
+	printf("%d ",p[0]);
+	printf("%d\n",p[1]);
+    
+    current_positionX=4;
+    current_positionY=0;
 
-    product_positionX=6;
-    product_positionY=14;
+    product_positionX=p[0];
+    product_positionY=p[1];
 
     previous_positionX = current_positionX;
 	previous_positionY = current_positionY;
@@ -118,7 +122,7 @@ int main(){
     pthread_create(&threadCommunications, NULL, thread_communications, NULL);
     //sleep(10);
 
-    sleep(3);
+    sleep(30);
     printf("Current positon x = %d\n",current_positionX);
     printf("Current position y = %d\n",current_positionY);
 
@@ -134,6 +138,8 @@ int main(){
     }
     //sleep(10);
     //pthread_exit(NULL);
+    sendWarehouse(ip,cli,warehouse);
+   
 }
 void* thread_battery_management(void *arg){
     while(1){
@@ -174,12 +180,14 @@ void* thread_route_planner(void *arg){
     printf("Product position y = %d\n\n",product_positionY);
     pthread_mutex_lock(&current_position_mutex);
     while(current_positionX!=product_positionX || current_positionY!=product_positionY){
+		//sleep(1);
         printf("chegou\n");
         pthread_mutex_unlock(&current_position_mutex);
         pthread_mutex_lock(&current_position_mutex);
         printf("chegou 2 \n");
         position_flag=0;
         while(current_positionX!=product_positionX){
+			sleep(1);
             position_flag=1;
             pthread_mutex_unlock(&current_position_mutex);
             pthread_mutex_lock(&current_position_mutex);
@@ -251,6 +259,7 @@ void* thread_route_planner(void *arg){
         }
 
         while(current_positionY!=product_positionY){
+            sleep(1);
             pthread_mutex_lock(&current_position_mutex);
 
             if(current_positionY>product_positionY){
@@ -327,6 +336,7 @@ void* thread_positioning(void *arg){
     while(1){
         //printf("chegou ao positioning\n");
         pthread_cond_wait(&can_move,&signal_pos_mutex);
+        
         //printf("passou ao positioning1\n");
         //sleep(AGV_SPEED);
         //printf("passou ao positioning2\n");
@@ -336,6 +346,7 @@ void* thread_positioning(void *arg){
         //printf(" receveu %d\n", movement_direction);
         pthread_mutex_unlock(&direction_mutex);
         //printf("mingou\n");
+        
         for(int i = 0;i < NUMBER_OF_SENSORS; i++) {
 			printf("%d. %d\n", i, obstaculos[i]);
 		}
@@ -408,6 +419,7 @@ void* thread_positioning(void *arg){
                 break;
         }
         printf ("current position x = %d \n current position y = %d\n",current_positionX,current_positionY);
+        sendWarehouse(ip,cli,warehouse);
     }
     pthread_exit(NULL);
 }
