@@ -19,6 +19,18 @@ public class Warehouse implements AggregateRoot<Long>, Serializable {
     @Column
     private String jsonPath;
 
+    @Lob
+    @Column
+    private String warehouse;
+
+    public void setWarehouse(String warehouse) {
+        this.warehouse = warehouse;
+    }
+
+    public String getWarehouse() {
+        return warehouse;
+    }
+
     @Transient
     @SerializedName("Warehouse")
     private String name;

@@ -67,7 +67,9 @@ public class HttpAjaxVotingRequest extends Thread {
 				response.send(outS);
 			}
 		}
-		catch(IOException ignored) { }
+		catch(IOException ignored) { } catch (Exception e) {
+			e.printStackTrace();
+		}
 		try { sock.close();}
 		catch(IOException ex) { System.out.println("CLOSE IOException"); }
 	}

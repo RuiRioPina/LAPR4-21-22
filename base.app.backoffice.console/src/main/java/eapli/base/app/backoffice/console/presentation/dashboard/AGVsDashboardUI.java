@@ -19,7 +19,7 @@ public class AGVsDashboardUI extends AbstractUI {
 
         URI uri;
         try {
-            uri = new URI("https://localhost:11555/");
+            uri = new URI("https://localhost:11557/");
             Desktop.getDesktop().browse(uri);
         } catch (HeadlessException | AWTError | URISyntaxException | IOException e) {
             return false;

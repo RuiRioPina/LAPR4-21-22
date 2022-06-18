@@ -11,17 +11,17 @@ function refreshAgvsWarehouse() {
     request.ontimeout = function() {
         vBoard.innerHTML = "Server timeout, still trying ...";
         vBoard.style.color="red";
-        setTimeout(refreshAgvsWarehouse, 100);
+        setTimeout(refreshAgvsWarehouse, 2000);
     };
 
     request.onerror = function() {
         vBoard.innerHTML = "No server reply, still trying ...";
         vBoard.style.color="red";
-        setTimeout(refreshAgvsWarehouse, 5000);
+        setTimeout(refreshAgvsWarehouse, 2000);
     };
 
     request.open("GET", "/agvsWarehouse", true);
-    request.timeout = 5000;
+    request.timeout = 2000;
     request.send();
 }
 function refreshAGVsDashboardInfo() {
@@ -31,23 +31,23 @@ function refreshAGVsDashboardInfo() {
     request.onload = function() {
         vBoard.innerHTML = this.responseText;
         vBoard.style.color="white";
-        setTimeout(refreshAGVsDashboardInfo, 12000);
+        setTimeout(refreshAGVsDashboardInfo, 2000);
     };
 
     request.ontimeout = function() {
         vBoard.innerHTML = "Server timeout, still trying ...";
         vBoard.style.color="red";
-        setTimeout(refreshAGVsDashboardInfo, 12000);
+        setTimeout(refreshAGVsDashboardInfo, 2000);
     };
 
     request.onerror = function() {
         vBoard.innerHTML = "No server reply, still trying ...";
         vBoard.style.color="red";
-        setTimeout(refreshAGVsDashboardInfo, 12000);
+        setTimeout(refreshAGVsDashboardInfo, 2000);
     };
 
     request.open("GET", "/agvsDashboard", true);
-    request.timeout = 12000;
+    request.timeout = 2000;
     request.send();
 }
 

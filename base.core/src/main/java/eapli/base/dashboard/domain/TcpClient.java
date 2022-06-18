@@ -1,73 +1,91 @@
 package eapli.base.dashboard.domain;
 
-import eapli.base.agv.domain.AGVState;
-import eapli.base.packet.Packet;
+import eapli.base.infrastructure.persistence.PersistenceContext;
+import eapli.base.warehousemanagement.domain.Warehouse;
 
+import javax.net.ssl.*;
 import java.io.*;
 import java.net.InetAddress;
-import java.net.Socket;
 import java.net.UnknownHostException;
-import java.nio.charset.StandardCharsets;
-
+import java.util.NoSuchElementException;
 
 public class TcpClient {
 
-    private static InetAddress serverIP;
-    private static Socket socket;
-    private ObjectOutputStream sOut;
-    private ObjectInputStream sIn;
+    static final int SERVER_PORT=2020;
 
-    public void startConnection(String ip) {
+    static InetAddress serverIP;
+    static SSLSocket sock;
+    static ObjectOutputStream sOut;
+    static ObjectInputStream sIn;
+    private static final String TRUSTED_STORE = "A.jks";
+    private static final String KEYSTORE_PASS = "secret";
+
+
+    public int [][] startConnection() throws Exception {
+
+        System.setProperty("javax.net.ssl.trustStore", TRUSTED_STORE);
+        System.setProperty("javax.net.ssl.trustStorePassword", KEYSTORE_PASS);
+
+        System.setProperty("javax.net.ssl.keyStore", TRUSTED_STORE);
+        System.setProperty("javax.net.ssl.keyStorePassword", KEYSTORE_PASS);
+
+        SSLSocketFactory sf = (SSLSocketFactory) SSLSocketFactory.getDefault();
+
         try {
-            serverIP = InetAddress.getByName(ip);
+            serverIP = InetAddress.getByName("127.0.0.1");
         } catch (UnknownHostException ex) {
-            System.out.println("Invalid server specified: " + ip);
+            System.out.println("Invalid server specified: " + "127.0.0.1");
             System.exit(1);
         }
 
         try {
-            socket = new Socket(serverIP, 2020);
+            sock = (SSLSocket) sf.createSocket(serverIP, SERVER_PORT);
         } catch (IOException ex) {
-            System.out.println("Failed to establish TCP connection");
-            System.exit(1);
+            Thread.sleep(3000);
         }
 
         try {
-            sOut = new ObjectOutputStream(socket.getOutputStream());
-            sIn = new ObjectInputStream(socket.getInputStream());
-        } catch (IOException e) {
-            System.out.println("Failed to establish ObjectOutputStream or ObjectInputStream");
-            System.exit(1);
+            sock.startHandshake();
+        } catch (SSLHandshakeException e) {
+            Thread.sleep(3000);
         }
+
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        sOut = new ObjectOutputStream(sock.getOutputStream());
+        sIn = new ObjectInputStream(sock.getInputStream());
+
+        int [][] warehouse = monoToBidi(18,20);
+        // System.out.println(wp);
+        return warehouse;
     }
 
-    public void stopConnection() throws IOException {
-        sIn.close();
-        sOut.close();
-        socket.close();
-    }
+    public int[][] monoToBidi(final int rows, final int cols ) {
+        int[][] bidi;
+        try {
+            PersistenceContext.repositories().newTransactionalContext();
+            Warehouse w = PersistenceContext.repositories().warehouse().findAll().iterator().next();
+            String wp = w.getWarehouse();
+            String[] oo = wp.split(",");
+            int[] array = new int[18 * 20];
+            for (int i = 0; i < oo.length; i++) {
+                if (oo[i].contains("]")) {
+                    oo[i] = oo[i].replace("]", "");
+                }
+                if (oo[i].contains("[")) {
+                    oo[i] = oo[i].replace("[", "");
+                }
+                oo[i] = oo[i].replace(" ", "");
+                array[i] = Integer.parseInt(oo[i]);
+            }
+            if (array.length != (rows * cols))
+                throw new IllegalArgumentException("Invalid array length");
 
-    public AGVState getAgvState(Long Identity) throws IOException, ClassNotFoundException {
-        String conteudo = "";
-        byte version = 0, code = 3;
-        AGVState agv = null;
-        Packet packet = new Packet(version, code, conteudo.getBytes(StandardCharsets.UTF_8));
-        Packet packetOccupied = getAvgState(Identity);
-        sOut.writeObject(packetOccupied);
-        Packet packetReceived = (Packet) sIn.readObject();
-        Packet packetFree = getAvgState(Identity);
-
-        if (packetReceived.getCode() == 6) {
-            agv = AGVState.valueOf(packetReceived.data());
-            sOut.writeObject(packetFree);
+            bidi = new int[rows][cols];
+            for (int i = 0; i < rows; i++)
+                System.arraycopy(array, (i * cols), bidi[i], 0, cols);
+        }catch (NoSuchElementException e) {
+            bidi = new int[rows][cols];
         }
-        return agv;
+        return bidi;
     }
-
-
-    private static Packet getAvgState(Long id) {
-        return new Packet((byte) 0,(byte) 5,(""+id).getBytes(StandardCharsets.UTF_8));
-    }
-
 }
-

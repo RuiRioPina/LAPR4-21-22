@@ -36,9 +36,9 @@ public class HttpsServerAjaxVoting extends Thread {
 */
         try {
             SSLServerSocketFactory sslF = (SSLServerSocketFactory) SSLServerSocketFactory.getDefault();
-            sock = (SSLServerSocket) sslF.createServerSocket(11555);
+            sock = (SSLServerSocket) sslF.createServerSocket(11557);
         } catch (IOException ex) {
-            System.out.println("Server failed to open local port " + 11555);
+            System.out.println("Server failed to open local port " + 11557);
             System.exit(1);
         }
 
@@ -88,22 +88,25 @@ public class HttpsServerAjaxVoting extends Thread {
         return null;
     }
 
-    public static synchronized String refreshAgvsWarehouse () throws FileNotFoundException {
+    public static synchronized String refreshAgvsWarehouse () throws Exception {
         AGVsDashboardController controller = new AGVsDashboardController();
-        String[][] warehouse = controller.agvsWarehouse();
+        int[][] warehouse = controller.agvsWarehouse();
         StringBuilder s = new StringBuilder("<div class=\"grid-container\">\n");
         for (int i = 0; i < 18 ; i++){
             for (int j = 0; j <20 ;j++) {
-                if (warehouse[i][j] == null){
+                if (warehouse[i][j] == 0){
                     s.append("<div class=\"grid-item\"></div>\n");
                 }
-                if (warehouse[i][j] == "grey"){
+                if (warehouse[i][j] == 1){
                     s.append("<div class=\"grid-item1\"></div>\n");
                 }
-                if (warehouse[i][j] == "orange"){
+                if (warehouse[i][j] == 3){
                     s.append("<div class=\"grid-item3\"></div>\n");
                 }
-                if (warehouse[i][j] == "dock"){
+                if (warehouse[i][j] == 4){
+                    s.append("<div class=\"grid-item3\"></div>\n");
+                }
+                if (warehouse[i][j] == 2){
                     s.append("<div class=\"grid-item2\"></div>\n");
                 }
             }
