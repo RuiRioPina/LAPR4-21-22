@@ -1,11 +1,11 @@
 @startuml
 
-class "UpdateOrderStateReadyUI" as UI{
+class "UpdateOrderStateDispatchedUI" as UI{
   +doShow()
   +headline()
 }
 
-class "UpdateOrderStateReadyController" as CTRL {
+class "UpdateOrderStateDispatchedUIController" as CTRL {
   +getListProductOrders()
   +updateOrderState(ProductOrder)
   +save(ProductOrder)

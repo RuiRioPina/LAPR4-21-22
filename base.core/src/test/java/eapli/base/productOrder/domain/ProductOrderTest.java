@@ -10,6 +10,7 @@ import java.time.LocalDateTime;
 import static org.junit.Assert.assertTrue;
 
 public class ProductOrderTest {
+
     private final LocalDateTime DATE = LocalDateTime.now();
     private final Long CUSTOMERID = 1L;
     private final Address BILLINGADDRESS = new Address("Rua Areosa","52","4444-444","Porto","Portugal", AddressType.SHIPMENT);
@@ -62,5 +63,28 @@ public class ProductOrderTest {
         assertTrue(expected);
     }
 
+    @Test
+    public void updateProductOrderStateToBEINGPREPARED(){
+        ProductOrder p = new ProductOrder(DATE,CUSTOMERID,DELIVERYADDRESS,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT,OrderState.TO_BE_PREPARED);
+        p.setOrderState(OrderState.BEING_PREPARED);
+        boolean expected = OrderState.BEING_PREPARED.equals(p.getOrderState());
+        assertTrue(expected);
+    }
+
+    @Test
+    public void updateProductOrderStateToDISPATCHED(){
+        ProductOrder p = new ProductOrder(DATE,CUSTOMERID,DELIVERYADDRESS,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT,OrderState.READY_FOR_CARRIER);
+        p.setOrderState(OrderState.DISPATCHED);
+        boolean expected = OrderState.DISPATCHED.equals(p.getOrderState());
+        assertTrue(expected);
+    }
+
+    @Test
+    public void updateProductOrderStateToDELIVERED(){
+        ProductOrder p = new ProductOrder(DATE,CUSTOMERID,DELIVERYADDRESS,BILLINGADDRESS,null,TOTALAMOUNT,PAYMENT,SHIPMENT,OrderState.DISPATCHED);
+        p.setOrderState(OrderState.DELIVERED);
+        boolean expected = OrderState.DELIVERED.equals(p.getOrderState());
+        assertTrue(expected);
+    }
 
 }
