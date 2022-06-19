@@ -18,8 +18,8 @@ public class UpdateOrderStateDispatchedController {
     }
 
     public boolean changeOrderState(ProductOrder prod){
-        prod.setOrderState(OrderState.BEING_PREPARED);
-        return prod.getOrderState().equals(OrderState.BEING_PREPARED);
+        prod.setOrderState(OrderState.DELIVERED);
+        return prod.getOrderState().equals(OrderState.DELIVERED);
     }
 
     public ProductOrder save(ProductOrder nProd, ProductOrder oProd){
@@ -28,7 +28,7 @@ public class UpdateOrderStateDispatchedController {
     }
 
     public String printBeingPreparedProductOrders(){
-        Iterable<ProductOrder> lProd = this.oRepo.findByState(OrderState.BEING_PREPARED);
+        Iterable<ProductOrder> lProd = this.oRepo.findByState(OrderState.DELIVERED);
         int i = 1;
         String result = "";
         for (ProductOrder prod: lProd) {

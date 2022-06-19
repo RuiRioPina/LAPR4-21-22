@@ -2,7 +2,6 @@ package eapli.base.app.backoffice.console.presentation.order;
 
 import eapli.base.app.backoffice.console.presentation.Utils.Utils;
 import eapli.base.productOrder.application.UpdateOrderStateDispatchedController;
-import eapli.base.productOrder.application.UpdateOrderStateReadyController;
 import eapli.base.productOrder.domain.OrderState;
 import eapli.base.productOrder.domain.ProductOrder;
 import eapli.framework.presentation.console.AbstractUI;
@@ -41,7 +40,7 @@ public class UpdateOrderStateDispatchedUI extends AbstractUI {
 
         String confirmation = null;
         do {
-            confirmation= Utils.readLineFromConsole("Do you wish to update ProductOrder#" + rProductOrder.identity() + "'s state to BEING_PREPARED?(Y/N)\"");
+            confirmation= Utils.readLineFromConsole("Do you wish to update ProductOrder#" + rProductOrder.identity() + "'s state to DELIVERED?(Y/N)\"");
             if(confirmation.equalsIgnoreCase("y")) {
                 ProductOrder nProductOrder = rProductOrder;
 
@@ -50,7 +49,7 @@ public class UpdateOrderStateDispatchedUI extends AbstractUI {
                     System.out.print("--------------------------------------------------------------\n" +
                             "Operation successful!" + "\n" +
                             "--------------------------------------------------------------\n" +
-                            "Here is the list of BEING_PREPARED Product Orders:" + "\n" +
+                            "Here is the list of DELIVERED Product Orders:" + "\n" +
                             this.ctrl.printBeingPreparedProductOrders() + "\n" +
                             "--------------------------------------------------------------\n");
                     break;
@@ -76,7 +75,7 @@ public class UpdateOrderStateDispatchedUI extends AbstractUI {
 
     @Override
     public String headline() {
-        return "Update Product Order To BEING_PREPARED";
+        return "Update Product Order To DELIVERED";
     }
 }
 

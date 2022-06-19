@@ -71,76 +71,53 @@ dando-nos uma visão orientada a objetos à camada de persitência.
 
 # 4. Implementação
 
-## UpdateOrderStateReadyUI
+## CheckCustomerOpenOrdersUI
 
-@Override
-	protected boolean doShow() {
+public class CheckCustomerOpenOrdersUI extends AbstractUI {
 
-			Iterable<ProductOrder> lProdOrder = ctrl.getListProductOrders();
-			int i = 1;
+    CheckCustomerOpenOrdersController ctrl = new CheckCustomerOpenOrdersController();
 
-			System.out.print("Order List: \n" +
-							"--------------------------------------------------------------\n");
-			for (ProductOrder prod : lProdOrder ) {
-					if(prod.getOrderState().toString().equals(OrderState.READY_FOR_CARRIER.toString())){
-							System.out.println(i + " - \n" + prod.shortToString());
-							i++;
-					}
-			}
-			System.out.print("\n" +
-							"0 - to cancel operation");
-			System.out.print("--------------------------------------------------------------\n");
-			ProductOrder rProductOrder = (ProductOrder) Utils.selectsObject((List) lProdOrder);
-
-			if (rProductOrder.equals(null)){
-					System.out.printf("No Product Order selected! (Null Product Order");
-					return false;
-			}
-
-			System.out.println();
-
-			String confirmation = null;
-			do {
-					confirmation= Utils.readLineFromConsole("Do you wish to update ProductOrder#" + rProductOrder.identity() + "'s state to DISPATCHED?(Y/N)\"");
-					if(confirmation.equalsIgnoreCase("y")) {
-							ProductOrder nProductOrder = rProductOrder;
-
-							if(this.ctrl.changeOrderState(nProductOrder)){
-									this.ctrl.save(nProductOrder,rProductOrder);
-									System.out.print("--------------------------------------------------------------\n" +
-													"Operation successful!" + "\n" +
-													"--------------------------------------------------------------\n" +
-													"Here is the list of DISPATCHED Product Orders:" + "\n" +
-													this.ctrl.printDispatchedProductOrders() + "\n" +
-													"--------------------------------------------------------------\n");
-									break;
-							} else {
-									System.out.print("--------------------------------------------------------------\n" +
-													"Operation unsuccessful!" + "\n" +
-													"--------------------------------------------------------------\n");
-									break;
-							}
-
-					} else if (confirmation.equalsIgnoreCase("n")) {
-							System.out.print("Operation successfully canceled!\n");
-							break;
-					} else {
-							System.out.println("Enter Y to confirm, or N to cancel the order!");
-					}
-
-			}while(!confirmation.equalsIgnoreCase("y") || !confirmation.equalsIgnoreCase("n"));
+    @Override
+    protected boolean doShow() {
+        Iterable<Customer> lCustomer = ctrl.getListCustomers();
+        int i = 1;
 
 
-			return false;
-	}
+        System.out.print("Customer List: \n" +
+                "--------------------------------------------------------------\n");
+        for (Customer customer : lCustomer ) {
+            System.out.println(i + " - \n" + customer.name() +", " + customer.identity() + ", " + customer.email());
+            i++;
+        }
+        System.out.print("\n" +
+                "0 - to cancel operation");
+        System.out.print("--------------------------------------------------------------\n");
+        Customer rCustomer = (Customer) Utils.selectsObject((List) lCustomer);
 
+        if (rCustomer == null){
+            System.out.print("No Customer selected! (Null Customer)\n");
+            return false;
+        }
 
-	@Override
-	public String headline() {
-			return "Update Product Order to DISPATCHED";
-	}
-	}
+        Iterable<ProductOrder> lProdOrder = ctrl.getListProductOrders();
+        i = 1;
 
+        if(!ctrl.checkCustomerHasProductOrders(rCustomer,lProdOrder)){
+            System.out.println("\nCustomer has no open Product Orders in the database!");
+            return false;
+        }
+
+        System.out.print("\nOrder List: \n" +
+                "--------------------------------------------------------------\n");
+        for (ProductOrder prod : lProdOrder ) {
+            if(Objects.equals(prod.getCustomerId(), rCustomer.identity()) && !prod.getOrderState().toString().equals(OrderState.DELIVERED.toString())){
+                System.out.println(i + " - \n" + prod.toString());
+                i++;
+            }
+        }
+        System.out.print("\n--------------------------------------------------------------\n");
+        return false;
+    }
 
 # 5. Integração/Demonstração
 
