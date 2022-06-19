@@ -11,6 +11,8 @@ A interpretação feita deste requisito foi no sentido de criar um questionário
 
 # 2. Análise
 
+Para posteriormente serem feitos relatórios estatísticos será necessário persistir os seguintes dados:
+
 Answer: QuestionID, SurveyID, SectionID, RESPOSTA (String), CustomerID
 
 

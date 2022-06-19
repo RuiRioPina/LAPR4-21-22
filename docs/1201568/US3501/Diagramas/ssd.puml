@@ -10,6 +10,17 @@ activate ":System"
 
 deactivate ":System"
 
-MEDLT-> ":System" : answer to survey
+
+MEDLT-> ":System" : selects survey to be answered
+activate ":System"
+
+loop while has questions
+":System" ->  MEDLT: show question
+deactivate ":System"
+
+MEDLT-> ":System" : answer to question
+
+end loop
+activate ":System"
 deactivate ":System"
 @enduml

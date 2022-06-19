@@ -3,6 +3,7 @@ autonumber
 actor "Customer" as MEDLT
 participant ":AnswerToSurveyUI" as SYS
 participant "Survey Controller" as CTRL
+participant ":LabeledExprLexer" as EXPR
 participant ":EvalVisitor" as EVAL
 participant ":QuestionDTOParser" as QDTOP
 participant ":SectionDTO" as SDTO
@@ -26,21 +27,63 @@ activate MEDLT
 MEDLT-> SYS : Answer to Survey
 
 activate SYS
+SYS-> CTRL : findSurveysByCustomer()
+
+activate CTRL
+CTRL -> SYS: surveys
+deactivate CTRL
+
 SYS --> MEDLT : Show list of Survey to answer
 
 deactivate SYS
 
 
-MEDLT-> SYS : begins answering to the question
+
+MEDLT-> SYS : selects survey to be answered
+
+activate SYS
+SYS-> CTRL :survey =  surveyToBeAnswered()
+
+
+
+SYS-> EXPR** : create(survey.content())
+deactivate SYS
+
+loop for each question in the survey
+
+activate EXPR
+EXPR->EVAL : visitSection()
+
+activate EVAL
+deactivate EVAL
+
+EXPR->EVAL : visitQuestion()
+activate EVAL
+deactivate EVAL
+EXPR->EVAL : treatObligatoriness()
+activate EVAL
+deactivate EVAL
+EXPR->EVAL : treatQuestionType()
+activate EVAL
+deactivate EVAL
+
+EXPR->CTRL : question
+deactivate EXPR
+
+
+activate CTRL
+
+
+CTRL->SYS : show question
+deactivate CTRL
 activate SYS
 
-SYS->EVAL : visitSection()
+MEDLT-> SYS : answers Question
+end loop
 
-SYS->EVAL : visitQuestion()
+SYS -> CTRL : setAnswers()
 
-SYS->EVAL : treatObligatoriness()
-
-SYS->EVAL : treatQuestionTyoe()
+SYS -> CTRL : saveSurvey()
 
 
 

@@ -1,6 +1,5 @@
 package eapli.base.persistence.impl.jpa;
 
-import eapli.base.product.domain.Product;
 import eapli.base.productCategory.domain.AlphaNumericCode;
 import eapli.base.questionnaire.domain.Answer;
 import eapli.base.questionnaire.repositories.AnswerRepository;
@@ -24,7 +23,7 @@ public class JpaAnswerRepository extends BasepaRepositoryBase <Answer,Long,Long>
         final TypedQuery<Answer> query = super.createQuery(
                 "SELECT p FROM Answer p WHERE p.id != 0",Answer.class);
         for (Answer a : query.getResultList()) {
-            if (a.getSurvey().alphaNumericCode().toString().equals(id.toString())) {
+            if (a.survey().alphaNumericCode().toString().equals(id.toString())) {
                 answers.add(a);
             }
         }

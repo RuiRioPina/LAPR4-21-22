@@ -45,24 +45,12 @@ public class Answer implements AggregateRoot<AlphaNumericCode> {
         return customer;
     }
 
-    public void setCustomer(Customer customer) {
-        this.customer = customer;
-    }
-
-    public Survey getSurvey() {
+    public Survey survey() {
         return survey;
     }
 
-    public void setSurvey(Survey survey) {
-        this.survey = survey;
-    }
-
-    public String getAnswer() {
+    public String answerToBuildAnswerObject() {
         return answer;
-    }
-
-    public String getQuestionID() {
-        return questionID;
     }
 
     public Answer(String answer, String sectionID, String questionID, Customer customer, Survey survey) {

@@ -374,7 +374,7 @@ public class EvalVisitor extends LabeledExprBaseVisitor<String> {
                     String obligatorinessOptions = options.toString().substring(3, options.toString().length() - 1).toLowerCase();
 
                     for (Answer answer : answers) {
-                        String pppp = answer.getAnswer();
+                        String pppp = answer.answerToBuildAnswerObject();
                         if (pppp.equals(resultOptions) && debug.contains(obligatorinessOptions)) {
                             return "S";
                         }
