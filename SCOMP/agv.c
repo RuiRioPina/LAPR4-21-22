@@ -174,8 +174,6 @@ int main(){
     
 	pthread_create(&threadSimulationEngine, NULL, thread_simulation_engine,NULL);
 
-    //sleep(10);
-
     sleep(30);
     printf("Current positon x = %d\n",current_positionX);
     printf("Current position y = %d\n",current_positionY);
@@ -190,7 +188,7 @@ int main(){
     for(int i = 0;i < NUMBER_OF_SENSORS; i++) {
         printf("%d. %d\n", i, obstaculos[i]);
     }
-    //sleep(10);
+   
     pthread_exit(NULL);
     sendWarehouse(ip,cli,warehouse);
 	
@@ -208,6 +206,7 @@ void* thread_control_system(void *arg) {
 		sensor_args[i]=i;
 		pthread_create(&threadSensors[i],NULL,thread_sensors,(void*)&sensor_args[i]);
 	}
+	
 	while(1){
 		int change_speed_flag = 0;
 		current_speed = AGV_SPEED;
@@ -246,7 +245,6 @@ void* thread_battery_management(void *arg){
                 
                 sleep(current_speed);
                 pthread_cond_broadcast(&battery_ready);
-                
             }
         }else{
             //pthread_mutex_unlock(&current_position_mutex);
@@ -295,7 +293,6 @@ void* thread_route_planner(void *arg){
 		}else pthread_mutex_unlock(&current_position_mutex);
         //printf("chegou\n");
 		
-    
         pthread_mutex_lock(&current_position_mutex);
         //printf("chegou 2 \n");
         position_flag=0;
@@ -443,6 +440,7 @@ void* thread_route_planner(void *arg){
     }
     //pthread_exit(NULL);
 }
+
 void* thread_simulation_engine(void *arg){
 	
 	while(1) {
@@ -479,7 +477,7 @@ void* thread_positioning(void *arg){
             case 1:
                 
                 pthread_mutex_lock(&current_position_mutex);
-               
+              
                 current_positionX--;
 
 				pthread_mutex_lock(&warehouse_mutex);
@@ -628,7 +626,6 @@ void* thread_sensors(void *arg){
         int positionX=current_positionX;
         int positionY=current_positionY;
 
-
         pthread_mutex_unlock(&current_position_mutex);
         //printf("CHEGOU O SIGNAL NO SENSOR\n");
 
@@ -647,7 +644,6 @@ void* thread_sensors(void *arg){
                         //printf("Obstacle %d spaces away \n",positionX-positionXSnapshot);
                         obstaculos[0]= abs(positionX-positionXSnapshot);
                         break;
-
                     }
                 }
                 break;
@@ -730,17 +726,16 @@ void* thread_sensors(void *arg){
                     obstaculos[7]=0;
                     //printf("SENSOR 7 Posição Y = %d\n", positionY);
                     //printf("SENSOR 7 Posição X = %d\n", positionX);
-
+                    
                     if(warehouse[positionXSnapshot][positionYSnapshot]!=0 && warehouse[positionXSnapshot][positionYSnapshot]!=4){
                         //printf(" SENSOR 7  Obstacle %d spaces away\n", positionY-positionYSnapshot);
                         obstaculos[7] = abs(positionY-positionYSnapshot);
 
                         break;
-
                     }
                 }
                 break;
-            default:
+                default:
                 printf("error in sensor\n");
                 break;
         }
