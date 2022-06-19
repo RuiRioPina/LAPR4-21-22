@@ -6,6 +6,7 @@ import eapli.base.warehousemanagement.domain.Warehouse;
 import javax.net.ssl.*;
 import java.io.*;
 import java.net.InetAddress;
+import java.net.SocketException;
 import java.net.UnknownHostException;
 import java.util.NoSuchElementException;
 
@@ -22,37 +23,42 @@ public class TcpClient {
 
 
     public int [][] startConnection() throws Exception {
+            try {
 
-        System.setProperty("javax.net.ssl.trustStore", TRUSTED_STORE);
-        System.setProperty("javax.net.ssl.trustStorePassword", KEYSTORE_PASS);
+                System.setProperty("javax.net.ssl.trustStore", TRUSTED_STORE);
+                System.setProperty("javax.net.ssl.trustStorePassword", KEYSTORE_PASS);
 
-        System.setProperty("javax.net.ssl.keyStore", TRUSTED_STORE);
-        System.setProperty("javax.net.ssl.keyStorePassword", KEYSTORE_PASS);
+                System.setProperty("javax.net.ssl.keyStore", TRUSTED_STORE);
+                System.setProperty("javax.net.ssl.keyStorePassword", KEYSTORE_PASS);
 
-        SSLSocketFactory sf = (SSLSocketFactory) SSLSocketFactory.getDefault();
+                SSLSocketFactory sf = (SSLSocketFactory) SSLSocketFactory.getDefault();
 
-        try {
-            serverIP = InetAddress.getByName("127.0.0.1");
-        } catch (UnknownHostException ex) {
-            System.out.println("Invalid server specified: " + "127.0.0.1");
-            System.exit(1);
-        }
+                try {
+                    serverIP = InetAddress.getByName("127.0.0.1");
+                } catch (UnknownHostException ex) {
+                    System.out.println("Invalid server specified: " + "127.0.0.1");
+                    System.exit(1);
+                }
 
-        try {
-            sock = (SSLSocket) sf.createSocket(serverIP, SERVER_PORT);
-        } catch (IOException ex) {
-            Thread.sleep(3000);
-        }
+                try {
+                    sock = (SSLSocket) sf.createSocket(serverIP, SERVER_PORT);
+                } catch (IOException ex) {
+                    Thread.sleep(3000);
+                }
 
-        try {
-            sock.startHandshake();
-        } catch (SSLHandshakeException e) {
-            Thread.sleep(3000);
-        }
+                try {
+                    sock.startHandshake();
+                } catch (SSLHandshakeException e) {
+                    Thread.sleep(3000);
+                }
 
-        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
-        sOut = new ObjectOutputStream(sock.getOutputStream());
-        sIn = new ObjectInputStream(sock.getInputStream());
+                BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+                sOut = new ObjectOutputStream(sock.getOutputStream());
+                sIn = new ObjectInputStream(sock.getInputStream());
+            } catch (SocketException e) {
+                sock = null;
+            } catch (NullPointerException e) {
+            }
 
         int [][] warehouse = monoToBidi(18,20);
         // System.out.println(wp);

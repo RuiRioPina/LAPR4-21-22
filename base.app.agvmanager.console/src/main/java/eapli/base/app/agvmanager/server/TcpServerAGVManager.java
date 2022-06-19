@@ -112,8 +112,10 @@ class TcpServerAGVManager {
                         dIn.close();
                     }
                     if (code == 2) {
-                        positions[0] = 0; positions[1] = 4; positions[2] = 7; positions[3] =4;
-                        positions[4] = 0;  positions[5] = 2;  positions[6] = 6;  positions[7] = 5;
+                        positions[0] = 4; positions[1] = 0; positions[2] = 6; positions[3] =4;
+                        positions[4] = 12;  positions[5] = 0;  positions[6] = 6;  positions[7] = 6;
+                        positions[8] = 4; positions[9] = 0; positions[10] = 6; positions[11] =4;
+                        positions[12] = 12;  positions[13] = 0;  positions[14] = 6;  positions[15] = 6;
                         for (int i = inc; i < 4+inc; i++) {
                             dOut.writeByte(positions[i]);
                             dOut.flush();
@@ -136,14 +138,14 @@ class TcpServerAGVManager {
                             }
                             System.out.println();
                         }
-                        
+                        PersistenceContext.repositories().newTransactionalContext();
                         Warehouse w = wr.findAll().iterator().next();
                         wr.remove(w);
                         w.setWarehouse(Arrays.deepToString(wp));
                         wr.save(w);
                         dOut.close();
                         dIn.close();
-
+                        PersistenceContext.repositories().newTransactionalContext();
                     }
                 }
 

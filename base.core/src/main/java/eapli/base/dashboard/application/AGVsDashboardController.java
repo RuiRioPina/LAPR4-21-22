@@ -37,6 +37,7 @@ public class AGVsDashboardController {
                 }
             }
         }
+
         return agvsDashboardInfoDTOList;
     }
 
