@@ -6,7 +6,7 @@
 
 **US1006** As Sales Clerk, I want to access a list of orders that had been dispatched for customer delivery and be able to update some of those orders to as being delivered.
 
-A interpretação feita deste requisito foi no sentido de visualizar e atualizar o estado de product orders no estado "DISPATCHED" para "BEING_DELIVERED".
+A interpretação feita deste requisito foi no sentido de visualizar e atualizar o estado de product orders no estado "DISPATCHED" para "DELIVERED".
 
 # 2. Análise
 
@@ -16,7 +16,7 @@ A interpretação feita deste requisito foi no sentido de visualizar e atualizar
 
 ## 2.2 Sequência das ações
 
-* O warehouse employee irá iniciar o processo de visualização de lista de encomendas preparadas, de seguida poderá atualizar uma dessas encomendas para o estado "BEING_DELIVERED" *
+* O warehouse employee irá iniciar o processo de visualização de lista de encomendas preparadas, de seguida poderá atualizar uma dessas encomendas para o estado "DELIVERED" *
 
 ## 2.3 Regras de negócio associadas aos atributos de um ProductOrder
 
@@ -69,75 +69,72 @@ dando-nos uma visão orientada a objetos à camada de persitência.
 
 # 4. Implementação
 
-## UpdateOrderStateReadyUI
+## UpdateOrderStateDispatchedUI
 
-@Override
-	protected boolean doShow() {
+public class UpdateOrderStateDispatchedUI extends AbstractUI {
 
-			Iterable<ProductOrder> lProdOrder = ctrl.getListProductOrders();
-			int i = 1;
+    UpdateOrderStateDispatchedController ctrl = new UpdateOrderStateDispatchedController();
 
-			System.out.print("Order List: \n" +
-							"--------------------------------------------------------------\n");
-			for (ProductOrder prod : lProdOrder ) {
-					if(prod.getOrderState().toString().equals(OrderState.READY_FOR_CARRIER.toString())){
-							System.out.println(i + " - \n" + prod.shortToString());
-							i++;
-					}
-			}
-			System.out.print("\n" +
-							"0 - to cancel operation");
-			System.out.print("--------------------------------------------------------------\n");
-			ProductOrder rProductOrder = (ProductOrder) Utils.selectsObject((List) lProdOrder);
+    @Override
+    protected boolean doShow() {
 
-			if (rProductOrder.equals(null)){
-					System.out.printf("No Product Order selected! (Null Product Order");
-					return false;
-			}
+        Iterable<ProductOrder> lProdOrder = ctrl.getListProductOrders();
+        int i = 1;
 
-			System.out.println();
+        System.out.print("Order List: \n" +
+                "--------------------------------------------------------------\n");
+        for (ProductOrder prod : lProdOrder ) {
+            if(prod.getOrderState().toString().equals(OrderState.DISPATCHED.toString())){
+                System.out.println(i + " - \n" + prod.shortToString());
+                i++;
+            }
+        }
+        System.out.print("\n" +
+                "0 - to cancel operation");
+        System.out.print("--------------------------------------------------------------\n");
+        ProductOrder rProductOrder = (ProductOrder) Utils.selectsObject((List) lProdOrder);
 
-			String confirmation = null;
-			do {
-					confirmation= Utils.readLineFromConsole("Do you wish to update ProductOrder#" + rProductOrder.identity() + "'s state to DISPATCHED?(Y/N)\"");
-					if(confirmation.equalsIgnoreCase("y")) {
-							ProductOrder nProductOrder = rProductOrder;
+        if (rProductOrder == null){
+            System.out.print("No Product Order selected! (Null Product Order)\n");
+            return false;
+        }
 
-							if(this.ctrl.changeOrderState(nProductOrder)){
-									this.ctrl.save(nProductOrder,rProductOrder);
-									System.out.print("--------------------------------------------------------------\n" +
-													"Operation successful!" + "\n" +
-													"--------------------------------------------------------------\n" +
-													"Here is the list of DISPATCHED Product Orders:" + "\n" +
-													this.ctrl.printDispatchedProductOrders() + "\n" +
-													"--------------------------------------------------------------\n");
-									break;
-							} else {
-									System.out.print("--------------------------------------------------------------\n" +
-													"Operation unsuccessful!" + "\n" +
-													"--------------------------------------------------------------\n");
-									break;
-							}
+        System.out.println();
 
-					} else if (confirmation.equalsIgnoreCase("n")) {
-							System.out.print("Operation successfully canceled!\n");
-							break;
-					} else {
-							System.out.println("Enter Y to confirm, or N to cancel the order!");
-					}
+        String confirmation = null;
+        do {
+            confirmation= Utils.readLineFromConsole("Do you wish to update ProductOrder#" + rProductOrder.identity() + "'s state to DELIVERED?(Y/N)\"");
+            if(confirmation.equalsIgnoreCase("y")) {
+                ProductOrder nProductOrder = rProductOrder;
 
-			}while(!confirmation.equalsIgnoreCase("y") || !confirmation.equalsIgnoreCase("n"));
+                if(this.ctrl.changeOrderState(nProductOrder)){
+                    this.ctrl.save(nProductOrder,rProductOrder);
+                    System.out.print("--------------------------------------------------------------\n" +
+                            "Operation successful!" + "\n" +
+                            "--------------------------------------------------------------\n" +
+                            "Here is the list of DELIVERED Product Orders:" + "\n" +
+                            this.ctrl.printBeingPreparedProductOrders() + "\n" +
+                            "--------------------------------------------------------------\n");
+                    break;
+                } else {
+                    System.out.print("--------------------------------------------------------------\n" +
+                            "Operation unsuccessful!" + "\n" +
+                            "--------------------------------------------------------------\n");
+                    break;
+                }
+
+            } else if (confirmation.equalsIgnoreCase("n")) {
+                System.out.print("Operation successfully canceled!\n");
+                break;
+            } else {
+                System.out.println("Enter Y to confirm, or N to cancel the order!");
+            }
+
+        }while(!confirmation.equalsIgnoreCase("y") || !confirmation.equalsIgnoreCase("n"));
 
 
-			return false;
-	}
-
-
-	@Override
-	public String headline() {
-			return "Update Product Order to BEING_DELIVERED";
-	}
-	}
+        return false;
+    }
 
 
 # 5. Integração/Demonstração
