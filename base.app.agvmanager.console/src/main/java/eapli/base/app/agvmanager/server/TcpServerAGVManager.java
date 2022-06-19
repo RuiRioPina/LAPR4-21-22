@@ -10,7 +10,6 @@ import eapli.base.productOrder.domain.OrderState;
 import eapli.base.productOrder.domain.ProductOrder;
 import eapli.base.productOrder.repositories.OrderRepository;
 import eapli.base.warehousemanagement.domain.Warehouse;
-import eapli.base.warehousemanagement.domain.WarehouseInfo;
 import eapli.base.warehousemanagement.repositories.WarehouseRepository;
 
 import javax.net.ssl.*;
@@ -99,6 +98,7 @@ class TcpServerAGVManager {
                 if (format == 2) {
 
                     if (code == 1) {
+                        System.out.println("\nWarehouse Request\n");
                         wp = getWarehouse(18,20);
                         for (int i = 0; i < 18; i++) {
                             for (int j = 0; j < 20; j++) {
@@ -112,6 +112,7 @@ class TcpServerAGVManager {
                         dIn.close();
                     }
                     if (code == 2) {
+                        System.out.println("\nPositions Request\n");
                         positions[0] = 4; positions[1] = 0; positions[2] = 6; positions[3] =4;
                         positions[4] = 12;  positions[5] = 0;  positions[6] = 6;  positions[7] = 6;
                         positions[8] = 4; positions[9] = 0; positions[10] = 6; positions[11] =4;
@@ -125,8 +126,7 @@ class TcpServerAGVManager {
                         inc = inc + 4;
                     }
                     if (code !=1 && code != 2){
-                        WarehouseInfo wi = new WarehouseInfo();
-
+                        System.out.println("\nWarehouse Request\n");
                         for (int i = 0; i < 18; i++) {
                             for (int j = 0; j < 20; j++) {
                                 int z = dIn.readByte();
