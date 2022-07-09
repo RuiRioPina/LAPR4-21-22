@@ -1,193 +1,170 @@
-# Base Management
-    ____                 
-    |  _ \                
-    | |_) | __ _ ___  ___ 
-    |  _ < / _` / __|/ _ \
-    | |_) | (_| \__ \  __/
-    |____/ \__,_|___/\___|
+<div id="top"></div>
+<!--
+*** Thanks for checking out the Best-README-Template. If you have a suggestion
+*** that would make this better, please fork the repo and create a pull request
+*** or simply open an issue with the tag "enhancement".
+*** Don't forget to give the project a star!
+*** Thanks again! Now go create something AMAZING! :D
+-->
+
+
+
+<!-- PROJECT SHIELDS -->
+<!--
+*** I'm using markdown "reference style" links for readability.
+*** Reference links are enclosed in brackets [ ] instead of parentheses ( ).
+*** See the bottom of this document for the declaration of the reference variables
+*** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
+*** https://www.markdownguide.org/basic-syntax/#reference-style-links
+-->
+[![LinkedIn][linkedin-shield]][linkedin-url]
+
+
+
+<!-- PROJECT LOGO -->
+<br />
+<div align="center">
+ 
 
-Engenharia de Aplicações (EAPLI)
+  <h3 align="center">SS4I Warehouse/Online Shop Management Software</h3>
 
-Polythecnic of Porto, School of Engineering
+  <p align="center">
+   Development of a products orders (and
+sell) management system (from now on referred to as SPOMS) having in mind two distinctive aspects:
+• The products being sold are stored in a (almost) fully robotized warehouse where customized
+automated guided vehicles (AGV) are used to pick-up orders’ products.
+• The ability to specify and carry out questionnaires/surveys about any intended topic (e.g.: about
+a concrete product, a brand, the customer satisfaction regarding the system and/or regarding the
+delivery process) in an easy and integrated way.
+    <br />
+    <a href="https://github.com/RuiRioPina/LAPR4-21-22/tree/master/docs"><strong>Explore the docs »</strong></a>
+    <br />
+    <br />
+    
+  </p>
+</div>
 
----------------------------------------------
 
-This application is part of the lab project for the course unit EAPLI. Parts of 
-the application were developed to show specific approaches or techniques; as such, 
-the overall application is not consistent in terms of design. for production ready 
-code this would obvisously be a problem as we should strive for consistency. In 
-this case, it is acceptable as the inconsistencies are meant to provide samples 
-of different valid approaches.
 
-_Base logo created with [kammerl ascii signature](https://www.kammerl.de/ascii/AsciiSignature.php) using font "big"_
+<!-- TABLE OF CONTENTS -->
+<details>
+  <summary>Table of Contents</summary>
+  <ol>
+    <li>
+      <a href="#about-the-project">About The Project</a>
+      <ul>
+        <li><a href="#built-with">Built With</a></li>
+      </ul>
+    </li>
+    <li>
+      <a href="#getting-started">Getting Started</a>
+      <ul>
+        <li><a href="#prerequisites">Prerequisites</a></li>
+        <li><a href="#installation">Installation</a></li>
+      </ul>
+    </li>
+  </ol>
+</details>
+
+
+
+<!-- ABOUT THE PROJECT -->
+## About The Project
+
+As in any traditional products order management system, there is a minimum core information
+regarding customers and the products catalog that is required to the system work properly. Thus, it is
+important that SPOMS provides the users with the ability of either (i) to create and manage
+products/customers information directly and (ii) to import such information from external systems in
+use in the organization where the system is being deployed.
+
+
+
+
+Products basic information comprehends a unique internal code, a short and an extended description
+as well as a more technical description, a set of photos, a brand name and reference. Moreover,
+products can be organized by categories. By simplicity, a category consists only of an alphanumeric
+code, and a description. Each product belongs mandatorily to a single category. To foster integration
+with other information systems, a product also has (i) a mandatory barcode according to a valid coding
+standard such as, for instance, EAN-13, UPC and (ii) an optional production code. Since products’
+prices vary through time (e.g.: promotions) and by applicable taxes that differ from one
+location/country to another, by now, it is just worth considering the current list price with and without
+taxes. At last, it is required a mechanism to inhibit products (one or more) from being temporarily (or
+permanently) ordered.
+
+
+
+Regarding customers, the minimum required information is its name, a valid Value-Added Tax (VAT)
+identifier, an email address, and a phone number. Optionally, customers might state their birthdate
+and gender and have/manage several billing and delivering postal addresses. These addresses should
+be kept updated by customers during the ordering process, namely while they are concluding a new
+order. Every customer also has a unique identifier that is automatically generated by the system at
+the customer registration time. In this regard, it is important noticing that a customer might register
+his/herself on the system or, instead, be registered by an organization salesclerk, which may type or
+import customer’ information from another system running into the organization. In the former
+scenario, the customer must undergo an email/phone-based validation process to get his/her
+credentials to access the system. In the latter scenario, no customer credentials are generated
+automatically.
 
-## Who do I talk to?
 
-Paulo Gandra de Sousa [pag@isep.ipp.pt](emailto:pag@isep.ipp.pt) / [pagsousa@gmail.com](emailto:pagsousa@gmail.com)
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-## License and copyright
 
-Copyright (c) 2013-2019 the original author or authors.
 
-MIT License
+### Built With
 
-Permission is hereby granted, free of charge, to any person obtaining a copy
-of this software and associated documentation files (the "Software"), to deal
-in the Software without restriction, including without limitation the rights
-to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
-copies of the Software, and to permit persons to whom the Software is
-furnished to do so, subject to the following conditions:
+* [![Next][Next.js]][Next-url]
+* [![React][React.js]][React-url]
+* [![Vue][Vue.js]][Vue-url]
+* [![Angular][Angular.io]][Angular-url]
+* [![Svelte][Svelte.dev]][Svelte-url]
+* [![Laravel][Laravel.com]][Laravel-url]
 
-The above copyright notice and this permission notice shall be included in all
-copies or substantial portions of the Software.
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
-FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
-AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
-LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
-OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
-SOFTWARE.
 
-## Build
 
-make sure Maven is installed and on the PATH
+<!-- GETTING STARTED -->
+## Getting Started
 
-If using an Oracle database, you will need to change your maven settings for 
-downloading the Oracle drivers. see <https://blogs.oracle.com/dev2dev/entry/how_to_get_oracle_jdbc#settings> for more information.
+This is an example of how you may give instructions on setting up your project locally.
+To get a local copy up and running follow these simple example steps.
 
-run script 
+### Prerequisites
 
-    rebuild-all.bat
+This is an example of how to list things you need to use the software and how to install them.
+* npm
+  ```sh
+  npm install npm@latest -g
+  ```
 
-## Running
+### Installation
 
-make sure a JRE is installed and on the PATH
+1. Clone the repo
+   ```sh
+   git clone https://github.com/RuiRioPina/LAPR4-21-22.git
+   ```
+3. Install Build Essential package (containing Maven/Java JVM/GCC/Javascript)
+   ```sh
+   sudo apt get build essential
+   ```
+<h3>Thank you for reading! And being interested in the project. :)</h3>
 
-run script 
+<p align="right">(<a href="#top">back to top</a>)</p>
 
-    run-backoffice 
 
-or 
-
-    run-user.bat
-
-## Project structure
-
-- eapli.base.consoleapp
-
-  - presentation using console
-  - Main class 
-  - application properties in resource folder
-
-- eapli.base.bootstrap 
-  - bootstrap data. should be ignored on a "real" instalation
-
-- eapli.base.core 
-  - use case controllers, model, and persistence
-
-## Architecture
-
-The application follows a typical layered approach
-
-    UI -> Controller -+-> Domain
-                      |     ^
-                      |     |
-                      +-> Repositories
-
-
-### Domain objects with persistence knowledge or not
-
-Two different approaches are possible:
-
-- pure domain objects without any knowledge of the persistence
-- domain objects that can save and load thenselves from persistence (thus, an Active Record)
-
-In the first case, the controller is responsible for obtaining the domain objects 
-from the repository, asking the domain objects to perform the business logic and 
-then pass them back to the repository. in this case, the domain objects can "easily" 
-be tested as they do not depend on any other package this gets trickier when we 
-need/want to have lazy load of collections...
-
-In the second case, the controller asks the domain object class to load a certain 
-instance, asks that object to perform the business operation and then asks the object 
-to save itself back to the database
-
-### Passing domain objects to the UI or not
-
-The decision is to use domain objects outside of the controllers boundary. One could 
-argue that domain objects should be known only "inside" the application boundary and 
-as such other data structures should be returned to outside layers, i.e., DTO (Data Transfer Objects).
-
-### Performing calculations in memory or directly at the persistence layer
-
-Both approaches have advantages and disavantages:
-
-- in memory
-
-  - advantages
-
-    - allows the use of business logic in code
-    - disavantages performance may be poor
-
-- at persistence layer
-
-  - advantages
-
-    - use of aggregated SQL functions is straigth forward
-    - performance
-
-  - disavantages
-
-    - complicated business logic is hard to implement
-
-//TODO provide one example of each approach.
-
-See also <http://www.martinfowler.com/articles/dblogic.html>
-
-### Factoring out common behaviour
-
-use services at the application or domain layer
-
-### Can controllers call other controllers?
-
-it is best if they call application services
-
-### Should the UI/controller create domain objects directly
-
-Should the rules for the Creator pattern be fully enforced, e.g., the responsibility to 
-create a Payment should be of Expense, or can the controller/UI create a Payment and
- pass it to the Expense?
-
-### How to reuse behavior betwen controllers
-
-Factor out common behaviour in an application service.
-
-### When showing movements gruped by type, who performs the sum operation? UI, Controller or Domain object?
-
-the UI might not be smart enough to compute the total sum with enough precision, and 
-would carry a burden for the computer running the interface
-
-the Controller might indeed perform such calculation as it has all the data is needs 
-for a short period of time, but it is not the controller function to perform mathematical 
-operations
-
-the domain object might indeed be the very best resource to calculate the sum for each 
-expense type, but it would not make sense to delegate the domain object to the interface.
-
-### When showing movements gruped by type, should types with no values also appear?
-
-this can be another strategy
-
-## References and bibliography
-
-Start by reading the essential material listed in [EAPLI framework](https://bitbucket.org/pag_isep/eapli.framework/src/master/README.md)
-
-### JPA
-
-- [Entities or DTOs in JPA Queries](https://thoughts-on-java.org/entities-dtos-use-projection/)
-- [Primary key mapping](https://thoughts-on-java.org/primary-key-mappings-jpa-hibernate/)
-
-### Other useful readings
-
-T.B.D.
+<!-- MARKDOWN LINKS & IMAGES -->
+<!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
+[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
+[linkedin-url]: https://www.linkedin.com/in/rui-pina-9a58721b3/
+[Next.js]: https://img.shields.io/badge/Java-ED8B00?style=for-the-badge&logo=java&logoColor=white
+[Next-url]: java.com
+[React.js]: https://img.shields.io/badge/C-00599C?style=for-the-badge&logo=c&logoColor=white
+[React-url]: https://www.cprogramming.com/
+[Vue.js]: https://img.shields.io/badge/Oracle-F80000?style=for-the-badge&logo=oracle&logoColor=black
+[Vue-url]: https://www.oracle.com/pt/database/
+[Angular.io]: https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E
+[Angular-url]: https://developer.mozilla.org/pt-BR/docs/Web/JavaScript
+[Svelte.dev]: https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white
+[Svelte-url]: https://pt.wikipedia.org/wiki/HTML5
+[Laravel.com]: https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white
+[Laravel-url]: https://pt.wikipedia.org/wiki/CSS3
